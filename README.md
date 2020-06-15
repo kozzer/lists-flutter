@@ -1,6 +1,6 @@
-# lists
+# Lists!
 
-A new Flutter project.
+Flutter implementation of Lists! for Android and (maybe) iOS and web.  (Original is Java/Android-only).
 
 ## Getting Started
 
