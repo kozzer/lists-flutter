@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: ListView(
         children: <Widget>[
+          // Hard-coded list items
           ListTile(
             leading:  Icon(IconData(59596, fontFamily: 'MaterialIcons')),
             title:    Text('Shopping List'),
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () { print("Add New List"); },
+        onPressed: () { print("Add New List"); },     // Prints to debug console
         tooltip: 'Add List',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
