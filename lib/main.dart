@@ -42,16 +42,19 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             leading:  Icon(IconData(59596, fontFamily: 'MaterialIcons')),
             title:    Text('Shopping List'),
+            subtitle: Text('18 items'),
             trailing: Icon(Icons.more_vert),
           ),
           ListTile(
             leading:  Icon(IconData(57445, fontFamily: 'MaterialIcons')),
             title:    Text('To-Do List'),
+            subtitle: Text('12 items'),
             trailing: Icon(Icons.more_vert),
           ),
           ListTile(
             leading:  Icon(IconData(59641, fontFamily: 'MaterialIcons')),
             title:    Text('Packing List'),
+            subtitle: Text('27 items'),
             trailing: Icon(Icons.more_vert),
           ),
         ],
