@@ -6,7 +6,7 @@ import 'package:lists/models/UserSettings.dart';
 class ListsDataModel extends ChangeNotifier{
 
   final List<ListThing> _mainList = [];
-  List<ListThing> get mainList => _mainList.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));  // Return sorted list
+  List<ListThing> get mainList => _mainList;  // Return sorted list
   int get mainListSize => _mainList.length;
 
   UserSettings _userSettings;
@@ -21,6 +21,7 @@ class ListsDataModel extends ChangeNotifier{
 
   void addList(ListThing thing){
     _mainList.add(thing);
+    _mainList.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
     notifyListeners();
   }
 

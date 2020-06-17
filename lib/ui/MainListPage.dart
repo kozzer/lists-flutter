@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:lists/models/ListsDataModel.dart';
 
 class MainListPage extends StatefulWidget {
   MainListPage({Key key, this.title}) : super(key: key);
@@ -28,18 +30,19 @@ class _MainListPageState extends State<MainListPage> {
       ),
       body: Consumer<ListsDataModel> (            // Main list view consumes Lists! data model
         builder: (context, listsDataModel, _) {
-        return ListView.builder(            
-          itemCount:   listsDataModel.mainListSize,
-          itemBuilder: (context, index){
-            var item = context.mainList[index];
-            return ListTile(
-              leading:  Icon(item.icon),
-              title:    Text(item.label),
-              subtitle: Text(item.listSize),
-              trailing: Icon(Icons.drag_handle)
-            ),
-          },
-        ),
+          return ListView.builder(            
+            itemCount:   listsDataModel.mainListSize,
+            itemBuilder: (context, index){
+              var item = listsDataModel.mainList[index];
+              return ListTile(
+                leading:  Icon(item.icon),
+                title:    Text(item.label),
+                subtitle: Text('(${item.listSize} items)'),
+                trailing: Icon(Icons.drag_handle)
+              );
+            } 
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () { print("Add New List"); },     // Prints to debug console
