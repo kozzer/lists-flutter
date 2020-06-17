@@ -6,15 +6,16 @@ class ListThing {
   final int             listID;
   final int             parentListID;
         String          label;
-        bool            isList;             // Is this itself a list, or just an item in a parent list?
+        bool            isList;              // Is this itself a list, or just an item in a parent list?
         IconData        icon;
         bool            isMarked  = false;   // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
-        int             sortOrder = 999999; // Default to end of list
+        int             sortOrder = 999999;  // Default to end of list
   final List<ListThing> _items = [];
 
   List<ListThing> get items        => _items;
   int             get listSize     => _items.length;
   int             get maxSortOrder => _items.last.sortOrder;
+  bool            get showAsMarked => !isList || isMarked;
 
   ListThing({
     @required this.listID,
@@ -46,5 +47,5 @@ class ListThing {
       'sortOrder':    sortOrder
     };
   }
-  
+
 }
