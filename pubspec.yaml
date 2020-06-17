@@ -23,7 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  sqflite:
+  path:
   provider: ^4.0.2
 
 
