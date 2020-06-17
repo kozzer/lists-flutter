@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/UserSettings.dart';
 
-class ListThingModel extends ChangeNotifier{
+class ListsDataModel extends ChangeNotifier{
 
   final List<ListThing> _mainList = [];
   List<ListThing> get mainList => _mainList;
@@ -16,7 +16,7 @@ class ListThingModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  ListThingModel();   // Data access here? - list data & user settings
+  ListsDataModel();   // CONSTRUCTOR: Data access here? - list data & user settings
 
   void addList(ListThing thing){
     _mainList.add(thing);
