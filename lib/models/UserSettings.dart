@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class UserSettings {
   final bool    showListItemNumbers;
@@ -11,5 +10,5 @@ class UserSettings {
     this.fontSize,
     this.useFloatingActionButton,
     this.dataBackupLocation
-  })
+  });
 }
