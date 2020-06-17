@@ -17,4 +17,14 @@ class ListThingModel extends ChangeNotifier{
   }
 
   ListThingModel();   // Data access here? - list data & user settings
+
+  void addList(ListThing thing){
+    _mainList.add(thing);
+    notifyListeners();
+  }
+
+  void removeList(ListThing thing){
+    _mainList.remove(thing);
+    notifyListeners();
+  }
 }

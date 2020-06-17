@@ -16,27 +16,37 @@ class _MainListPageState extends State<MainListPage> {
     return Scaffold(
       appBar: AppBar(               //  Also need to expose route to Settings screen
         title: Text(widget.title),
+        actions: <Widget>[
+            // action button
+            IconButton(
+              icon: Icon(Icons.more_vert),
+              onPressed: () {
+                print('pushed!');
+              },
+            ),
+        ]
       ),
       body: ListView(               // Build list via the context object?
         children: <Widget>[
           // Hard-coded list items
           ListTile(
-            leading:  Icon(IconData(59596, fontFamily: 'MaterialIcons')),
+            leading:  Icon(Icons.shopping_cart),
             title:    Text('Shopping List'),
             subtitle: Text('18 items'),
-            trailing: Icon(Icons.more_vert),
+            trailing: Icon(Icons.drag_handle),
+            onTap: listItemTap(itemId: 1),
           ),
           ListTile(
-            leading:  Icon(IconData(57445, fontFamily: 'MaterialIcons')),
+            leading:  Icon(Icons.playlist_add_check),
             title:    Text('To-Do List'),
             subtitle: Text('12 items'),
-            trailing: Icon(Icons.more_vert),
+            trailing: Icon(Icons.drag_handle),
           ),
           ListTile(
-            leading:  Icon(IconData(59641, fontFamily: 'MaterialIcons')),
+            leading:  Icon(Icons.work),
             title:    Text('Packing List'),
             subtitle: Text('27 items'),
-            trailing: Icon(Icons.more_vert),
+            trailing: Icon(Icons.drag_handle),
           ),
         ],
       ),
@@ -46,5 +56,9 @@ class _MainListPageState extends State<MainListPage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void listItemTap(int itemId){
+
   }
 }
