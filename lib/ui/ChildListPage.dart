@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class MainListPage extends StatefulWidget {
-  MainListPage({Key key, this.title}) : super(key: key);
+class ChildListPage extends StatefulWidget {
+  ChildListPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MainListPageState createState() => _MainListPageState();
+  _ChildListPageState createState() => _ChildListPageState();
 }
 
-class _MainListPageState extends State<MainListPage> {
+class _ChildListPageState extends State<ChildListPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,6 @@ class _MainListPageState extends State<MainListPage> {
             title:    Text('Shopping List'),
             subtitle: Text('18 items'),
             trailing: Icon(Icons.drag_handle),
-            onTap: listItemTap(itemId: 1),
           ),
           ListTile(
             leading:  Icon(Icons.playlist_add_check),
@@ -56,9 +55,5 @@ class _MainListPageState extends State<MainListPage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-
-  void listItemTap(int itemId){
-
   }
 }

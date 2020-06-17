@@ -8,18 +8,19 @@ class ListThing {
   bool      isList;             // Is this itself a list, or just an item in a parent list?
   Icon      icon;
   bool      isMarked = false;   // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
+  int       sortOrder = 0;
   final List<ListThing> _items = [];
 
   List<ListThing> get items => _items;
+  int get listSize => _items.length;
 
   ListThing({
     @required this.listID,
     @required this.label,
     @required this.isList,
-    this.icon
+    this.icon,
+    this.sortOrder
   });
-
-  int get listSize => _items.length;
 
   void add(ListThing thing) {
     if (!isList){

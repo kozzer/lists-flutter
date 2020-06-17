@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lists/models/ListsDataModel.dart';
-import 'package:lists/screens/MainListPage.dart';
+import 'package:lists/ui/MainListPage.dart';
 
 void main() {
   runApp(ListsApp());

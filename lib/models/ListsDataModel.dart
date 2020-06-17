@@ -6,7 +6,8 @@ import 'package:lists/models/UserSettings.dart';
 class ListsDataModel extends ChangeNotifier{
 
   final List<ListThing> _mainList = [];
-  List<ListThing> get mainList => _mainList;
+  List<ListThing> get mainList => _mainList.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));  // Return sorted list
+  int get mainListSize => _mainList.length;
 
   UserSettings _userSettings;
   UserSettings get userSettings => _userSettings;
