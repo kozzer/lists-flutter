@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ListThing {
   final int             thingID;
-  final int             parentListID;
+  final int             parentThingID;
         String          label;
         bool            isList;              // Is this itself a list, or just an item in a parent list?
         IconData        icon;
@@ -19,7 +19,7 @@ class ListThing {
 
   ListThing({
     @required this.thingID,
-    @required this.parentListID,
+    @required this.parentThingID,
     @required this.label,
     @required this.isList,
     this.icon,
@@ -37,23 +37,23 @@ class ListThing {
   void removeChildThing(ListThing thing) => _items.remove(thing);
 
   ListThing.fromMap(Map<String, dynamic> map)
-    : thingID       = map['thingID'],
-      parentListID  = map['parentListID'],
-      label         = map['label'],
-      isList        = map['isList'],
-      icon          = map['icon'],
-      isMarked      = map['isMarked'],
-      sortOrder     = map['sortOrder'];
+    : thingID         = map['thingID'],
+      parentThingID   = map['parentThingID'],
+      label           = map['label'],
+      isList          = map['isList'],
+      icon            = map['icon'],
+      isMarked        = map['isMarked'],
+      sortOrder       = map['sortOrder'];
 
   Map<String, dynamic> toMap() {
     return {
-      'thingID':      thingID,
-      'parentListID': parentListID,
-      'label':        label,
-      'isList':       isList,
-      'icon':         icon,
-      'isMarked':     isMarked,
-      'sortOrder':    sortOrder
+      'thingID':        thingID,
+      'parentThingID':  parentThingID,
+      'label':          label,
+      'isList':         isList,
+      'icon':           icon,
+      'isMarked':       isMarked,
+      'sortOrder':      sortOrder
     };
   }
 

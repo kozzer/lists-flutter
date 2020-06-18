@@ -16,9 +16,9 @@ class ListsDatabase {
   Future<List<ListThing>> getAllListsData() async {
     final Database db = await _database;
     List<ListThing> listsData = [];
-    var rawMapData = await db.query('lists', columns: ['thingID', 'parentListID', 'label', 'isList', 'icon', 'isMarked', 'sortOrder']);
+    var rawMapData = await db.query('lists', columns: ['thingID', 'parentThingID', 'label', 'isList', 'icon', 'isMarked', 'sortOrder']);
  
-    // need to convert rawMapData to list of ListThing objects
+    // TODO need to convert rawMapData to list of ListThing objects
 
     return listsData;
   }
@@ -52,6 +52,19 @@ class ListsDatabase {
   }
 
   // SQL Queries
-  static String createDatabaseSQL = "";   // concatenated series of queries to create Lists! database
+  static String createDatabaseSQL = '''
+    CREATE TABLE lists (
+      thingID         INTEGER   NOT NULL PRIMARY KEY,
+      parentThingID   INTEGER   NOT NULL,
+      label           TEXT      NOT NULL,
+      isList          INTEGER   NOT NULL,
+      icon            TEXT,
+      isMarked        INTEGER   NOT NULL,
+      sortOrder       INTEGER   NOT NULL,
+    );
+    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder) 
+      VALUES (0, 0, 'Main List', 1, NULL, 0, 0);
+    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
+      VALUES (1, 0, 'First List Item', 0, NULL, 0, 0);''';
 
 }
