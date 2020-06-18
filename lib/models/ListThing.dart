@@ -15,7 +15,7 @@ class ListThing {
   List<ListThing> get items        => _items;
   int             get listSize     => _items.length;
   int             get maxSortOrder => _items.last.sortOrder;
-  bool            get showAsMarked => !isList || isMarked;
+  bool            get showAsMarked => !isList && isMarked;
 
   ListThing({
     @required this.thingID,
@@ -27,16 +27,14 @@ class ListThing {
     this.sortOrder
   });
 
-  void add(ListThing thing) {
+  void addChildThing(ListThing thing) {
     if (!isList){
       isList = true;    // Since we're adding an item, convert to list if not already one
     }
     _items.add(thing);
   }
 
-  void remove(ListThing thing){
-    _items.remove(thing);
-  }
+  void removeChildThing(ListThing thing) => _items.remove(thing);
 
   ListThing.fromMap(Map<String, dynamic> map)
     : thingID       = map['thingID'],
