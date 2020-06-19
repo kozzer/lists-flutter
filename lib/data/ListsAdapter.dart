@@ -1,11 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lists/models/ListThing.dart';
 
 
-final Future<Database> _database = getDatabasesPath().then((String path) {
+final Future<Database> _database = getDatabasesPath().then((String path) async {
+  var fse = File(join(path, 'lists_database.db'));
+  if (await fse.exists()){
+    fse.delete();
+  }
+
   return openDatabase(
     join(path, 'lists_database.db'),
     onCreate: _onCreate,
@@ -15,11 +21,13 @@ final Future<Database> _database = getDatabasesPath().then((String path) {
 
 Future<List<ListThing>> getAllListsData() async {
 
-  print('getting lists data');
+  print('KOZZER - getting lists data');
 
   final Database  db = await _database;
   final List<ListThing> listsData = <ListThing>[];
   final List<Map<String, dynamic>> rawMapData = await db.query('lists', columns: <String>['thingID', 'parentThingID', 'label', 'isList', 'icon', 'isMarked', 'sortOrder']);
+
+  print('KOZZER - records read: ${rawMapData.length}');
 
   for (final Map<String, dynamic> map in rawMapData){
     listsData.add(ListThing(
@@ -32,6 +40,8 @@ Future<List<ListThing>> getAllListsData() async {
       sortOrder:      map['sortOrder']      as int    
     ));
   }
+
+  print('KOZZER - listsData size: ${listsData.length}');
 
   return listsData;
 }
@@ -61,6 +71,7 @@ Future<void> updateThing(ListThing thing) async {
 
 // Executes only once - to create the database
 Future<void> _onCreate(Database db, int version) async {
+  print('KOZZER - in _onCreate, executing create script');
   db.execute(createDatabaseSQL);
 }
 
@@ -73,7 +84,7 @@ const String createDatabaseSQL = '''
     isList          INTEGER   NOT NULL,
     icon            TEXT,
     isMarked        INTEGER   NOT NULL,
-    sortOrder       INTEGER   NOT NULL,
+    sortOrder       INTEGER   NOT NULL
   );
   INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder) 
               VALUES (0, 0, 'Main List', 1, NULL, 0, 0);

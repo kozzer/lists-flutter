@@ -6,7 +6,10 @@ import 'package:lists/data/ListsAdapter.dart';
 
 class ListsDataModel extends ChangeNotifier{
 
-  ListsDataModel();
+  ListsDataModel(){
+    print('KOZZER - ListsDataModel constructor');
+    getAllListsData().then((data) => _mainList = data);
+  }
 
   List<ListThing> _mainList = <ListThing>[];
 
@@ -21,6 +24,7 @@ class ListsDataModel extends ChangeNotifier{
   }
 
   Future<List<ListThing>> get mainList async {
+    print('KOZZER - get mainList');
     if (mainList != null)
       return _mainList;
 
