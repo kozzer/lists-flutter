@@ -6,7 +6,9 @@ import 'package:lists/data/ListsAdapter.dart';
 
 class ListsDataModel extends ChangeNotifier{
 
-  List<ListThing> _mainList = [];
+  ListsDataModel();
+
+  List<ListThing> _mainList = <ListThing>[];
 
   int get mainListSize => _mainList.length;
 
@@ -18,20 +20,18 @@ class ListsDataModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  ListsDataModel();
-
   Future<List<ListThing>> get mainList async {
     if (mainList != null)
       return _mainList;
 
     // if _database is null we instantiate it
-    _mainList = await ListsDatabase.getAllListsData();
+    _mainList = await getAllListsData();
     return _mainList;
   }   
 
   void addList(ListThing thing){
     _mainList.add(thing);
-    _mainList.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
+    _mainList.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
     notifyListeners();
   }
 

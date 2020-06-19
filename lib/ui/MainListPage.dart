@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lists/models/ListThing.dart';
 import 'package:provider/provider.dart';
 import 'package:lists/models/ListsDataModel.dart';
 
 class MainListPage extends StatefulWidget {
-  MainListPage({Key key, this.title}) : super(key: key);
+  const MainListPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -29,11 +30,11 @@ class _MainListPageState extends State<MainListPage> {
         ]
       ),
       body: Consumer<ListsDataModel> (            // Main list view consumes Lists! data model
-        builder: (context, listsDataModel, _) {
+        builder: (BuildContext context, ListsDataModel listsDataModel, _) {
           return ListView.builder(            
             itemCount:   listsDataModel.mainListSize,
-            itemBuilder: (context, index){
-              var item = listsDataModel.getMainListThing(index);
+            itemBuilder: (BuildContext context, int index){
+              final ListThing item = listsDataModel.getMainListThing(index);
               return ListTile(
                 leading:  Icon(item.icon),
                 title:    Text(item.label),
@@ -45,7 +46,7 @@ class _MainListPageState extends State<MainListPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () { print("Add New List"); },     // Prints to debug console
+        onPressed: () { print('Add New List'); },     // Prints to debug console
         tooltip: 'Add List',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
