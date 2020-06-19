@@ -3,12 +3,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lists/models/ListThing.dart';
 
-class ListsProvider {
-  ListsProvider._();
-  static final ListsProvider db = ListsProvider._();
-}
-
-
 class ListsDatabase {
 
   static final Future<Database> _database = getDatabasesPath().then((String path) {
