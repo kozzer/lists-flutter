@@ -3,9 +3,15 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lists/models/ListThing.dart';
 
+class ListsProvider {
+  ListsProvider._();
+  static final ListsProvider db = ListsProvider._();
+}
+
+
 class ListsDatabase {
 
-  final Future<Database> _database = getDatabasesPath().then((String path) {
+  static final Future<Database> _database = getDatabasesPath().then((String path) {
     return openDatabase(
       join(path, 'lists_database.db'),
       onCreate: _onCreate,
@@ -13,17 +19,19 @@ class ListsDatabase {
     );
   });
 
-  Future<List<ListThing>> getAllListsData() async {
+  static Future<List<ListThing>> getAllListsData() async {
     final Database db = await _database;
     List<ListThing> listsData = [];
     var rawMapData = await db.query('lists', columns: ['thingID', 'parentThingID', 'label', 'isList', 'icon', 'isMarked', 'sortOrder']);
  
     // TODO need to convert rawMapData to list of ListThing objects
+    //rawMapData.forEach((element) { print(element); });
 
+    print('getting lists data');
     return listsData;
   }
 
-  Future<int> insertThing(ListThing thing) async {
+  static Future<int> insertThing(ListThing thing) async {
     final Database db = await _database;
     return await db.insert(                           // db.insert() returns ID of new record
       'lists',
@@ -32,12 +40,12 @@ class ListsDatabase {
     );
   }
 
-  Future<void> removeThing(int thingID) async {
+  static Future<void> removeThing(int thingID) async {
     final Database db = await _database;
     await db.execute('DELETE FROM lists WHERE thingID = $thingID');
   }
 
-  Future<void> updateThing(ListThing thing) async {
+  static Future<void> updateThing(ListThing thing) async {
     final Database db = await _database;
     await db.insert(
       'lists',
@@ -63,8 +71,8 @@ class ListsDatabase {
       sortOrder       INTEGER   NOT NULL,
     );
     INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder) 
-      VALUES (0, 0, 'Main List', 1, NULL, 0, 0);
+               VALUES (0, 0, 'Main List', 1, NULL, 0, 0);
     INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
-      VALUES (1, 0, 'First List Item', 0, NULL, 0, 0);''';
+               VALUES (1, 0, 'First List Item', 0, NULL, 0, 0);''';
 
 }

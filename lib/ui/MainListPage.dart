@@ -33,7 +33,7 @@ class _MainListPageState extends State<MainListPage> {
           return ListView.builder(            
             itemCount:   listsDataModel.mainListSize,
             itemBuilder: (context, index){
-              var item = listsDataModel.mainList[index];
+              var item = listsDataModel.getMainListThing(index);
               return ListTile(
                 leading:  Icon(item.icon),
                 title:    Text(item.label),

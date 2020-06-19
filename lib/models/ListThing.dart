@@ -17,6 +17,8 @@ class ListThing {
   int             get maxSortOrder => _items.last.sortOrder;
   bool            get showAsMarked => !isList && isMarked;
 
+  ListThing getChildListThing(int index) => _items[index];
+
   ListThing({
     @required this.thingID,
     @required this.parentThingID,
