@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ChildListPage extends StatefulWidget {
-  ChildListPage({Key key, this.title}) : super(key: key);
+
+  const ChildListPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -31,26 +32,26 @@ class _ChildListPageState extends State<ChildListPage> {
           // Hard-coded list items
           ListTile(
             leading:  Icon(Icons.shopping_cart),
-            title:    Text('Shopping List'),
-            subtitle: Text('18 items'),
+            title:    const Text('Shopping List'),
+            subtitle: const Text('18 items'),
             trailing: Icon(Icons.drag_handle),
           ),
           ListTile(
             leading:  Icon(Icons.playlist_add_check),
-            title:    Text('To-Do List'),
-            subtitle: Text('12 items'),
+            title:    const Text('To-Do List'),
+            subtitle: const Text('12 items'),
             trailing: Icon(Icons.drag_handle),
           ),
           ListTile(
             leading:  Icon(Icons.work),
-            title:    Text('Packing List'),
-            subtitle: Text('27 items'),
+            title:    const Text('Packing List'),
+            subtitle: const Text('27 items'),
             trailing: Icon(Icons.drag_handle),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () { print("Add New List"); },     // Prints to debug console
+        onPressed: () { print('Add New List'); },     // Prints to debug console
         tooltip: 'Add List',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

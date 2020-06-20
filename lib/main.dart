@@ -11,14 +11,14 @@ class ListsApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (context) => ListsDataModel(),
+    return ChangeNotifierProvider<ListsDataModel>(create: (BuildContext context) => ListsDataModel(),
       child: MaterialApp(
         title: 'Lists!',
         theme: ThemeData(
           primarySwatch: Colors.green,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: MainListPage(title: 'Lists!'),
+        home: const MainListPage(title: 'Lists!'),
     ));
   }
 }
