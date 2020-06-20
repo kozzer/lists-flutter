@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:lists/models/ListsDataModel.dart';
-import 'package:path_provider/path_provider.dart';
 
-class ListDataAdapter {
-  static final DatabaseHelper _instance = new DatabaseHelper.internal();
-  factory DatabaseHelper() => _instance;
+class ListsDataAdapter {
+  static final ListsDataAdapter _instance = new ListsDataAdapter.internal();
+  factory ListsDataAdapter() => _instance;
 
   static Database _db;
 
@@ -17,13 +14,15 @@ class ListDataAdapter {
     if (_db != null) return _db;
     _db = await initDb();
     return _db;
+  }
 
- }
-
-  DatabaseHelper.internal();
+  ListsDataAdapter.internal();
 
   initDb() async {
+
     var path = await getDatabasesPath();
+
+    print('KOZZER - deleting existing database');
     var dbf = File(join(path, 'lists_database.db'));
     if (await dbf.exists()){
       dbf.delete();
@@ -67,6 +66,29 @@ class ListDataAdapter {
     }).toList();
 
     print('KOZZER -- $result');
+    return list;
+  }
+
+  Future<List<ListThing>> getChildItemsForListId(int listID) async {
+    var dbClient = await db;
+    String sql = "SELECT * FROM lists WHERE parentThingID = $listID";
+
+    var result = await dbClient.rawQuery(sql);
+    if (result.length == 0) return List<ListThing>();
+
+    List<ListThing> list = result.map((item) {
+      return ListThing.fromMap(item);
+    }).toList();
+
+    // Nested loop using recursion to populate data model
+    for(ListThing thing in list){
+      List<ListThing> childThings = await getChildItemsForListId(thing.thingID);
+      for(ListThing child in childThings){
+        thing.addChildThing(child);
+      }
+    }
+
+    print('KOZZER -- listID result: $result');
     return list;
   }
 

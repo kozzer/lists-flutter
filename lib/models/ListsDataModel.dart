@@ -2,16 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/UserSettings.dart';
-import 'package:lists/data/ListsAdapter.dart';
+import 'package:lists/data/ListsDataAdapter.dart';
 
 class ListsDataModel extends ChangeNotifier{
 
   ListsDataModel() {
     print('KOZZER - ListsDataModel constructor');
-    getAllListsData().then((data) => _mainList = data);
+    populateListsData();
   }
 
-  List<ListThing> _mainList = <ListThing>[];
+  ListsDataAdapter _listsDataAdapter = ListsDataAdapter();
+  List<ListThing> _listsData ;
 
   UserSettings _userSettings;
   UserSettings get userSettings => _userSettings;
@@ -21,28 +22,30 @@ class ListsDataModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<List<ListThing>> get mainList async {
+  Future<void> populateListsData() async {
+    // if _database is null we instantiate it
+    if (_listsData == null) {
+      print('KOZZER - _mainList null, populating now');
+      _listsData = await _listsDataAdapter.getChildItemsForListId(-1);
+    }
+  }
+
+  Future<List<ListThing>> getMainList() async {
     print('KOZZER - get mainList');
 
-    // if _database is null we instantiate it
-    if (_mainList == null) {
-      print('KOZZER - _mainList null, populating now');
-      _mainList = await getAllListsData();
-    }
-      
-    return _mainList.where((thing) => thing.parentThingID == -1).toList();
+    await populateListsData();
+    return _listsData;
   }   
 
   void addList(ListThing thing){
-    _mainList.add(thing);
-    _mainList.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
+    _listsData.add(thing);
+    _listsData.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
     notifyListeners();
   }
 
   void removeList(ListThing thing){
-    _mainList.remove(thing);
+    _listsData.remove(thing);
     notifyListeners();
   }
 
-  ListThing getMainListThing(int index) => _mainList[index];
 }
