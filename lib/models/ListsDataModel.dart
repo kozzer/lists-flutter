@@ -12,7 +12,7 @@ class ListsDataModel extends ChangeNotifier{
   }
 
   ListsDataAdapter _listsDataAdapter = ListsDataAdapter();
-  List<ListThing> _listsData ;
+  ListThing _mainList;
 
   UserSettings _userSettings;
   UserSettings get userSettings => _userSettings;
@@ -24,27 +24,28 @@ class ListsDataModel extends ChangeNotifier{
 
   Future<void> populateListsData() async {
     // if _database is null we instantiate it
-    if (_listsData == null) {
+    if (_mainList == null) {
       print('KOZZER - _mainList null, populating now');
-      _listsData = await _listsDataAdapter.getChildItemsForListId(-1);
+      _mainList = await _listsDataAdapter.getListThingPlusItems(-1);
     }
+    notifyListeners();
   }
 
-  Future<List<ListThing>> getMainList() async {
+  Future<ListThing> getMainList() async {
     print('KOZZER - get mainList');
 
     await populateListsData();
-    return _listsData;
+    return _mainList;
   }   
 
   void addList(ListThing thing){
-    _listsData.add(thing);
-    _listsData.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
+    _mainList.addChildThing(thing);
+    _mainList.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
     notifyListeners();
   }
 
   void removeList(ListThing thing){
-    _listsData.remove(thing);
+    _mainList.removeChildThing(thing);
     notifyListeners();
   }
 

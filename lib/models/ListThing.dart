@@ -18,9 +18,9 @@ class ListThing {
     this.thingID        = map['thingID'] ;
     this.parentThingID  = map['parentThingID'];
     this.label          = map['label'] ;
-    this.isList         = map['isList'] ;
+    this.isList         = map['isList'] > 0;
     this.icon           = map['icon'] ;
-    this.isMarked       = map['isMarked'] ;
+    this.isMarked       = map['isMarked'] > 0;
     this.sortOrder      = map['sortOrder'] ;
   }
 

@@ -11,7 +11,11 @@ class ListsDataAdapter {
   static Database _db;
 
   Future<Database> get db async {
-    if (_db != null) return _db;
+    if (_db != null) 
+      return _db;
+
+    print ('KOZZER - db is null, init');
+
     _db = await initDb();
     return _db;
   }
@@ -21,13 +25,13 @@ class ListsDataAdapter {
   initDb() async {
 
     var path = await getDatabasesPath();
-
+/*
     print('KOZZER - deleting existing database');
     var dbf = File(join(path, 'lists_database.db'));
     if (await dbf.exists()){
       dbf.delete();
     }
-
+*/
     print('KOZZER - opening database');
     return openDatabase(
       join(path, 'lists_database.db'),
@@ -69,27 +73,41 @@ class ListsDataAdapter {
     return list;
   }
 
-  Future<List<ListThing>> getChildItemsForListId(int listID) async {
+  Future<ListThing> getListThingPlusItems(int thingID) async {
+
+    print('KOZZER - getting list id $thingID');
     var dbClient = await db;
-    String sql = "SELECT * FROM lists WHERE parentThingID = $listID";
 
+    String sql = "SELECT * FROM lists WHERE thingID = $thingID";
     var result = await dbClient.rawQuery(sql);
-    if (result.length == 0) return List<ListThing>();
 
-    List<ListThing> list = result.map((item) {
-      return ListThing.fromMap(item);
-    }).toList();
+    // get top-level list for ID
+    ListThing thing = result.map((map) => ListThing.fromMap(map)).first;
+
+    print('KOZZER - found thing: $thing');
 
     // Nested loop using recursion to populate data model
-    for(ListThing thing in list){
-      List<ListThing> childThings = await getChildItemsForListId(thing.thingID);
+    if (thing.isList){
+
+      // Get child things
+      sql = '''SELECT thingID, parentThingID, label, isList, icon, isMarked, sortOrder 
+               FROM lists 
+               WHERE parentThingID = ${thing.thingID}''';
+      var itemResult = await dbClient.rawQuery(sql);
+
+      List<ListThing> childThings = itemResult.map((map) => ListThing.fromMap(map));
+      print('KOZZER - found ${childThings.length} child things');
       for(ListThing child in childThings){
+
+        print('KOZZER - getting thing $child');
+
         thing.addChildThing(child);
       }
     }
 
+
     print('KOZZER -- listID result: $result');
-    return list;
+    return thing;
   }
 
 

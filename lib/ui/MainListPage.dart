@@ -4,9 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:lists/models/ListsDataModel.dart';
 
 class MainListPage extends StatefulWidget {
-  const MainListPage({Key key, this.title}) : super(key: key);
+  const MainListPage({Key key, this.title, this.listsDataModel}) : super(key: key);
 
   final String title;
+  final ListsDataModel listsDataModel;
 
   @override
   _MainListPageState createState() => _MainListPageState();
@@ -31,30 +32,25 @@ class _MainListPageState extends State<MainListPage> {
             ),
         ]
       ),
-      body: Consumer<FutureBuilder<ListsDataModel>> (            // Main list view consumes Lists! data model
-      builder: (BuildContext context, FutureBuilder<ListsDataModel> snapshot, _) {
-        return FutureBuilder<List<ListThing>>(
-          future: listsDataModel.getMainList(),
-          builder: (BuildContext context, AsyncSnapshot<List<ListThing>> snapshot){
+      body:FutureBuilder<ListThing>(
+        future: listsDataModel.getMainList(),
+        builder: (BuildContext context, AsyncSnapshot<ListThing> snapshot){
 
-            return ListView.builder(            
-              itemCount:   snapshot.data.length,
-              itemBuilder: (BuildContext context, int index){
-                print('KOZZER - in ListView.builder - index: $index');
-                final ListThing item = snapshot.data[index];
-                return ListTile(
-                  leading:  Icon(item.icon),
-                  title:    Text(item.label),
-                  subtitle: Text('(${item.listSize} items)'),
-                  trailing: Icon(Icons.drag_handle)
-                );
-              } 
-            );
-            
-          }
-        );
-      },
-    ),
+          return ListView.builder(            
+            itemCount:   snapshot.data.items.length,
+            itemBuilder: (BuildContext context, int index){
+              print('KOZZER - in ListView.builder - index: $index');
+              final ListThing item = snapshot.data.items[index];
+              return ListTile(
+                leading:  Icon(item.icon),
+                title:    Text(item.label),
+                subtitle: Text('(${item.listSize} items)'),
+                trailing: Icon(Icons.drag_handle)
+              );
+            } 
+          );            
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () { print('KOZZER - Add New List'); },     // Prints to debug console
         tooltip: 'Add List',
