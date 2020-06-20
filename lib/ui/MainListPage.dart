@@ -31,7 +31,7 @@ class _MainListPageState extends State<MainListPage> {
       ),
       body: Consumer<ListsDataModel> (            // Main list view consumes Lists! data model
         builder: (BuildContext context, ListsDataModel listsDataModel, _) {
-          print('KOZZER - in builder - size: ${listsDataModel.mainListSize}');
+          print('KOZZER - in builder - size: ${listsDataModel.mainList.}');
           return ListView.builder(            
             itemCount:   listsDataModel.mainListSize,
             itemBuilder: (BuildContext context, int index){

@@ -7,6 +7,9 @@ import 'package:lists/models/ListThing.dart';
 
 
 final Future<Database> _database = getDatabasesPath().then((String path) async {
+
+
+  print('KOZZER - deleting existing database');
   var fse = File(join(path, 'lists_database.db'));
   if (await fse.exists()){
     fse.delete();
@@ -30,6 +33,9 @@ Future<List<ListThing>> getAllListsData() async {
   print('KOZZER - records read: ${rawMapData.length}');
 
   for (final Map<String, dynamic> map in rawMapData){
+
+    print('KOZZER - map: $map');
+
     listsData.add(ListThing(
       thingID:        map['thingID']        as int,
       parentThingID:  map['parentThingID']  as int,
@@ -73,6 +79,12 @@ Future<void> updateThing(ListThing thing) async {
 Future<void> _onCreate(Database db, int version) async {
   print('KOZZER - in _onCreate, executing create script');
   db.execute(createDatabaseSQL);
+  print('KOZZER - in _onCreate, executing create script');
+  db.execute(insertMainList);  
+  print('KOZZER - in _onCreate, executing create script');
+  db.execute(insertFirstItem);  
+  print('KOZZER - in _onCreate, executing create script');
+  db.execute(insertSecondList);
 }
 
 // SQL Queries
@@ -85,9 +97,17 @@ const String createDatabaseSQL = '''
     icon            TEXT,
     isMarked        INTEGER   NOT NULL,
     sortOrder       INTEGER   NOT NULL
-  );
-  INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder) 
-              VALUES (0, 0, 'Main List', 1, NULL, 0, 0);
-  INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
-              VALUES (1, 0, 'First List Item', 0, NULL, 0, 0);''';
+  );''';
+  const String insertMainList = '''
+    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder) 
+      VALUES (0, -1, '[Main List]', 1, NULL, 0, 0);''';
+  const String insertFirstList = '''
+    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
+      VALUES (1, 0, 'First List', 1, NULL, 0, 0);''';
+  const String insertFirstItem = '''
+    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
+      VALUES (2, 1, 'First List Item', 0, NULL, 0, 0);'''; 
+  const String insertSecondList = '''
+    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
+      VALUES (3, 0, 'Second List', 0, NULL, 0, 1);''';           
 

@@ -6,14 +6,12 @@ import 'package:lists/data/ListsAdapter.dart';
 
 class ListsDataModel extends ChangeNotifier{
 
-  ListsDataModel(){
+  ListsDataModel() {
     print('KOZZER - ListsDataModel constructor');
     getAllListsData().then((data) => _mainList = data);
   }
 
   List<ListThing> _mainList = <ListThing>[];
-
-  int get mainListSize => _mainList.length;
 
   UserSettings _userSettings;
   UserSettings get userSettings => _userSettings;
@@ -25,12 +23,14 @@ class ListsDataModel extends ChangeNotifier{
 
   Future<List<ListThing>> get mainList async {
     print('KOZZER - get mainList');
-    if (mainList != null)
-      return _mainList;
 
     // if _database is null we instantiate it
-    _mainList = await getAllListsData();
-    return _mainList;
+    if (_mainList == null) {
+      print('KOZZER - _mainList null, populating now');
+      _mainList = await getAllListsData();
+    }
+      
+    return _mainList.where((thing) => thing.parentThingID == -1).toList();
   }   
 
   void addList(ListThing thing){

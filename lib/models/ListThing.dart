@@ -14,23 +14,35 @@ class ListThing {
     this.sortOrder
   });
 
-  static ListThing fromMap(Map<String, dynamic> map) => ListThing(
-    thingID:        map['thingID']        as int,
-    parentThingID:  map['parentThingID']  as int,
-    label:          map['label']          as String,
-    isList:         map['isList']         as bool,
-    icon:           map['icon']           as IconData,
-    isMarked:       map['isMarked']       as bool,
-    sortOrder:      map['sortOrder']      as int
-  );
+  ListThing.fromMap(Map<String, dynamic> map) {
+    this.thingID        = map['thingID'] ;
+    this.parentThingID  = map['parentThingID'];
+    this.label          = map['label'] ;
+    this.isList         = map['isList'] ;
+    this.icon           = map['icon'] ;
+    this.isMarked       = map['isMarked'] ;
+    this.sortOrder      = map['sortOrder'] ;
+  }
 
-  final int             thingID;
-  final int             parentThingID;
-        String          label;
-        bool            isList;              // Is this itself a list, or just an item in a parent list?
-        IconData        icon;
-        bool            isMarked  = false;   // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
-        int             sortOrder = 999999;  // Default to end of list
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'thingID':        thingID,
+      'parentThingID':  parentThingID,
+      'label':          label,
+      'isList':         isList,
+      'icon':           icon,
+      'isMarked':       isMarked,
+      'sortOrder':      sortOrder
+    };
+  }
+
+  int             thingID;
+  int             parentThingID;
+  String          label;
+  bool            isList;              // Is this itself a list, or just an item in a parent list?
+  IconData        icon;
+  bool            isMarked  = false;   // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
+  int             sortOrder = 999999;  // Default to end of list
   final List<ListThing> _items = <ListThing>[];
 
   List<ListThing> get items        => _items;
@@ -48,17 +60,5 @@ class ListThing {
   }
 
   void removeChildThing(ListThing thing) => _items.remove(thing);
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'thingID':        thingID,
-      'parentThingID':  parentThingID,
-      'label':          label,
-      'isList':         isList,
-      'icon':           icon,
-      'isMarked':       isMarked,
-      'sortOrder':      sortOrder
-    };
-  }
 
 }
