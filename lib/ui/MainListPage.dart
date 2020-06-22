@@ -3,18 +3,16 @@ import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsDataModel.dart';
 
 class MainListPage extends StatefulWidget {
-  const MainListPage({Key key, this.title, this.listsDataModel}) : super(key: key);
+  const MainListPage({Key key, this.title}) : super(key: key);
 
   final String title;
-  final ListsDataModel listsDataModel;
-
   @override
   _MainListPageState createState() => _MainListPageState();
 }
 
 class _MainListPageState extends State<MainListPage> {
 
-  ListsDataModel listsDataModel = ListsDataModel;
+  ListsDataModel listsDataModel = ListsDataModel();
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +30,14 @@ class _MainListPageState extends State<MainListPage> {
         ]
       ),
       body:FutureBuilder<ListThing>(
-        future: listsDataModel.getMainList(),
+        future: listsDataModel.mainList,
         builder: (BuildContext context, AsyncSnapshot<ListThing> snapshot){
 
           return ListView.builder(            
-            itemCount:   snapshot.data.items.length,
+            itemCount:   snapshot.hasData ? snapshot.data?.items?.length : 0,
             itemBuilder: (BuildContext context, int index){
               print('KOZZER - in ListView.builder - index: $index');
-              final ListThing item = snapshot.data.items[index];
+              final ListThing item = snapshot?.data?.items[index];
               return ListTile(
                 leading:  Icon(item.icon),
                 title:    Text(item.label),

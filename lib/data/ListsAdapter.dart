@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lists/models/ListThing.dart';
@@ -35,6 +36,17 @@ class ListsAdapter {
     // this opens the database (and creates it if it doesn't exist)
   Future<Database> _initDatabase() async {
     final String path = join(await getDatabasesPath(), _databaseFileName);
+
+/*
+  if (_database == null){
+    print('KOZZER - deleting existing database');
+    var fse = File(join(path, 'lists_database.db'));
+    if (await fse.exists()){
+      fse.delete();
+    }
+  }
+*/
+    
     return await openDatabase(
         path,
         version:  _databaseVersion,
