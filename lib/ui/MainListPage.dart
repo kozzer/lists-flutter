@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:provider/provider.dart';
 import 'package:lists/models/ListsDataModel.dart';
 
 class MainListPage extends StatefulWidget {
@@ -15,7 +14,7 @@ class MainListPage extends StatefulWidget {
 
 class _MainListPageState extends State<MainListPage> {
 
-  ListsDataModel listsDataModel = ListsDataModel();
+  ListsDataModel listsDataModel = ListsDataModel;
 
   @override
   Widget build(BuildContext context) {

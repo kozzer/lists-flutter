@@ -2,16 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/UserSettings.dart';
-import 'package:lists/data/ListsDataAdapter.dart';
+import 'package:lists/data/ListsAdapter.dart';
 
 class ListsDataModel extends ChangeNotifier{
 
-  ListsDataModel(this._listsDataAdapter) {
+  ListsDataModel(this._listsAdapter) {
     print('KOZZER - ListsDataModel constructor');
     populateListsData();
   }
 
-  final ListsDataAdapter _listsDataAdapter;
+  final ListsAdapter _listsAdapter;
   ListThing _mainList;
 
   UserSettings _userSettings;
@@ -26,7 +26,7 @@ class ListsDataModel extends ChangeNotifier{
     // if _database is null we instantiate it
     if (_mainList == null) {
       print('KOZZER - _mainList null, populating now');
-      _mainList = await _listsDataAdapter.getListThingPlusItems(0);
+      _mainList = await _listsAdapter.getListThingByID(0);
     }
     notifyListeners();
   }

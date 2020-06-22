@@ -3,11 +3,11 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lists/models/ListThing.dart';
 
-class ListsDataProvider {
+class ListsAdapter {
 
   // Constructor, singleton access
-  ListsDataProvider._();
-  static final ListsDataProvider instance = ListsDataProvider._();
+  ListsAdapter._();
+  static final ListsAdapter instance = ListsAdapter._();
 
   // Database info
   static const String _databaseFileName = 'lists_database.db';

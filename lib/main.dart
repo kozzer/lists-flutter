@@ -18,7 +18,7 @@ class ListsApp extends StatelessWidget {
           primarySwatch: Colors.green,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: const MainListPage(title: 'Lists!', listsDataModel: context.),
+        home: const MainListPage(title: 'Lists!', listsDataModel: Provider.of(context)),
     ));
   }
 }
