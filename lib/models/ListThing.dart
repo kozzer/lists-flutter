@@ -15,13 +15,13 @@ class ListThing {
   });
 
   ListThing.fromMap(Map<String, dynamic> map) {
-    this.thingID        = map['thingID'] ;
-    this.parentThingID  = map['parentThingID'];
-    this.label          = map['label'] ;
-    this.isList         = map['isList'] > 0;
-    this.icon           = map['icon'] ;
-    this.isMarked       = map['isMarked'] > 0;
-    this.sortOrder      = map['sortOrder'] ;
+    thingID        =  map['thingID']       as int;
+    parentThingID  =  map['parentThingID'] as int;
+    label          =  map['label']         as String;
+    isList         = (map['isList']        as int) > 0;
+    icon           =  map['icon']          as IconData;
+    isMarked       = (map['isMarked']      as int) > 0;
+    sortOrder      =  map['sortOrder']     as int;
   }
 
   Map<String, dynamic> toMap() {

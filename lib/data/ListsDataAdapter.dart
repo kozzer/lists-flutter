@@ -76,9 +76,9 @@ class ListsDataAdapter {
   Future<ListThing> getListThingPlusItems(int thingID) async {
 
     print('KOZZER - getting list id $thingID');
-    var dbClient = await db;
+    final dbClient = await db;
 
-    String sql = "SELECT * FROM lists WHERE thingID = $thingID";
+    String sql = 'SELECT * FROM lists WHERE thingID = $thingID';
     var result = await dbClient.rawQuery(sql);
 
     // get top-level list for ID
@@ -112,7 +112,7 @@ class ListsDataAdapter {
 
 
   // SQL Queries
-static final String createDatabaseSQL = '''
+static const String createDatabaseSQL = '''
   CREATE TABLE lists (
     thingID         INTEGER   NOT NULL PRIMARY KEY,
     parentThingID   INTEGER   NOT NULL,
@@ -123,19 +123,19 @@ static final String createDatabaseSQL = '''
     sortOrder       INTEGER   NOT NULL
   );''';
 
-  static final  String insertMainList = '''
-    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder) 
-      VALUES (0, -1, '[Main List]', 1, NULL, 0, 0);''';
+static const  String insertMainList = '''
+  INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder) 
+    VALUES (0, -1, '[Main List]', 1, NULL, 0, 0);''';
 
-  static final  String insertFirstList = '''
-    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
-      VALUES (1, 0, 'First List', 1, NULL, 0, 0);''';
+static const  String insertFirstList = '''
+  INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
+    VALUES (1, 0, 'First List', 1, NULL, 0, 0);''';
 
-  static final  String insertFirstItem = '''
-    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
-      VALUES (2, 1, 'First List Item', 0, NULL, 0, 0);'''; 
+static const  String insertFirstItem = '''
+  INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
+    VALUES (2, 1, 'First List Item', 0, NULL, 0, 0);'''; 
 
-  static final  String insertSecondList = '''
-    INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
-      VALUES (3, 0, 'Second List', 0, NULL, 0, 1);''';   
+static const String insertSecondList = '''
+  INSERT INTO lists (thingID, parentThingID, label, isList, icon, isMarked, sortOrder)
+    VALUES (3, 0, 'Second List', 0, NULL, 0, 1);''';   
 }
