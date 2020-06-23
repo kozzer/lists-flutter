@@ -9,6 +9,7 @@ class ListsDataModel extends ChangeNotifier{
   ListsDataModel() {
     print('KOZZER - ListsDataModel constructor');
     populateListsData();
+    notifyListeners();
   }
 
   // ListsAdapter
@@ -17,7 +18,7 @@ class ListsDataModel extends ChangeNotifier{
   // Main List
   ListThing _mainList;
   Future<ListThing> get mainList async {
-    print('KOZZER - getting mainList async');
+    print('KOZZER - getting mainList async in LDM (not necessarily');
     _mainList ??= await listsAdapter.getListThingByID(0);
     return _mainList;
   }

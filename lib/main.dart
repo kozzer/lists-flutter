@@ -15,13 +15,16 @@ class ListsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ListsDataModel>(
       create: (BuildContext context) => ListsDataModel(),
-      child: MaterialApp(
-        title: 'Lists!',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: MainListPage(title: 'Lists!'),
-    ));
+      child: Consumer<ListsDataModel>(
+        builder: (context, model, _) => MaterialApp(
+          title: 'Lists!',
+          theme: ThemeData(
+            primarySwatch: Colors.green,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: MainListPage(title: 'Lists!', listsDataModel: model),
+        )  // MaterialApp
+      )
+    );
   }
 }

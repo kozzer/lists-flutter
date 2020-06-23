@@ -12,7 +12,7 @@ class ListsAdapter {
 
   // Database info
   static const String _databaseFileName = 'lists_database.db';
-  static const int    _databaseVersion  = 1;
+  static const int    _databaseVersion  = 2;
 
   // Table/column names
   static const String listsTable        = 'lists';
@@ -28,8 +28,13 @@ class ListsAdapter {
   static Database _database;
   Future<Database> get database async {
     // If _database is null, get it now, then return the instance
-    print('KOZZER - get database');
-    _database ??= await _initDatabase();
+    print('KOZZER - ListsAdapter: get database');
+    if (_database != null) {
+      print('KOZZER - database is populated');
+      return _database;
+    }
+
+    _database = await _initDatabase();
     return _database;
   }
 
@@ -37,29 +42,39 @@ class ListsAdapter {
   Future<Database> _initDatabase() async {
     final String path = join(await getDatabasesPath(), _databaseFileName);
 
-/*
-  if (_database == null){
-    print('KOZZER - deleting existing database');
-    var fse = File(join(path, 'lists_database.db'));
-    if (await fse.exists()){
-      fse.delete();
-    }
-  }
-*/
     
-    return await openDatabase(
+    if (_database == null){
+      print('KOZZER - deleting existing database');
+      var fse = File(join(path, 'lists_database.db'));
+      if (await fse.exists()){
+        fse.delete();
+      }
+    }
+ 
+
+    print('about to open database');
+    var db = await openDatabase(
         path,
         version:  _databaseVersion,
-        onCreate: _onCreate);
+        onCreate: _onCreate,
+        readOnly: false);
+
+    //await _onCreate(db, _databaseVersion);
+
+    return db;
   }
 
   // SQL code to create the database table & rows
   Future<void> _onCreate(Database db, int version) async {
     print('KOZZER - creating new database');
     await db.execute(createDatabaseSQL);
+    print('KOZZER - insert main list');
     await db.execute(insertMainList);
+    print('KOZZER - insert first list');
     await db.execute(insertFirstList);
+    print('KOZZER - insert first list item');
     await db.execute(insertFirstItem);
+    print('KOZZER - insert second list');
     await db.execute(insertSecondList);
   }
 
@@ -104,6 +119,8 @@ class ListsAdapter {
 
   /// Gets ListThing by ID and includes all descendants
   Future<ListThing> getListThingByID(int thingID) async {
+
+    print('KOZZER - in listsAdapter.getListThingByID($thingID)');
 
     // Build SQL query
     final Database db = await instance.database;
@@ -190,7 +207,7 @@ static const  String insertFirstItem = '''
 
 static const String insertSecondList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (3, 0, 'Second List', 0, NULL, 0, 1);''';   
+    VALUES (3, 0, 'Second List', 1, NULL, 0, 1);''';   
 }
 
 
