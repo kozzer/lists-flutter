@@ -34,10 +34,10 @@ class _MainListPageState extends State<MainListPage> {
         builder: (BuildContext context, AsyncSnapshot<ListThing> snapshot){
 
           return ListView.builder(            
-            itemCount:   snapshot.hasData ? snapshot.data?.items?.length : 0,
+            itemCount:   snapshot.data.items.length,
             itemBuilder: (BuildContext context, int index){
               print('KOZZER - in ListView.builder - index: $index');
-              final ListThing item = snapshot?.data?.items[index];
+              final ListThing item = snapshot.data.items[index];
               return ListTile(
                 leading:  Icon(item.icon),
                 title:    Text(item.label),
