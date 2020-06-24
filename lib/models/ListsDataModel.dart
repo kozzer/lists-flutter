@@ -6,11 +6,7 @@ import 'package:lists/data/ListsAdapter.dart';
 class ListsDataModel extends ChangeNotifier{
 
   // Constructor
-  ListsDataModel() {
-    print('KOZZER - ListsDataModel constructor');
-    //populateListsData();
-    //notifyListeners();
-  }
+  ListsDataModel();
 
   // ListsAdapter
   final ListsAdapter listsAdapter = ListsAdapter.instance;
@@ -18,7 +14,6 @@ class ListsDataModel extends ChangeNotifier{
   // Main List
   ListThing _mainList;
   Future<ListThing> get mainList async {
-    print('KOZZER - getting mainList async in LDM (not necessarily');
     _mainList ??= await listsAdapter.getListThingByID(0);
     return _mainList;
   }
@@ -43,7 +38,7 @@ class ListsDataModel extends ChangeNotifier{
   // Modify data via listsAdapter
 
   void addList(ListThing thing){
-    print('KOZZER - adding item to mainList');
+    print('KOZZER - adding item to mainList: ${thing.toMap()}');
     listsAdapter.insert(thing);       // Database
     _mainList.addChildThing(thing);   // In memory
     _mainList.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
@@ -51,7 +46,7 @@ class ListsDataModel extends ChangeNotifier{
   }
 
   void removeList(ListThing thing){
-    print('KOZZER - removing item from mainList');
+    print('KOZZER - removing item from mainList: ${thing.toMap()}');
     listsAdapter.delete(thing.thingID);   // Database 
     _mainList.removeChildThing(thing);    // In memory 
     notifyListeners();

@@ -30,27 +30,28 @@ class ListsAdapter {
     // If _database is null, get it now, then return the instance
     print('KOZZER - ListsAdapter: get database');
     if (_database != null) {
-      print('KOZZER - database is populated');
+      print('KOZZER -     database is populated');
       return _database;
     }
-    print('KOZZER - database null, init ');
+    print('KOZZER -     database null, init ');
     _database = await _initDatabase();
     return _database;
   }
 
     // this opens the database (and creates it if it doesn't exist)
   Future<Database> _initDatabase() async {
-    final String path = join(await getDatabasesPath(), _databaseFileName);
 
-    
+    final String path = join(await getDatabasesPath(), _databaseFileName);
+   
+    /*
     if (_database == null){
       print('KOZZER - deleting existing database');
-      var fse = File(join(path, 'lists_database.db'));
+      var fse = File(path);
       if (await fse.exists()){
         fse.delete();
       }
     }
- 
+    */
 
     print('about to open database');
     var db = await openDatabase(
@@ -59,7 +60,7 @@ class ListsAdapter {
         onCreate: _onCreate,
         readOnly: false);
 
-    //await _onCreate(db, _databaseVersion);
+    // DEBUG - just report # of rows in table
     var num = await db.rawQuery("SELECT COUNT(*) FROM lists");
     num[0].forEach((key, value) {print('KOZZER - $key -- $value');});
 
@@ -70,18 +71,16 @@ class ListsAdapter {
   Future<void> _onCreate(Database db, int version) async {
     print('KOZZER - creating new database');
     await db.execute(createDatabaseSQL);
-    print('KOZZER - insert main list');
     await db.execute(insertMainList);
-    print('KOZZER - insert first list');
     await db.execute(insertFirstList);
-    print('KOZZER - insert first list item');
     await db.execute(insertFirstItem);
-    print('KOZZER - insert second list');
     await db.execute(insertSecondList);
+    await db.execute(insertThirdList);
   }
 
   /// Insert new ListThing into database (since it's an add, it will never have any children at this point)
   Future<int> insert(ListThing thing) async {
+    print('KOZZER - insert new thing row: ${thing.toMap()}');
     final Database db = await instance.database;
     return await db.insert(listsTable, thing.toMap());
   }
@@ -91,11 +90,11 @@ class ListsAdapter {
 
     print('KOZZER - in ListsDataProvider.delete($thingID)');
 
-    final Database db = await instance.database;
-
     // Get any children
+    final Database db = await instance.database;
     String query = 'SELECT $colThingID FROM $listsTable WHERE $colParentThingID = $thingID';
     final List<Map<String, dynamic>> rows = await db.rawQuery(query);
+
     if (rows.isNotEmpty){
       print('KOZZER - in ListsDataProvider.delete($thingID) - found ${rows.length} children');
       // Recursively get to the "bottom", and then we can delete on the way up
@@ -115,6 +114,7 @@ class ListsAdapter {
 
   /// Update existing ListThing record
   Future<int> update(ListThing thing) async {
+    print('KOZZER - updating thing row - new values: ${thing.toMap()}');
     final Database db = await instance.database;
     return await db.update(listsTable, thing.toMap());
   }
@@ -123,7 +123,6 @@ class ListsAdapter {
   Future<ListThing> getListThingByID(int thingID) async {
 
     print('KOZZER - in listsAdapter.getListThingByID($thingID)');
-
     // Build SQL query
     final Database db = await instance.database;
     final String query = '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
@@ -138,15 +137,13 @@ class ListsAdapter {
 
       // If this is a list, get the children
       if (thing.isList){
-        print('KOZZER - is a list, getting children');
         final List<ListThing> children = await getChildrenForParentID(thing.thingID);
         print('KOZZER - found ${children?.length ?? 0} children');
+
         for(int i = 0; i < children.length; i++){
-          print('KOZER - adding child $i to list');
           thing.addChildThing(children[i]);
         }
       }
-
       // Return populated thing
       return thing;
       
@@ -169,7 +166,9 @@ class ListsAdapter {
     // Loop through any results and populate list
     final List<ListThing> children = <ListThing>[];
     for(final Map<String, dynamic> row in rows){
+
       final ListThing child = ListThing.fromMap(row);
+      
       if (child.isList){
         final List<ListThing> grandChildren = await getChildrenForParentID(child.thingID);
         for (int i = 0; i < grandChildren.length; i++){
@@ -212,7 +211,11 @@ static const  String insertFirstItem = '''
 
 static const String insertSecondList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (3, 0, 'Second List', 1, NULL, 0, 1);''';   
+    VALUES (3, 0, 'Second List', 1, NULL, 0, 1);''';  
+
+static const String insertThirdList = '''
+  INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
+    VALUES (4, 0, 'Third List', 1, NULL, 0, 2);''';   
 }
 
 

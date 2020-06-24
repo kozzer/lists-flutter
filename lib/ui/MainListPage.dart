@@ -27,7 +27,7 @@ class _MainListPageState extends State<MainListPage> {
             IconButton(
               icon: Icon(Icons.more_vert),
               onPressed: () {
-                print('KOZZER - pushed!');
+                print('KOZZER - menu open!');
               },
             ),
         ]
@@ -39,7 +39,6 @@ class _MainListPageState extends State<MainListPage> {
           return ListView.builder(            
             itemCount:   snapshot.hasData ? snapshot.data?.items?.length : 0,
             itemBuilder: (BuildContext context, int index){
-              print('KOZZER - in ListView.builder - item: $index of ${snapshot.data?.items?.length ?? 0}');
               final ListThing item = snapshot.data?.items[index];
               return ListTile(
                 leading:  Icon(item.icon),
@@ -57,9 +56,5 @@ class _MainListPageState extends State<MainListPage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-
-  void listItemTap(int itemId){
-
   }
 }
