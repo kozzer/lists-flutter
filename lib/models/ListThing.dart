@@ -1,28 +1,29 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 
 class ListThing {
 
-  ListThing({
-    @required this.thingID,
-    @required this.parentThingID,
-    @required this.label,
-    @required this.isList,
-    this.icon,
-    this.isMarked,
-    this.sortOrder
-  });
+  ListThing(
+    this.thingID,
+    this.parentThingID,
+    this.label,
+    this.isList,
+    {
+      this.icon,
+      this.isMarked,
+      this.sortOrder
+    }
+  );
 
-  ListThing.fromMap(Map<String, dynamic> map) {
-    this.thingID        = map['thingID'] ;
-    this.parentThingID  = map['parentThingID'];
-    this.label          = map['label'] ;
-    this.isList         = map['isList'] > 0;
-    this.icon           = map['icon'] ;
-    this.isMarked       = map['isMarked'] > 0;
-    this.sortOrder      = map['sortOrder'] ;
-  }
+  ListThing.fromMap(Map<String, dynamic> map): 
+    thingID        =  map['thingID']        as int,
+    parentThingID  =  map['parentThingID']  as int,
+    label          =  map['label']          as String,
+    isList         = (map['isList']         as int        ) > 0,
+    icon           =  map['icon']           as IconData,
+    isMarked       = (map['isMarked']       as int        ) > 0,
+    sortOrder      =  map['sortOrder']      as int;
+
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -36,13 +37,13 @@ class ListThing {
     };
   }
 
-  int             thingID;
-  int             parentThingID;
-  String          label;
-  bool            isList;              // Is this itself a list, or just an item in a parent list?
-  IconData        icon;
-  bool            isMarked  = false;   // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
-  int             sortOrder = 999999;  // Default to end of list
+  final int             thingID;
+  final int             parentThingID;
+  String                label;
+  bool                  isList;              // Is this itself a list, or just an item in a parent list?
+  IconData              icon;
+  bool                  isMarked  = false;   // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
+  int                   sortOrder = 999999;  // Default to end of list
   final List<ListThing> _items = <ListThing>[];
 
   List<ListThing> get items        => _items;

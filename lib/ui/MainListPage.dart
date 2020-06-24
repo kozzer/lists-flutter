@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:provider/provider.dart';
 import 'package:lists/models/ListsDataModel.dart';
 
 class MainListPage extends StatefulWidget {
   const MainListPage({Key key, this.title, this.listsDataModel}) : super(key: key);
 
-  final String title;
   final ListsDataModel listsDataModel;
-
+  final String title;
   @override
-  _MainListPageState createState() => _MainListPageState();
+  _MainListPageState createState() => _MainListPageState(listsDataModel);
 }
 
 class _MainListPageState extends State<MainListPage> {
 
-  ListsDataModel listsDataModel = ListsDataModel();
+  _MainListPageState(this.listsDataModel);
+
+  ListsDataModel listsDataModel;
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +27,19 @@ class _MainListPageState extends State<MainListPage> {
             IconButton(
               icon: Icon(Icons.more_vert),
               onPressed: () {
-                print('KOZZER - pushed!');
+                print('KOZZER - menu open!');
               },
             ),
         ]
       ),
       body:FutureBuilder<ListThing>(
-        future: listsDataModel.getMainList(),
+        future: listsDataModel.mainList,
         builder: (BuildContext context, AsyncSnapshot<ListThing> snapshot){
 
           return ListView.builder(            
-            itemCount:   snapshot.data.items.length,
+            itemCount:   snapshot.hasData ? snapshot.data?.items?.length : 0,
             itemBuilder: (BuildContext context, int index){
-              print('KOZZER - in ListView.builder - index: $index');
-              final ListThing item = snapshot.data.items[index];
+              final ListThing item = snapshot.data?.items[index];
               return ListTile(
                 leading:  Icon(item.icon),
                 title:    Text(item.label),
@@ -57,9 +56,5 @@ class _MainListPageState extends State<MainListPage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-
-  void listItemTap(int itemId){
-
   }
 }
