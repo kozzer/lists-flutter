@@ -30,9 +30,6 @@ class ListsAdapter {
     // If _database is null, get it now, then return the instance
     print('KOZZER - ListsAdapter: get database');
 
-    // Delete database so it can be re-generated with canned queries
-    //await deleteDatabaseFile();
-
     // init database if null, then return it
     _database ??= await _initDatabase();
     return _database;
@@ -42,6 +39,9 @@ class ListsAdapter {
   Future<Database> _initDatabase() async {
 
     final String path = join(await getDatabasesPath(), _databaseFileName);
+
+    // Delete database so it can be re-generated with canned queries
+    //await deleteDatabaseFile(path);
    
     print('KOZZER - in _initDatabase(), about to open $path');
     var db = await openDatabase(
