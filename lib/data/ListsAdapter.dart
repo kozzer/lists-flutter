@@ -29,12 +29,12 @@ class ListsAdapter {
   Future<Database> get database async {
     // If _database is null, get it now, then return the instance
     print('KOZZER - ListsAdapter: get database');
-    if (_database != null) {
-      print('KOZZER -     database is populated');
-      return _database;
-    }
-    print('KOZZER -     database null, init ');
-    _database = await _initDatabase();
+
+    // Delete database so it can be re-generated with canned queries
+    //await deleteDatabaseFile();
+
+    // init database if null, then return it
+    _database ??= await _initDatabase();
     return _database;
   }
 
@@ -43,17 +43,7 @@ class ListsAdapter {
 
     final String path = join(await getDatabasesPath(), _databaseFileName);
    
-    /*
-    if (_database == null){
-      print('KOZZER - deleting existing database');
-      var fse = File(path);
-      if (await fse.exists()){
-        fse.delete();
-      }
-    }
-    */
-
-    print('about to open database');
+    print('KOZZER - in _initDatabase(), about to open $path');
     var db = await openDatabase(
         path,
         version:  _databaseVersion,
@@ -81,13 +71,13 @@ class ListsAdapter {
   /// Insert new ListThing into database (since it's an add, it will never have any children at this point)
   Future<int> insert(ListThing thing) async {
     print('KOZZER - insert new thing row: ${thing.toMap()}');
+
     final Database db = await instance.database;
     return await db.insert(listsTable, thing.toMap());
   }
 
   /// Delete ListThing from database, including all descendants (uses recursion)
   Future<void> delete(int thingID) async {
-
     print('KOZZER - in ListsDataProvider.delete($thingID)');
 
     // Get any children
@@ -168,7 +158,7 @@ class ListsAdapter {
     for(final Map<String, dynamic> row in rows){
 
       final ListThing child = ListThing.fromMap(row);
-      
+
       if (child.isList){
         final List<ListThing> grandChildren = await getChildrenForParentID(child.thingID);
         for (int i = 0; i < grandChildren.length; i++){
@@ -181,9 +171,16 @@ class ListsAdapter {
     return children;
   }
 
-
-
-
+  Future<void> deleteDatabaseFile(String path) async {
+    // DELETE DATABASE FILE Needs directive: import 'dart:io';
+    if (_database == null){
+      print('KOZZER - deleting existing database file: $path');
+      var fse = File(path);
+      if (await fse.exists()){
+        fse.delete();
+      }
+    }
+  }
 
 // SQL Queries
 static const String createDatabaseSQL = '''
