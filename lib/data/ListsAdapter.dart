@@ -33,7 +33,7 @@ class ListsAdapter {
       print('KOZZER - database is populated');
       return _database;
     }
-
+    print('KOZZER - database null, init ');
     _database = await _initDatabase();
     return _database;
   }
@@ -60,6 +60,8 @@ class ListsAdapter {
         readOnly: false);
 
     //await _onCreate(db, _databaseVersion);
+    var num = await db.rawQuery("SELECT COUNT(*) FROM lists");
+    num[0].forEach((key, value) {print('KOZZER - $key -- $value');});
 
     return db;
   }
@@ -136,8 +138,11 @@ class ListsAdapter {
 
       // If this is a list, get the children
       if (thing.isList){
+        print('KOZZER - is a list, getting children');
         final List<ListThing> children = await getChildrenForParentID(thing.thingID);
+        print('KOZZER - found ${children?.length ?? 0} children');
         for(int i = 0; i < children.length; i++){
+          print('KOZER - adding child $i to list');
           thing.addChildThing(children[i]);
         }
       }

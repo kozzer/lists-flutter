@@ -8,8 +8,8 @@ class ListsDataModel extends ChangeNotifier{
   // Constructor
   ListsDataModel() {
     print('KOZZER - ListsDataModel constructor');
-    populateListsData();
-    notifyListeners();
+    //populateListsData();
+    //notifyListeners();
   }
 
   // ListsAdapter

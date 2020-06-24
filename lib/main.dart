@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lists/data/ListsAdapter.dart';
 import 'package:provider/provider.dart';
 import 'package:lists/models/ListsDataModel.dart';
 import 'package:lists/ui/MainListPage.dart';
 
 void main() async {
-  runApp(ListsApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  ListsAdapter.instance.database.then((db) => runApp(ListsApp()));
 }
 
 class ListsApp extends StatelessWidget {
