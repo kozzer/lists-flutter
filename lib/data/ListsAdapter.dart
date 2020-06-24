@@ -44,15 +44,15 @@ class ListsAdapter {
     //await deleteDatabaseFile(path);
    
     print('KOZZER - in _initDatabase(), about to open $path');
-    var db = await openDatabase(
+    final Database db = await openDatabase(
         path,
         version:  _databaseVersion,
         onCreate: _onCreate,
         readOnly: false);
 
     // DEBUG - just report # of rows in table
-    var num = await db.rawQuery("SELECT COUNT(*) FROM lists");
-    num[0].forEach((key, value) {print('KOZZER - $key -- $value');});
+    final List<Map<String, dynamic>> num = await db.rawQuery('SELECT COUNT(*) FROM lists');
+    num[0].forEach((String key, dynamic value) {print('KOZZER - $key -- $value');});
 
     return db;
   }
@@ -175,7 +175,7 @@ class ListsAdapter {
     // DELETE DATABASE FILE Needs directive: import 'dart:io';
     if (_database == null){
       print('KOZZER - deleting existing database file: $path');
-      var fse = File(path);
+      final File fse = File(path);
       if (await fse.exists()){
         fse.delete();
       }
