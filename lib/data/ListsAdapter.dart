@@ -70,6 +70,10 @@ class ListsAdapter {
 
   /// Insert new ListThing into database (since it's an add, it will never have any children at this point)
   Future<int> insert(ListThing thing) async {
+    print('KOZZER - get next id');
+
+    // TODO get next thing id and 
+
     print('KOZZER - insert new thing row: ${thing.toMap()}');
 
     final Database db = await instance.database;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsDataModel.dart';
+import 'package:lists/ui/ListThingEntry.dart';
 
 class MainListPage extends StatefulWidget {
   const MainListPage({Key key, this.title, this.listsDataModel}) : super(key: key);
@@ -51,10 +52,23 @@ class _MainListPageState extends State<MainListPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () { print('KOZZER - Add New List'); },     // Prints to debug console
+        onPressed: _onAddButtonPressed,    
         tooltip: 'Add List',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  void _onAddButtonPressed() {
+     Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListThingEntry(
+          parentThingID:  0, 
+          listsDataModel: listsDataModel
+        ),
+        fullscreenDialog: true,
+      ),
     );
   }
 }
