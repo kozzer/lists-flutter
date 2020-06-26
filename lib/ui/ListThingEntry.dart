@@ -68,7 +68,6 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
         child: Column(
           children: <Widget>[
             Text('New List Thing'),
-            Text('label'),
             TextFormField(
               onSaved: (String val) => _label = val,
               decoration: InputDecoration(
@@ -113,9 +112,10 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
   }
 
   void _handleFormSubmit(){
-    final newThing = ListThing(-1, parentThingID, _label, _isList);
-    listsDataModel.addList(newThing);
+    if (_formChanged){
+      final newThing = ListThing(-1, parentThingID, _label, _isList);
+      listsDataModel.addList(newThing);
+    }
   }
-
 }
 

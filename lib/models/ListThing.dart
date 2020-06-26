@@ -27,13 +27,13 @@ class ListThing {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'thingID':        thingID,
+      'thingID':        thingID,    // changed table def to autoincrement this
       'parentThingID':  parentThingID,
       'label':          label,
-      'isList':         isList,
+      'isList':         isListAsInt,
       'icon':           icon,
-      'isMarked':       isMarked,
-      'sortOrder':      sortOrder
+      'isMarked':       isMarkedAsInt,
+      'sortOrder':      sortOrderDbVal
     };
   }
 
@@ -50,6 +50,10 @@ class ListThing {
   int             get listSize     => _items.length;
   int             get maxSortOrder => _items.last.sortOrder;
   bool            get showAsMarked => !isList && isMarked;
+
+  int get isListAsInt    => isList    != null && isList   ? 1 : 0;
+  int get isMarkedAsInt  => isMarked  != null && isMarked ? 1 : 0;
+  int get sortOrderDbVal => sortOrder != null ?  sortOrder : 99999;
 
   ListThing getChildListThing(int index) => _items[index];
 
