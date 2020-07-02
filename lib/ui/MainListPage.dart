@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsDataModel.dart';
+import 'package:lists/ui/ListThingEntry.dart';
+import 'package:lists/ui/ListThingListTile.dart';
 
 class MainListPage extends StatefulWidget {
   const MainListPage({Key key, this.title, this.listsDataModel}) : super(key: key);
@@ -35,26 +37,34 @@ class _MainListPageState extends State<MainListPage> {
       body:FutureBuilder<ListThing>(
         future: listsDataModel.mainList,
         builder: (BuildContext context, AsyncSnapshot<ListThing> snapshot){
-
           return ListView.builder(            
             itemCount:   snapshot.hasData ? snapshot.data?.items?.length : 0,
             itemBuilder: (BuildContext context, int index){
-              final ListThing item = snapshot.data?.items[index];
-              return ListTile(
-                leading:  Icon(item.icon),
-                title:    Text(item.label),
-                subtitle: Text('(${item.listSize} items)'),
-                trailing: Icon(Icons.drag_handle)
-              );
+              // Always a list on the main page
+              return ListThingListTile(snapshot.data?.items[index]);
             } 
           );            
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () { print('KOZZER - Add New List'); },     // Prints to debug console
+        onPressed: _onAddButtonPressed,    
         tooltip: 'Add List',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  void _onAddButtonPressed() {
+     print('adding new list to Main list');
+     Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListThingEntry(
+          parentThingID:  0, 
+          listsDataModel: listsDataModel
+        ),
+        fullscreenDialog: true,
+      ),
     );
   }
 }

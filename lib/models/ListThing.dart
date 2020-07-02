@@ -8,11 +8,11 @@ class ListThing {
     this.parentThingID,
     this.label,
     this.isList,
-    {
+    [
       this.icon,
-      this.isMarked,
-      this.sortOrder
-    }
+      this.isMarked  = false,
+      this.sortOrder = 999999
+    ]
   );
 
   ListThing.fromMap(Map<String, dynamic> map): 
@@ -27,29 +27,33 @@ class ListThing {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'thingID':        thingID,
+      'thingID':        thingID,    // changed table def to autoincrement this
       'parentThingID':  parentThingID,
       'label':          label,
-      'isList':         isList,
+      'isList':         isListAsInt,
       'icon':           icon,
-      'isMarked':       isMarked,
-      'sortOrder':      sortOrder
+      'isMarked':       isMarkedAsInt,
+      'sortOrder':      sortOrderDbVal
     };
   }
 
   final int             thingID;
   final int             parentThingID;
-  String                label;
-  bool                  isList;              // Is this itself a list, or just an item in a parent list?
-  IconData              icon;
-  bool                  isMarked  = false;   // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
-  int                   sortOrder = 999999;  // Default to end of list
+  String                label     = '';
+  bool                  isList;               // Is this itself a list, or just an item in a parent list?
+  IconData              icon; 
+  bool                  isMarked;             // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
+  int                   sortOrder;            // Default to end of list
   final List<ListThing> _items = <ListThing>[];
 
   List<ListThing> get items        => _items;
   int             get listSize     => _items.length;
   int             get maxSortOrder => _items.last.sortOrder;
   bool            get showAsMarked => !isList && isMarked;
+
+  int get isListAsInt    => isList    != null && isList   ? 1 : 0;
+  int get isMarkedAsInt  => isMarked  != null && isMarked ? 1 : 0;
+  int get sortOrderDbVal => sortOrder != null ?  sortOrder : 99999;
 
   ListThing getChildListThing(int index) => _items[index];
 

@@ -12,11 +12,11 @@ class ListsAdapter {
 
   // Database info
   static const String _databaseFileName = 'lists_database.db';
-  static const int    _databaseVersion  = 2;
+  static const int    _databaseVersion  = 1;
 
   // Table/column names
   static const String listsTable        = 'lists';
-  static const String colThingID        = 'thingID';
+  static const String colThingID        = 'thingID';      
   static const String colParentThingID  = 'parentThingID';
   static const String colLabel          = 'label';
   static const String colIsList         = 'isList';
@@ -51,8 +51,8 @@ class ListsAdapter {
         readOnly: false);
 
     // DEBUG - just report # of rows in table
-    final List<Map<String, dynamic>> num = await db.rawQuery('SELECT COUNT(*) FROM lists');
-    num[0].forEach((String key, dynamic value) {print('KOZZER - $key -- $value');});
+    final List<Map<String, dynamic>> num = await db.rawQuery('SELECT * FROM lists');
+    num.forEach((row) { row.forEach((String key, dynamic value) {print('KOZZER - $key -- $value');}); });
 
     return db;
   }
@@ -70,10 +70,30 @@ class ListsAdapter {
 
   /// Insert new ListThing into database (since it's an add, it will never have any children at this point)
   Future<int> insert(ListThing thing) async {
-    print('KOZZER - insert new thing row: ${thing.toMap()}');
+    print('KOZZER - get new thing id');
+    final Database db = await instance.database;   
 
-    final Database db = await instance.database;
-    return await db.insert(listsTable, thing.toMap());
+    // Get new Thing's ID
+    String query = "SELECT MAX($colThingID) + 1 FROM $listsTable";
+    var row = await db.rawQuery(query);
+    var newID = row[0].values.first as int;
+
+    // Get new Thing's Sort order
+    query = "SELECT MAX($colSortOrder) + 1 FROM $listsTable WHERE $colParentThingID = ${thing.parentThingID}";
+    row = await db.rawQuery(query);
+    var newSortOrder = row[0].values.first as int;
+
+    // Construct new object
+    var newThing = ListThing(newID,
+                             thing.parentThingID,
+                             thing.label,
+                             thing.isList,
+                             thing.icon,
+                             thing.isMarked,
+                             newSortOrder);
+
+    print('KOZZER - insert new thing row: ${newThing.toMap()}');
+    return await db.insert(listsTable, newThing.toMap());
   }
 
   /// Delete ListThing from database, including all descendants (uses recursion)
@@ -185,7 +205,7 @@ class ListsAdapter {
 // SQL Queries
 static const String createDatabaseSQL = '''
   CREATE TABLE $listsTable (
-    $colThingID         INTEGER   NOT NULL PRIMARY KEY,
+    $colThingID         INTEGER   PRIMARY KEY,
     $colParentThingID   INTEGER   NOT NULL,
     $colLabel           TEXT      NOT NULL,
     $colIsList          INTEGER   NOT NULL,

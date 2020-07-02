@@ -37,11 +37,26 @@ class ListsDataModel extends ChangeNotifier{
 
   // Modify data via listsAdapter
 
-  void addList(ListThing thing){
+  Future<void> addList(ListThing thing) async {
     print('KOZZER - adding item to mainList: ${thing.toMap()}');
-    listsAdapter.insert(thing);       // Database
-    _mainList.addChildThing(thing);   // In memory
+
+    // Insert into database
+    final int newThingId = await listsAdapter.insert(thing);
+    ListThing newThing = ListThing(
+      newThingId,
+      0, 
+      thing.label,
+      thing.isList,
+      thing.icon,
+      thing.isMarked,
+      thing.sortOrder
+    );      
+
+    // Add to in-memory list
+    _mainList.addChildThing(newThing);  
     _mainList.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder));  // Sorts in place after every add
+ 
+    // Update UI
     notifyListeners();
   }
 
