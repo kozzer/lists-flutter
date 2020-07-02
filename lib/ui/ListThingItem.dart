@@ -1,1 +1,0 @@
-// widget that will service as the visible List item

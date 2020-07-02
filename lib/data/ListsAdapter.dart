@@ -72,16 +72,25 @@ class ListsAdapter {
   Future<int> insert(ListThing thing) async {
     print('KOZZER - get new thing id');
     final Database db = await instance.database;   
-    final String query = "SELECT MAX(thingID) + 1 FROM lists";
+
+    // Get new Thing's ID
+    String query = "SELECT MAX($colThingID) + 1 FROM $listsTable";
     var row = await db.rawQuery(query);
     var newID = row[0].values.first as int;
+
+    // Get new Thing's Sort order
+    query = "SELECT MAX($colSortOrder) + 1 FROM $listsTable WHERE $colParentThingID = ${thing.parentThingID}";
+    row = await db.rawQuery(query);
+    var newSortOrder = row[0].values.first as int;
+
+    // Construct new object
     var newThing = ListThing(newID,
                              thing.parentThingID,
                              thing.label,
                              thing.isList,
                              thing.icon,
                              thing.isMarked,
-                             thing.sortOrder);
+                             newSortOrder);
 
     print('KOZZER - insert new thing row: ${newThing.toMap()}');
     return await db.insert(listsTable, newThing.toMap());

@@ -24,9 +24,16 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
   final ListThing      existingThing;
   String               _label = '';
   IconData             _icon;
-  bool                 _isList = false;
+  bool                 _isList;
 
-  _ListThingEntryPageState(this.parentThingID, this.listsDataModel, [ this.existingThing ]);
+  // Constructor
+  _ListThingEntryPageState(this.parentThingID, this.listsDataModel, [ this.existingThing ]){
+    if (existingThing?.isList ?? false){
+      _isList = existingThing.isList;
+    } else {
+      _isList = false;
+    }
+  }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -67,7 +74,6 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
         onChanged: _onFormChange,
         child: Column(
           children: <Widget>[
-            Text('New List Thing'),
             TextFormField(
               onSaved: (String val) => _label = val,
               decoration: InputDecoration(
@@ -83,6 +89,11 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                 return null;
               },
             ),
+            Text('Is this a list?'),
+            Checkbox(
+              value: _isList,
+              onChanged: (bool val){ _formChanged = true; _isList = val;}            
+            ),       
             RaisedButton(
               color: Colors.blue[400],
               child: Text("save"),
@@ -103,6 +114,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
       )
     );
   }
+
 
   void _onFormChange() {
     if (_formChanged) return;

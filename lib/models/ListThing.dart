@@ -10,8 +10,8 @@ class ListThing {
     this.isList,
     [
       this.icon,
-      this.isMarked,
-      this.sortOrder
+      this.isMarked  = false,
+      this.sortOrder = 999999
     ]
   );
 
@@ -40,10 +40,10 @@ class ListThing {
   final int             thingID;
   final int             parentThingID;
   String                label     = '';
-  bool                  isList    = false;   // Is this itself a list, or just an item in a parent list?
-  IconData              icon;
-  bool                  isMarked  = false;   // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
-  int                   sortOrder = 999999;  // Default to end of list
+  bool                  isList;               // Is this itself a list, or just an item in a parent list?
+  IconData              icon; 
+  bool                  isMarked;             // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
+  int                   sortOrder;            // Default to end of list
   final List<ListThing> _items = <ListThing>[];
 
   List<ListThing> get items        => _items;
