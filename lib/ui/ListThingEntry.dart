@@ -72,44 +72,47 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
       body: Form(
         key: _formKey,
         onChanged: _onFormChange,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              onSaved: (String val) => _label = val,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                helperText: "Required",
-                labelText: "label",
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child:   Column(
+            children: <Widget>[
+              TextFormField(
+                onSaved: (String val) => _label = val,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  helperText: "Required",
+                  labelText: "label",
+                ),
+                autofocus: true,
+                initialValue: existingThing?.label,
+                autovalidate: _formChanged,
+                validator: (String val) {
+                  if (val.isEmpty) return "Field cannot be left blank";
+                  return null;
+                },
               ),
-              autofocus: true,
-              initialValue: existingThing?.label,
-              autovalidate: _formChanged,
-              validator: (String val) {
-                if (val.isEmpty) return "Field cannot be left blank";
-                return null;
-              },
-            ),
-            Text('Is this a list?'),
-            Checkbox(
-              value: _isList,
-              onChanged: (bool val){ _formChanged = true; _isList = val;}            
-            ),       
-            RaisedButton(
-              color: Colors.blue[400],
-              child: Text("save"),
-              onPressed: _formChanged
-                  ? () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        _handleFormSubmit();
-                        Navigator.pop(context);
-                      } else {
-                        FocusScope.of(context).requestFocus(focusNode);
+              Text('Is this a list?'),
+              Checkbox(
+                value: _isList,
+                onChanged: (bool val){ _formChanged = true; _isList = val;}            
+              ),       
+              RaisedButton(
+                color: Colors.blue[400],
+                child: Text("save"),
+                onPressed: _formChanged
+                    ? () {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          _handleFormSubmit();
+                          Navigator.pop(context);
+                        } else {
+                          FocusScope.of(context).requestFocus(focusNode);
+                        }
                       }
-                    }
-                  : null,
-            ),
-          ],
+                    : null,
+              ),
+            ],
+          )
         )
       )
     );
