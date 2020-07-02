@@ -18,6 +18,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
 
   bool            _formChanged = false;
   FocusNode       focusNode;
+  String          _pageTitle;
 
   final int            parentThingID;  
   final ListsDataModel listsDataModel;
@@ -33,6 +34,10 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
     } else {
       _isList = false;
     }
+    if (existingThing != null)
+      _pageTitle = 'edit ${existingThing.label}';
+    else
+      _pageTitle = 'add new thing';
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -58,7 +63,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(               //  Also need to expose route to Settings screen
-        title: Text('add new list thing'),
+        title: Text(_pageTitle),
         actions: <Widget>[
             // action button
             IconButton(
