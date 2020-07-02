@@ -51,8 +51,8 @@ class ListsAdapter {
         readOnly: false);
 
     // DEBUG - just report # of rows in table
-    final List<Map<String, dynamic>> num = await db.rawQuery('SELECT * FROM lists');
-    num.forEach((row) { row.forEach((String key, dynamic value) {print('KOZZER - $key -- $value');}); });
+    var num = await db.rawQuery('SELECT COUNT(*) FROM lists');
+    print('KOZZER - number of rows in lists table: ${num[0].values.first}');
 
     return db;
   }
