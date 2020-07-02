@@ -22,7 +22,7 @@ class ListThingThingTile extends StatelessWidget
             : TextStyle(color: Colors.black)
       ),
       trailing:     Icon(Icons.drag_handle),
-      onTap:        () => _toggleIsMarked,
+      onTap:        _toggleIsMarked,
       onLongPress:  () => _editThing(context, thisThing),
     );
 
