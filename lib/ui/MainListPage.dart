@@ -7,20 +7,23 @@ import 'package:lists/ui/ListThingListTile.dart';
 class MainListPage extends StatefulWidget {
   const MainListPage({Key key, this.title, this.listsDataModel}) : super(key: key);
 
-  final ListsDataModel listsDataModel;
   final String title;
+  final ListsDataModel listsDataModel;
   @override
-  _MainListPageState createState() => _MainListPageState(listsDataModel);
+  _MainListPageState createState() => _MainListPageState();
 }
 
 class _MainListPageState extends State<MainListPage> {
 
-  _MainListPageState(this.listsDataModel);
-
-  ListsDataModel listsDataModel;
-
   @override
   Widget build(BuildContext context) {
+
+    print('KOZZER - mainListPage build, get data');
+
+    final listsDataModel = widget.listsDataModel;
+
+    print('KOZZER - got data from container');
+
     return Scaffold(
       appBar: AppBar(               //  Also need to expose route to Settings screen
         title: Text(widget.title),
@@ -40,6 +43,7 @@ class _MainListPageState extends State<MainListPage> {
           return ListView.builder(            
             itemCount:   snapshot.hasData ? snapshot.data?.items?.length : 0,
             itemBuilder: (BuildContext context, int index){
+              print('KOZZER - in list item builer for thing id ${snapshot.data.items[0].thingID}');
               // Always a list on the main page
               return ListThingListTile(snapshot.data?.items[index]);
             } 
@@ -61,7 +65,7 @@ class _MainListPageState extends State<MainListPage> {
       MaterialPageRoute(
         builder: (context) => ListThingEntry(
           parentThingID:  0, 
-          listsDataModel: listsDataModel
+          listsDataModel: widget.listsDataModel
         ),
         fullscreenDialog: true,
       ),
