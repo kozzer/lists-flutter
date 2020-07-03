@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:lists/models/ListsStateContainer.dart';
+import 'package:lists/models/ListsDataModel.dart';
 import 'package:lists/ui/ListThingEntry.dart';
 import 'package:lists/ui/ListThingListTile.dart';
 
 class MainListPage extends StatefulWidget {
-  const MainListPage({Key key, this.title}) : super(key: key);
+  const MainListPage({Key key, this.title, this.listsDataModel}) : super(key: key);
 
   final String title;
+  final ListsDataModel listsDataModel;
   @override
   _MainListPageState createState() => _MainListPageState();
 }
@@ -19,7 +20,7 @@ class _MainListPageState extends State<MainListPage> {
 
     print('KOZZER - mainListPage build, get data');
 
-    final listsDataModel = ListsStateContainer.of(context).listsDataModel;
+    final listsDataModel = widget.listsDataModel;
 
     print('KOZZER - got data from container');
 
@@ -64,7 +65,7 @@ class _MainListPageState extends State<MainListPage> {
       MaterialPageRoute(
         builder: (context) => ListThingEntry(
           parentThingID:  0, 
-          listsDataModel: ListsStateContainer.of(context).listsDataModel
+          listsDataModel: widget.listsDataModel
         ),
         fullscreenDialog: true,
       ),

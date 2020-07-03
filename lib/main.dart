@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lists/models/ListsDataModel.dart';
-import 'package:lists/models/ListsStateContainer.dart';
 import 'package:lists/ui/MainListPage.dart';
 
 void main() async {
@@ -11,15 +10,15 @@ void main() async {
   // Populate all data, then create the state container and launch the app
   ListsDataModel().populateListsData().then((listsDataModel) { 
       print('KOZZER - got data, about to call runApp() ... listsDataModel: $listsDataModel');
-      runApp(
-        ListsStateContainer(
-          child:          ListsApp(), 
-          listsDataModel: listsDataModel
-      ));
+      runApp(ListsApp(listsDataModel));
   });
 }
 
 class ListsApp extends StatelessWidget {
+
+  ListsApp(this.listsDataModel);
+
+  final ListsDataModel listsDataModel;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class ListsApp extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MainListPage(title: 'Lists!'),
+      home: MainListPage(title: 'Lists!', listsDataModel: listsDataModel),
     );
   }
 }
