@@ -5,8 +5,7 @@ class ListThingEntry extends StatefulWidget {
   final int       parentThingID;
   final ListThing existingThing;
 
-  const ListThingEntry({Key key, this.parentThingID, this.existingThing})
-      : super(key: key);
+  const ListThingEntry({Key key, this.parentThingID, this.existingThing}) : super(key: key);
 
   @override
   _ListThingEntryPageState createState() => _ListThingEntryPageState();
@@ -24,7 +23,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
 
   // Constructor
   _ListThingEntryPageState() {
-    _isList    = widget?.existingThing?.isList ?? false;
+    _isList    = widget?.parentThingID == 0 || (widget?.existingThing?.isList ?? false);
     _pageTitle = widget?.key != null ? 'edit ${widget.existingThing.label}' : 'add new thing';
   }
 
@@ -72,9 +71,9 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                     TextFormField(
                       onSaved: (String val) => _label = val,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border:     OutlineInputBorder(),
                         helperText: "Required",
-                        labelText: "label",
+                        labelText:  "label",
                       ),
                       autofocus: true,
                       initialValue: widget.existingThing?.label,
@@ -89,7 +88,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                         value: _isList,
                         onChanged: (bool val) {
                           _formChanged = true;
-                          _isList = val;
+                          _isList      = val;
                         }),
                     RaisedButton(
                       color: Colors.blue[400],
@@ -111,6 +110,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
 
   void _onFormChange() {
     if (_formChanged) return;
+
     setState(() {
       _formChanged = true;
     });

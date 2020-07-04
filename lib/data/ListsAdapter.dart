@@ -69,7 +69,7 @@ class ListsAdapter {
 
   /// Insert new ListThing into database (since it's an add, it will never have any children at this point)
   Future<ListThing> insert(ListThing thing) async {
-    print('KOZZER - get new thing id');
+    print('KOZZER - ListsAdapter.insert() - get new thing id');
     final Database db = await instance.database;
 
     // Get new Thing's ID
@@ -79,8 +79,7 @@ class ListsAdapter {
     print('KOZZER - ListsAdapter.insert - new ID $newID');
 
     // Get new Thing's Sort order
-    query =
-        "SELECT MAX($colSortOrder) + 1 FROM $listsTable WHERE $colParentThingID = ${thing.parentThingID}";
+    query = "SELECT MAX($colSortOrder) + 1 FROM $listsTable WHERE $colParentThingID = ${thing.parentThingID}";
     row = await db.rawQuery(query);
     var newSortOrder = (row[0].values.first as int) ?? 1;
     print('KOZZER - ListsAdapter.insert - new sort order $newSortOrder');
@@ -155,8 +154,7 @@ class ListsAdapter {
 
       // If this is a list, get the children
       if (thing.isList) {
-        final List<ListThing> children =
-            await getChildrenForParentID(thing.thingID);
+        final List<ListThing> children = await getChildrenForParentID(thing.thingID);
         print('KOZZER - found ${children?.length ?? 0} children');
 
         for (int i = 0; i < children.length; i++) {

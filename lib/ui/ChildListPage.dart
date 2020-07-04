@@ -6,8 +6,7 @@ import 'package:lists/ui/ListThingThingTile.dart';
 import 'package:lists/ui/ListThingEntry.dart';
 
 class ChildListPage extends StatefulWidget {
-  const ChildListPage({Key key, this.listName, this.thisThing})
-      : super(key: key);
+  const ChildListPage({Key key, this.listName, this.thisThing}) : super(key: key);
 
   final String    listName;
   final ListThing thisThing;

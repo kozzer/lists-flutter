@@ -12,8 +12,9 @@ class ListThingThingTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      key:     ValueKey(thisThing.thingID),
       leading: Icon(thisThing.icon),
-      title: Text(thisThing.label,
+      title:   Text(thisThing.label,
           style: thisThing.isMarked
               ? TextStyle(
                   color: Colors.grey, decoration: TextDecoration.lineThrough)

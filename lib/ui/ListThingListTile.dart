@@ -6,6 +6,7 @@ import 'package:lists/ui/ListThingEntry.dart';
 
 /// Custom ListTile class for things that are lists
 class ListThingListTile extends StatelessWidget {
+
   final ListThing thisThing;
 
   const ListThingListTile(this.thisThing);
@@ -13,6 +14,7 @@ class ListThingListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      key:          ValueKey(thisThing.thingID),
       leading:      Icon(thisThing.icon),
       title:        Text(thisThing.label),
       subtitle:     Text('(${thisThing.listSize} items)'),
@@ -23,15 +25,15 @@ class ListThingListTile extends StatelessWidget {
   }
 
   void _openChildList(BuildContext context, ListThing thisThing) {
-    print('open child list, thingID: ${thisThing.thingID}');
+    print('open child list, thingID: ${thisThing.thingID} - ${thisThing.items.length} children');
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ChildListPage(
-              listName: thisThing.label,
-              thisThing: thisThing,
-            ),
-            fullscreenDialog: true));
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChildListPage(
+          listName:  thisThing.label,
+          thisThing: thisThing,
+        ),
+        fullscreenDialog: true));
   }
 
   void _editList(BuildContext context, ListThing thisThing) async {
