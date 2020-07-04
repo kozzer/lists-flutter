@@ -36,6 +36,23 @@ class ListThing {
     };
   }
 
+  ListThing copyWith({int thingID, int parentThingID, String label, bool isList, IconData icon, bool isMarked, int sortOrder, List<ListThing> items}){
+    var newThing = ListThing(
+      thingID       ?? this.thingID,
+      parentThingID ?? this.parentThingID,
+      label         ?? this.label,
+      isList        ?? this.isList,
+      icon          ?? this.icon,
+      isMarked      ?? this.isMarked,
+      sortOrder     ?? this.sortOrder
+    );
+
+    var children = items ?? this._items;
+    children.forEach((thing)  => addChildThing(thing));
+
+    return newThing;
+  }
+
   final int             thingID;
   final int             parentThingID;
   String                label     = '';
