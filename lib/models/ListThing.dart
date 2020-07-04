@@ -36,9 +36,26 @@ class ListThing {
     };
   }
 
+  ListThing copyWith({int thingID, int parentThingID, String label, bool isList, IconData icon, bool isMarked, int sortOrder, List<ListThing> items}){
+    var newThing = ListThing(
+      thingID       ?? this.thingID,
+      parentThingID ?? this.parentThingID,
+      label         ?? this.label,
+      isList        ?? this.isList,
+      icon          ?? this.icon,
+      isMarked      ?? this.isMarked,
+      sortOrder     ?? this.sortOrder
+    );
+
+    var children = items ?? this._items;
+    children.forEach((thing)  => addChildThing(thing));
+
+    return newThing;
+  }
+
   final int             thingID;
   final int             parentThingID;
-  String                label     = '';
+  String                label;
   bool                  isList;               // Is this itself a list, or just an item in a parent list?
   IconData              icon; 
   bool                  isMarked;             // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'

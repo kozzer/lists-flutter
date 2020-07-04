@@ -1,49 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:lists/models/ListsDataModel.dart';
 
 class ListThingEntry extends StatefulWidget {
+  final int       parentThingID;
+  final ListThing existingThing;
 
-  final int            parentThingID;
-  final ListsDataModel listsDataModel;
-  final ListThing      existingThing;
-
-  const ListThingEntry({Key key, this.parentThingID, this.listsDataModel, this.existingThing }) : super(key: key);
+  const ListThingEntry({Key key, this.parentThingID, this.existingThing}) : super(key: key);
 
   @override
-  _ListThingEntryPageState createState() => _ListThingEntryPageState(parentThingID, listsDataModel, existingThing);
+  _ListThingEntryPageState createState() => _ListThingEntryPageState();
 }
 
 class _ListThingEntryPageState extends State<ListThingEntry> {
 
-  bool            _formChanged = false;
-  FocusNode       focusNode;
-  String          _pageTitle;
+  FocusNode focusNode;
 
-  final int            parentThingID;  
-  final ListsDataModel listsDataModel;
-  final ListThing      existingThing;
-  String               _label = '';
-  IconData             _icon;
-  bool                 _isList;
+  bool      _formChanged = false;
+  String    _pageTitle;
+  String    _label = '';
+  IconData  _icon;
+  bool      _isList;
 
   // Constructor
-  _ListThingEntryPageState(this.parentThingID, this.listsDataModel, [ this.existingThing ]){
-    if (existingThing?.isList ?? false){
-      _isList = existingThing.isList;
-    } else {
-      _isList = false;
-    }
-    if (existingThing != null)
-      _pageTitle = 'edit ${existingThing.label}';
-    else
-      _pageTitle = 'add new thing';
+  _ListThingEntryPageState() {
+    _isList    = widget?.parentThingID == 0 || (widget?.existingThing?.isList ?? false);
+    _pageTitle = widget?.key != null ? 'edit ${widget.existingThing.label}' : 'add new thing';
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     focusNode = FocusNode();
   }
@@ -56,86 +43,84 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
 
   bool validateEntry() {
     // TODO ListThingEntry State validateEntry()
-    return false;
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(               //  Also need to expose route to Settings screen
-        title: Text(_pageTitle),
-        actions: <Widget>[
-            // action button
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {
-                print('KOZZER - menu open!');
-              },
-            ),
-        ]
-      ),
-      body: Form(
-        key: _formKey,
-        onChanged: _onFormChange,
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child:   Column(
-            children: <Widget>[
-              TextFormField(
-                onSaved: (String val) => _label = val,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  helperText: "Required",
-                  labelText: "label",
-                ),
-                autofocus: true,
-                initialValue: existingThing?.label,
-                autovalidate: _formChanged,
-                validator: (String val) {
-                  if (val.isEmpty) return "Field cannot be left blank";
-                  return null;
+        appBar: AppBar(
+            //  Also need to expose route to Settings screen
+            title: Text(_pageTitle),
+            actions: <Widget>[
+              // action button
+              IconButton(
+                icon: Icon(Icons.more_vert),
+                onPressed: () {
+                  print('KOZZER - menu open!');
                 },
               ),
-              Text('Is this a list?'),
-              Checkbox(
-                value: _isList,
-                onChanged: (bool val){ _formChanged = true; _isList = val;}            
-              ),       
-              RaisedButton(
-                color: Colors.blue[400],
-                child: Text("save"),
-                onPressed: _formChanged
-                    ? () {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                          _handleFormSubmit();
-                          Navigator.pop(context);
-                        } else {
-                          FocusScope.of(context).requestFocus(focusNode);
-                        }
-                      }
-                    : null,
-              ),
-            ],
-          )
-        )
-      )
-    );
+            ]),
+        body: Form(
+            key:       _formKey,
+            onChanged: _onFormChange,
+            child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      onSaved: (String val) => _label = val,
+                      decoration: InputDecoration(
+                        border:     OutlineInputBorder(),
+                        helperText: "Required",
+                        labelText:  "label",
+                      ),
+                      autofocus: true,
+                      initialValue: widget.existingThing?.label,
+                      autovalidate: _formChanged,
+                      validator: (String val) {
+                        if (val.isEmpty) return "Field cannot be left blank";
+                        return null;
+                      },
+                    ),
+                    Text('Is this a list?'),
+                    Checkbox(
+                        value: _isList,
+                        onChanged: (bool val) {
+                          _formChanged = true;
+                          _isList      = val;
+                        }),
+                    RaisedButton(
+                      color: Colors.blue[400],
+                      child: Text("save"),
+                      onPressed: _formChanged
+                          ? () {
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                Navigator.pop(context, _handleFormSubmit());
+                              } else {
+                                FocusScope.of(context).requestFocus(focusNode);
+                              }
+                            }
+                          : null,
+                    ),
+                  ],
+                ))));
   }
-
 
   void _onFormChange() {
     if (_formChanged) return;
+
     setState(() {
       _formChanged = true;
     });
   }
 
-  void _handleFormSubmit(){
-    if (_formChanged){
-      final newThing = ListThing(-1, parentThingID, _label, _isList);
-      listsDataModel.addList(newThing);
+  ListThing _handleFormSubmit() {
+    if (_formChanged) {
+      return ListThing(-1, widget.parentThingID, _label, _isList);
     }
+
+    return null;
   }
 }
-
