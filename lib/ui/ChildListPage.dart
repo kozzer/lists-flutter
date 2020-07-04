@@ -9,7 +9,7 @@ class ChildListPage extends StatefulWidget {
   const ChildListPage({Key key, this.listName, this.thisThing})
       : super(key: key);
 
-  final String listName;
+  final String    listName;
   final ListThing thisThing;
 
   @override
@@ -22,18 +22,18 @@ class _ChildListPageState extends State<ChildListPage> {
     return Scaffold(
       appBar: AppBar(
           //  Also need to expose route to Settings screen
-          title: Text(widget.listName),
+          title:   Text(widget.listName),
           actions: <Widget>[
             // action button
             IconButton(
-              icon: Icon(Icons.more_vert),
+              icon:      Icon(Icons.more_vert),
               onPressed: () {
                 print('pushed!');
               },
             ),
           ]),
       body: ListView.builder(
-          itemCount: widget.thisThing.items.length,
+          itemCount:   widget.thisThing.items.length,
           itemBuilder: (BuildContext context, int index) {
             var thing = widget.thisThing.items[index];
             if (thing?.isList ?? false || (thing?.thingID ?? 1) == 0) {
@@ -45,8 +45,8 @@ class _ChildListPageState extends State<ChildListPage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: _onAddButtonPressed, // Prints to debug console
-        tooltip: 'Add List',
-        child: Icon(Icons.add),
+        tooltip:   'Add List',
+        child:     Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
@@ -56,14 +56,13 @@ class _ChildListPageState extends State<ChildListPage> {
     var newThing = await Navigator.push<ListThing>(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            ListThingEntry(parentThingID: widget.thisThing.thingID),
+        builder:          (context) => ListThingEntry(parentThingID: widget.thisThing.thingID),
         fullscreenDialog: true,
       ),
     );
     if (newThing != null) {
-      var newWithID =
-          await StateContainer.of(context).addNewListThing(newThing);
+      var newWithID = await StateContainer.of(context).addNewListThing(newThing);
+      
       setState(() {
         print('in setState()');
         widget.thisThing.addChildThing(newWithID);

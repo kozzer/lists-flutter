@@ -55,7 +55,7 @@ class ListThing {
 
   final int             thingID;
   final int             parentThingID;
-  String                label     = '';
+  String                label;
   bool                  isList;               // Is this itself a list, or just an item in a parent list?
   IconData              icon; 
   bool                  isMarked;             // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'

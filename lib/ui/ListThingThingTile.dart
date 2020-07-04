@@ -18,8 +18,8 @@ class ListThingThingTile extends StatelessWidget {
               ? TextStyle(
                   color: Colors.grey, decoration: TextDecoration.lineThrough)
               : TextStyle(color: Colors.black)),
-      trailing: Icon(Icons.drag_handle),
-      onTap: () => _toggleIsMarked(context),
+      trailing:    Icon(Icons.drag_handle),
+      onTap:       () => _toggleIsMarked(context),
       onLongPress: () => _editThing(context, thisThing),
     );
   }

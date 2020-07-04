@@ -13,12 +13,12 @@ class ListThingListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(thisThing.icon),
-      title: Text(thisThing.label),
-      subtitle: Text('(${thisThing.listSize} items)'),
-      trailing: Icon(Icons.drag_handle),
-      onTap: () => _openChildList(context, thisThing),
-      onLongPress: () => _editList(context, thisThing),
+      leading:      Icon(thisThing.icon),
+      title:        Text(thisThing.label),
+      subtitle:     Text('(${thisThing.listSize} items)'),
+      trailing:     Icon(Icons.drag_handle),
+      onTap:        () => _openChildList(context, thisThing),
+      onLongPress:  () => _editList(context, thisThing),
     );
   }
 
@@ -28,9 +28,9 @@ class ListThingListTile extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => ChildListPage(
-                  listName: thisThing.label,
-                  thisThing: thisThing,
-                ),
+              listName: thisThing.label,
+              thisThing: thisThing,
+            ),
             fullscreenDialog: true));
   }
 

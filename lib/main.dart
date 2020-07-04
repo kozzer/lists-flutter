@@ -12,7 +12,8 @@ void main() async {
     print(
         'KOZZER - got data, about to call runApp() ... listsDataModel: $listsDataModel');
     runApp(new StateContainer(
-        child: ListsApp(listsDataModel), listsDataModel: listsDataModel));
+        child: ListsApp(listsDataModel), 
+        listsDataModel: listsDataModel));
   });
 }
 

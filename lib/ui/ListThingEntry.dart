@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
 
 class ListThingEntry extends StatefulWidget {
-  final int parentThingID;
+  final int       parentThingID;
   final ListThing existingThing;
 
   const ListThingEntry({Key key, this.parentThingID, this.existingThing})
@@ -13,27 +13,19 @@ class ListThingEntry extends StatefulWidget {
 }
 
 class _ListThingEntryPageState extends State<ListThingEntry> {
-  bool _formChanged = false;
-  FocusNode focusNode;
-  String _pageTitle;
 
-  String _label = '';
-  IconData _icon;
-  bool _isList;
+  FocusNode focusNode;
+
+  bool      _formChanged = false;
+  String    _pageTitle;
+  String    _label = '';
+  IconData  _icon;
+  bool      _isList;
 
   // Constructor
   _ListThingEntryPageState() {
-    if (widget != null &&
-        widget.existingThing != null &&
-        (widget.existingThing.isList ?? false)) {
-      _isList = widget.existingThing.isList;
-    } else {
-      _isList = false;
-    }
-    if (widget != null && widget.key != null)
-      _pageTitle = 'edit ${widget.existingThing.label}';
-    else
-      _pageTitle = 'add new thing';
+    _isList    = widget?.existingThing?.isList ?? false;
+    _pageTitle = widget?.key != null ? 'edit ${widget.existingThing.label}' : 'add new thing';
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -71,7 +63,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
               ),
             ]),
         body: Form(
-            key: _formKey,
+            key:       _formKey,
             onChanged: _onFormChange,
             child: Padding(
                 padding: EdgeInsets.all(16.0),

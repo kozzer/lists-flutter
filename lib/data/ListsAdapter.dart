@@ -7,21 +7,21 @@ import 'package:lists/models/ListThing.dart';
 class ListsAdapter {
   // Constructor, singleton access
   ListsAdapter._();
-  static final ListsAdapter instance = ListsAdapter._();
+  static final ListsAdapter instance    = ListsAdapter._();
 
   // Database info
   static const String _databaseFileName = 'lists_database.db';
-  static const int _databaseVersion = 1;
+  static const int    _databaseVersion  = 1;
 
   // Table/column names
-  static const String listsTable = 'lists';
-  static const String colThingID = 'thingID';
-  static const String colParentThingID = 'parentThingID';
-  static const String colLabel = 'label';
-  static const String colIsList = 'isList';
-  static const String colIcon = 'icon';
-  static const String colIsMarked = 'isMarked';
-  static const String colSortOrder = 'sortOrder';
+  static const String listsTable        = 'lists';
+  static const String colThingID        = 'thingID';
+  static const String colParentThingID  = 'parentThingID';
+  static const String colLabel          = 'label';
+  static const String colIsList         = 'isList';
+  static const String colIcon           = 'icon';
+  static const String colIsMarked       = 'isMarked';
+  static const String colSortOrder      = 'sortOrder';
 
   // only have a single app-wide reference to the database
   static Database _database;
@@ -44,8 +44,11 @@ class ListsAdapter {
     print('KOZZER - $path exists: ${await dbFile.exists()}');
 
     print('KOZZER - in _initDatabase(), about to open $path');
-    final Database db = await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreate, readOnly: false);
+    final Database db = await openDatabase(
+      path,
+      version:  _databaseVersion, 
+      onCreate: _onCreate, 
+      readOnly: false);
 
     // DEBUG - just report # of rows in table
     displayListsTable(db);
@@ -83,8 +86,7 @@ class ListsAdapter {
     print('KOZZER - ListsAdapter.insert - new sort order $newSortOrder');
 
     // Construct new object
-    var newThing = ListThing(newID, thing.parentThingID, thing.label,
-        thing.isList, thing.icon, thing.isMarked, newSortOrder);
+    var newThing = thing.copyWith(thingID: newID, sortOrder: newSortOrder);
 
     print('KOZZER - insert new thing row: ${newThing.toMap()}');
     await db.insert(listsTable, newThing.toMap());
@@ -99,19 +101,18 @@ class ListsAdapter {
 
     // Get any children
     final Database db = await instance.database;
-    String query =
-        'SELECT $colThingID FROM $listsTable WHERE $colParentThingID = $thingID';
-    final List<Map<String, dynamic>> rows = await db.rawQuery(query);
+    String query = 'SELECT $colThingID FROM $listsTable WHERE $colParentThingID = $thingID';
 
+    final List<Map<String, dynamic>> rows = await db.rawQuery(query);
     if (rows.isNotEmpty) {
-      print(
-          'KOZZER - in ListsDataProvider.delete($thingID) - found ${rows.length} children');
+      print('KOZZER - in ListsDataProvider.delete($thingID) - found ${rows.length} children');
+
       // Recursively get to the "bottom", and then we can delete on the way up
       for (final Map<String, dynamic> row in rows) {
         final int childID = row[colThingID] as int;
+
         // Call this method recursively
-        print(
-            'KOZZER - calling ListsDataProvider.delete($childID) recursively');
+        print('KOZZER - calling ListsDataProvider.delete($childID) recursively');
         await delete(childID);
       }
 
@@ -143,8 +144,7 @@ class ListsAdapter {
     print('KOZZER - in listsAdapter.getListThingByID($thingID)');
     // Build SQL query
     final Database db = await instance.database;
-    final String query =
-        '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
+    final String query = '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
                             FROM   $listsTable
                             WHERE  $colThingID = $thingID;''';
     // Execute query (should only get 1 item)
@@ -181,8 +181,7 @@ class ListsAdapter {
   Future<List<ListThing>> getChildrenForParentID(int parentID) async {
     // Build SQL query
     final Database db = await instance.database;
-    final String query =
-        '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
+    final String query = '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
                             FROM   $listsTable
                             WHERE  $colParentThingID = $parentID;''';
     // Execute query
@@ -194,8 +193,7 @@ class ListsAdapter {
       final ListThing child = ListThing.fromMap(row);
 
       if (child.isList) {
-        final List<ListThing> grandChildren =
-            await getChildrenForParentID(child.thingID);
+        final List<ListThing> grandChildren = await getChildrenForParentID(child.thingID);
         for (int i = 0; i < grandChildren.length; i++) {
           child.addChildThing(grandChildren[i]);
         }
@@ -218,9 +216,8 @@ class ListsAdapter {
   }
 
   Future<void> displayListsTable(Database db) async {
-    final String query =
-        '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
-                        FROM   $listsTable;''';
+    final String query = '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
+                            FROM   $listsTable;''';
     // Execute query (should only get 1 item)
     final List<Map<String, dynamic>> rows = await db.rawQuery(query);
     if ((rows?.length ?? 0) > 1) {
