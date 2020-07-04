@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lists/models/ListsDataModel.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/ui/ChildListPage.dart';
 import 'package:lists/ui/ListThingEntry.dart';
@@ -45,7 +46,7 @@ class ListThingListTile extends StatelessWidget {
       ),
     );
     if (editedThing != null) {
-      thisThing = editedThing;
+      await StateContainer.of(context).updateListThing(editedThing);
     }
   }
 }

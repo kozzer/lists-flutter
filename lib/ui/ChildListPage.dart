@@ -6,13 +6,11 @@ import 'package:lists/ui/ListThingThingTile.dart';
 import 'package:lists/ui/ListThingEntry.dart';
 
 class ChildListPage extends StatefulWidget {
-  const ChildListPage(
-      {Key key, this.listName, this.thisThing, @required this.listsDataModel})
+  const ChildListPage({Key key, this.listName, this.thisThing})
       : super(key: key);
 
   final String listName;
   final ListThing thisThing;
-  final ListsDataModel listsDataModel;
 
   @override
   _ChildListPageState createState() => _ChildListPageState();
@@ -64,7 +62,8 @@ class _ChildListPageState extends State<ChildListPage> {
       ),
     );
     if (newThing != null) {
-      var newWithID = await widget.listsDataModel.addNewListThing(newThing);
+      var newWithID =
+          await StateContainer.of(context).addNewListThing(newThing);
       setState(() {
         print('in setState()');
         widget.thisThing.addChildThing(newWithID);

@@ -8,21 +8,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Populate all data, then create the state container and launch the app
-  ListsDataModel().populateListsData().then((listsDataModel) { 
-      print('KOZZER - got data, about to call runApp() ... listsDataModel: $listsDataModel');
-      runApp(ListsApp(listsDataModel));
+  ListsDataModel().populateListsData().then((listsDataModel) {
+    print(
+        'KOZZER - got data, about to call runApp() ... listsDataModel: $listsDataModel');
+    runApp(new StateContainer(
+        child: ListsApp(listsDataModel), listsDataModel: listsDataModel));
   });
 }
 
 class ListsApp extends StatelessWidget {
-
   ListsApp(this.listsDataModel);
 
   final ListsDataModel listsDataModel;
 
   @override
   Widget build(BuildContext context) {
-
     print('KOZZER - building ListsApp');
 
     return MaterialApp(
@@ -31,7 +31,10 @@ class ListsApp extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MainListPage(title: 'Lists!', listsDataModel: listsDataModel),
+      home: MainListPage(
+        title: 'Lists!',
+        mainList: listsDataModel.getMainList(),
+      ),
     );
   }
 }
