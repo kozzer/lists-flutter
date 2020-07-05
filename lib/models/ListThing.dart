@@ -82,4 +82,6 @@ class ListThing {
 
   void removeChildThing(ListThing thing) => _items.remove(thing);
 
+  void clearChildThings() => _items.clear();
+
 }

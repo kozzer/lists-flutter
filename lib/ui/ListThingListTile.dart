@@ -24,20 +24,22 @@ class ListThingListTile extends StatelessWidget {
     );
   }
 
-  void _openChildList(BuildContext context, ListThing thisThing) {
+  Future<void> _openChildList(BuildContext context, ListThing thisThing) async {
     print('open child list, thingID: ${thisThing.thingID} - ${thisThing.items.length} children');
-    Navigator.push(
+    final openedThing = await Navigator.push<ListThing>(
       context,
       MaterialPageRoute(
-        builder: (context) => ChildListPage(
-          listName:  thisThing.label,
-          thisThing: thisThing,
-        ),
+        builder: (context) => ChildListPage(listName: thisThing.label, thisThing: thisThing),
         fullscreenDialog: true));
+
+    // Refresh in-memory things
+    print('KOZZER - refreshing list thing items');
+    thisThing.clearChildThings();
+    openedThing.items.forEach((thing) => thisThing.addChildThing(thing));
   }
 
   void _editList(BuildContext context, ListThing thisThing) async {
-    var editedThing = await Navigator.push<ListThing>(
+    final editedThing = await Navigator.push<ListThing>(
       context,
       MaterialPageRoute(
         builder: (context) => ListThingEntry(

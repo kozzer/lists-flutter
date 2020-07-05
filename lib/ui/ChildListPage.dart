@@ -18,35 +18,38 @@ class ChildListPage extends StatefulWidget {
 class _ChildListPageState extends State<ChildListPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          //  Also need to expose route to Settings screen
-          title:   Text(widget.listName),
-          actions: <Widget>[
-            // action button
-            IconButton(
-              icon:      Icon(Icons.more_vert),
-              onPressed: () {
-                print('pushed!');
-              },
-            ),
-          ]),
-      body: ListView.builder(
-          itemCount:   widget.thisThing.items.length,
-          itemBuilder: (BuildContext context, int index) {
-            var thing = widget.thisThing.items[index];
-            if (thing?.isList ?? false || (thing?.thingID ?? 1) == 0) {
-              // Always a list on the main page
-              return ListThingListTile(thing);
-            } else {
-              return ListThingThingTile(thing);
-            }
-          }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _onAddButtonPressed, // Prints to debug console
-        tooltip:   'Add List',
-        child:     Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child:     Scaffold(
+        appBar:  AppBar(
+            //  Also need to expose route to Settings screen
+            title:   Text(widget.listName),
+            actions: <Widget>[
+              // action button
+              IconButton(
+                icon:      Icon(Icons.more_vert),
+                onPressed: () {
+                  print('pushed!');
+                },
+              ),
+            ]),
+        body: ListView.builder(
+            itemCount:   widget.thisThing.items.length,
+            itemBuilder: (BuildContext context, int index) {
+              var thing = widget.thisThing.items[index];
+              if (thing?.isList ?? false || (thing?.thingID ?? 1) == 0) {
+                // Always a list on the main page
+                return ListThingListTile(thing);
+              } else {
+                return ListThingThingTile(thing);
+              }
+            }),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _onAddButtonPressed, // Prints to debug console
+          tooltip:   'Add List',
+          child:     Icon(Icons.add),
+        ), 
+      )
     );
   }
 
@@ -63,9 +66,16 @@ class _ChildListPageState extends State<ChildListPage> {
       var newWithID = await StateContainer.of(context).addNewListThing(newThing);
       
       setState(() {
-        print('in setState()');
+        print('in ChildListPage.setState()');
         widget.thisThing.addChildThing(newWithID);
       });
     }
+  }
+
+  Future<bool> _onWillPop(BuildContext context) async {
+    print('KOZZER - in _onWillPop() ... thisThing: ${widget.thisThing.toMap()}');
+    // Pop, passing (possibly) updated thing
+    Navigator.pop<ListThing>(context, widget.thisThing);
+    return false;
   }
 }

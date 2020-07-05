@@ -34,14 +34,13 @@ class _MainListPageState extends State<MainListPage> {
       body: ListView.builder(
         itemCount:    widget.mainList?.items?.length ?? 0,
         itemBuilder:  (BuildContext context, int index) {
-          print('KOZZER - in list item builer for thing id ${widget.mainList.items[index].thingID}');
           // Always a list on the main page
           return ListThingListTile(widget.mainList.items[index]);
         }),
       floatingActionButton: FloatingActionButton(
         onPressed: _onAddButtonPressed,
-        tooltip:  'Add List',
-        child:    Icon(Icons.add),
+        tooltip:   'Add List',
+        child:     Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
@@ -59,6 +58,7 @@ class _MainListPageState extends State<MainListPage> {
       var addedThing = await StateContainer.of(context).addNewListThing(newThing);
       
       setState(() {
+        print('KOZZER - in MainListPage.setState()');
         widget.mainList.items.add(addedThing);
       });
     }

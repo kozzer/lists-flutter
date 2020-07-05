@@ -9,22 +9,21 @@ void main() async {
 
   // Populate all data, then create the state container and launch the app
   ListsDataModel().populateListsData().then((listsDataModel) {
-    print(
-        'KOZZER - got data, about to call runApp() ... listsDataModel: $listsDataModel');
+    print('KOZZER - got data, about to call runApp() ... listsDataModel: $listsDataModel');
+    listsDataModel.listsAdapter.displayListsTable();
     runApp(new StateContainer(
-        child: ListsApp(listsDataModel), 
-        listsDataModel: listsDataModel));
+      child:          ListsApp(), 
+      listsDataModel: listsDataModel)
+    );
   });
 }
 
 class ListsApp extends StatelessWidget {
-  ListsApp(this.listsDataModel);
-
-  final ListsDataModel listsDataModel;
+  ListsApp();
 
   @override
   Widget build(BuildContext context) {
-    print('KOZZER - building ListsApp');
+    print('KOZZER - building ListsApp - no parameter');
 
     return MaterialApp(
       title: 'Lists!',
@@ -34,7 +33,7 @@ class ListsApp extends StatelessWidget {
       ),
       home: MainListPage(
         title: 'Lists!',
-        mainList: listsDataModel.getMainList(),
+        mainList: StateContainer.of(context).getMainList(),
       ),
     );
   }

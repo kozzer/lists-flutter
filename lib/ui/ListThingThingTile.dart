@@ -16,8 +16,7 @@ class ListThingThingTile extends StatelessWidget {
       leading: Icon(thisThing.icon),
       title:   Text(thisThing.label,
           style: thisThing.isMarked
-              ? TextStyle(
-                  color: Colors.grey, decoration: TextDecoration.lineThrough)
+              ? TextStyle(color: Colors.grey, decoration: TextDecoration.lineThrough)
               : TextStyle(color: Colors.black)),
       trailing:    Icon(Icons.drag_handle),
       onTap:       () => _toggleIsMarked(context),
