@@ -12,10 +12,10 @@ class MainListPage extends StatefulWidget {
   final ListThing mainList;
 
   @override
-  _MainListPageState createState() => _MainListPageState();
+  MainListPageState createState() => MainListPageState();
 }
 
-class _MainListPageState extends State<MainListPage> {
+class MainListPageState extends State<MainListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,4 +63,6 @@ class _MainListPageState extends State<MainListPage> {
       });
     }
   }
+
+  void triggerRebuild() => setState((){});
 }

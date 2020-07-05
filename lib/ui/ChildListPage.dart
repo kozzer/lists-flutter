@@ -66,7 +66,7 @@ class _ChildListPageState extends State<ChildListPage> {
       var newWithID = await StateContainer.of(context).addNewListThing(newThing);
       
       setState(() {
-        print('in ChildListPage.setState()');
+        print('KOZZER - in ChildListPage.setState()');
         widget.thisThing.addChildThing(newWithID);
       });
     }

@@ -3,6 +3,7 @@ import 'package:lists/models/ListsDataModel.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/ui/ChildListPage.dart';
 import 'package:lists/ui/ListThingEntry.dart';
+import 'package:lists/ui/MainListPage.dart';
 
 /// Custom ListTile class for things that are lists
 class ListThingListTile extends StatelessWidget {
@@ -51,6 +52,7 @@ class ListThingListTile extends StatelessWidget {
     );
     if (editedThing != null) {
       await StateContainer.of(context).updateListThing(editedThing);
+      context.findAncestorStateOfType<MainListPageState>().triggerRebuild();
     }
   }
 }
