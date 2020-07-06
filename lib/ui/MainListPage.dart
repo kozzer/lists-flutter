@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/ListThingEntry.dart';
 import 'package:lists/ui/ListThingListTile.dart';
@@ -23,14 +22,15 @@ class MainListPage extends StatelessWidget {
               // action button
               IconButton(
                 icon:       Icon(Icons.more_vert),
-                onPressed:  () {
-                  print('KOZZER - menu open!');
+                onPressed:  () async {
+                  await model.rePopulateListsData();
                 },
               ),
             ]),
         body: ListView.builder(
           itemCount:    model.mainList?.items?.length ?? 0,
           itemBuilder:  (BuildContext context, int index) {
+            print('KOZZER - in main page list builder');
             // Always a list on the main page
             return ListThingListTile(model.mainList.items[index], model);
           }),

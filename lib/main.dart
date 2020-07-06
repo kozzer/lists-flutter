@@ -8,10 +8,12 @@ void main() async {
   // Make sure everything is ready to populate data
   WidgetsFlutterBinding.ensureInitialized();
 
+  var model = ListsScopedModel();
+
   // Launch app wrapped in ScopedModel widget
   runApp(
     ScopedModel<ListsScopedModel>(
-      model: ListsScopedModel(),      // <-- data model Constructor
+      model: model,                   // <-- data model Constructor
       child: ListsApp()               // <-- app object Constructor
     )
   );
