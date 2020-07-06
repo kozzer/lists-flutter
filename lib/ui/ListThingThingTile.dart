@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/ListThingEntry.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 /// Custom ListTile class for things that are lists
 class ListThingThingTile extends StatelessWidget {
@@ -29,6 +30,7 @@ class ListThingThingTile extends StatelessWidget {
     print('toggle!');
     final toggledThing = thisThing.copyWith(isMarked: !thisThing.isMarked);
     await model.updateListThing(toggledThing);
+    await model.rePopulateListsData();
     print('isMarked toggled: ${toggledThing.isMarked}');
   }
 

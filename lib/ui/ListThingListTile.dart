@@ -37,7 +37,7 @@ class ListThingListTile extends StatelessWidget {
   }
 
   void _editList(BuildContext context, ListThing thisThing) async {
-    final editedThing = await Navigator.push<ListThing>(
+    await Navigator.push<ListThing>(
       context,
       MaterialPageRoute(
         builder: (context) => ListThingEntry(
@@ -47,8 +47,5 @@ class ListThingListTile extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
-    if (editedThing != null) {
-      await model.updateListThing(editedThing);
-    }
   }
 }
