@@ -50,6 +50,8 @@ class ListsAdapter {
 
     print('KOZZER - db opened: $db');
 
+    //runArbitraryQuery();
+
     return db;
   }
 
@@ -221,7 +223,7 @@ class ListsAdapter {
   }
 
   Future<void> runArbitraryQuery() async {
-    final String query = '''UPDATE $listsTable SET $colIsList = 1 WHERE thingID = 5''';
+    final String query = '''UPDATE $listsTable SET $colIsList = 1 WHERE thingID = 12''';
     await (await database).rawQuery(query);
   }
 
