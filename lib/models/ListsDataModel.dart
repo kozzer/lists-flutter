@@ -42,7 +42,7 @@ class ListsDataModel extends State<StateContainer> {
 
     setState(() {
       // Add to in-memory list
-      print('KOZZER - in ListsDataModel.setState()');
+      print('KOZZER - in ListsDataModel.addNewListThing.setState()');
       parentThing.addChildThing(newThing);
       parentThing.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
     });
@@ -57,7 +57,7 @@ class ListsDataModel extends State<StateContainer> {
     final refreshed = await listsAdapter.getListThingByID(0);
 
     setState(() {
-      print('KOZZER - in ListsDataModel.setState()');
+      print('KOZZER - in ListsDataModel.removeListThing.setState()');
       _mainList = refreshed;
       parentThing.removeChildThing(thing); // In memory
     });
@@ -69,7 +69,7 @@ class ListsDataModel extends State<StateContainer> {
     var refreshed = await listsAdapter.getListThingByID(0);
 
     setState(() {
-      print('KOZZER - in ListsDataModel.setState()');
+      print('KOZZER - in ListsDataModel.updateListThing.setState()');
       _mainList = refreshed;
     });
   }
@@ -110,5 +110,5 @@ class StateContainer extends StatefulWidget {
   }
 
   @override
-  ListsDataModel createState() => listsDataModel;
+  ListsDataModel createState() => this.listsDataModel;
 }
