@@ -9,6 +9,7 @@ class ListsScopedModel extends Model{
     listsAdapter.getListThingByID(0).then(
       (mainList) => _mainList = mainList
     );
+    notifyListeners();  
   }
 
   // single ListsAdapter
@@ -23,6 +24,7 @@ class ListsScopedModel extends Model{
   Future<ListsScopedModel> rePopulateListsData() async {
     print('KOZZER - populating _mainList');
     _mainList = await listsAdapter.getListThingByID(0);
+    notifyListeners();
     return this;
   }
 
@@ -39,6 +41,7 @@ class ListsScopedModel extends Model{
     parentThing.addChildThing(newThing);
     parentThing.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
 
+    notifyListeners();
     return newThing;
   }
 
@@ -51,6 +54,7 @@ class ListsScopedModel extends Model{
 
     _mainList = refreshed;
     parentThing.removeChildThing(thing); // In memory
+    notifyListeners();
   }
 
   Future<void> updateListThing(ListThing updatedThing) async {
@@ -59,5 +63,6 @@ class ListsScopedModel extends Model{
     var refreshed = await listsAdapter.getListThingByID(0);
 
     _mainList = refreshed;
+    notifyListeners();
   }
 }
