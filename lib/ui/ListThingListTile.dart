@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:lists/models/ListsDataModel.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/ui/ChildListPage.dart';
 import 'package:lists/ui/ListThingEntry.dart';
-import 'package:lists/ui/MainListPage.dart';
+import 'package:lists/models/ListsScopedModel.dart';
+
 
 /// Custom ListTile class for things that are lists
 class ListThingListTile extends StatelessWidget {
 
-  final ListThing thisThing;
+  final ListThing        thisThing;
+  final ListsScopedModel model;
 
-  const ListThingListTile(this.thisThing);
+  const ListThingListTile(this.thisThing, this.model);
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +52,7 @@ class ListThingListTile extends StatelessWidget {
       ),
     );
     if (editedThing != null) {
-      await StateContainer.of(context).updateListThing(editedThing);
-      context.findAncestorStateOfType<MainListPageState>().triggerRebuild();
+      await model.updateListThing(editedThing);
     }
   }
 }

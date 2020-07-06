@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:lists/models/ListsScopedModel.dart';
+
+
 
 class ListThingEntry extends StatefulWidget {
   final int       parentThingID;
@@ -48,7 +52,8 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScopedModelDescendant<ListsScopedModel>(
+      builder: (context, child, model) => Scaffold(
         appBar: AppBar(
             //  Also need to expose route to Settings screen
             title: Text(_pageTitle),
@@ -97,7 +102,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                           ? () {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-                                Navigator.pop(context, _handleFormSubmit());
+                                Navigator.pop(context, _handleFormSubmit(model));
                               } else {
                                 FocusScope.of(context).requestFocus(focusNode);
                               }
@@ -105,7 +110,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                           : null,
                     ),
                   ],
-                ))));
+                )))));
   }
 
   void _onFormChange() {
@@ -116,11 +121,17 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
     });
   }
 
-  ListThing _handleFormSubmit() {
+  Future<void> _handleFormSubmit(ListsScopedModel model) async {
     if (_formChanged) {
-      return ListThing(-1, widget.parentThingID, _label, _isList);
-    }
-
-    return null;
+      if (widget.existingThing != null){
+        // Already existing, so this is an update
+        final updatedThing = widget.existingThing.copyWith(label: _label, isList: _isList, icon: _icon);
+        await model.updateListThing(updatedThing);
+      } else {
+        // Nothing existing, so this is a new item
+        var newThing = ListThing(-1, widget.parentThingID, _label, _isList);
+        await model.addNewListThing(newThing);
+      }
+    }      
   }
 }
