@@ -8,7 +8,7 @@ import 'package:lists/ui/LoadingScreen.dart';
 
 
 class MainListPage extends StatelessWidget {
-  const MainListPage({Key key, this.title }) : super(key: key);
+  const MainListPage({ Key key, this.title }) : super(key: key);
 
   final String title;
 
@@ -17,7 +17,7 @@ class MainListPage extends StatelessWidget {
     return ScopedModelDescendant<ListsScopedModel>( 
       rebuildOnChange: true,
       builder: (context, child, model) => FutureBuilder<ListsScopedModel>(
-        future: model.populateListsData(),
+        future:  model.populateListsData(),
         builder: (context, AsyncSnapshot<ListsScopedModel> snapshot){
 
           if (!snapshot.hasData){
@@ -29,7 +29,7 @@ class MainListPage extends StatelessWidget {
             // Show lists data
             return Scaffold(
               appBar: AppBar(
-                //  Also need to expose route to Settings screen
+                // Also need to expose route to Settings screen
                 title:    Text(title),
                 actions:  <Widget>[
                   // action button
@@ -40,7 +40,8 @@ class MainListPage extends StatelessWidget {
                       await snapshot.data.populateListsData();
                     },
                   ),
-                ]),
+                ]
+              ),
 
               body: ListView.builder(
                 itemCount:    snapshot.data.mainList?.items?.length ?? 0,
@@ -48,8 +49,9 @@ class MainListPage extends StatelessWidget {
                   print('KOZZER - in main page list item builder - index $index');
                   // Always a list on the main page
                   return ListThingListTile(model.mainList.items[index]);
-                }),
-                
+                }
+              ),
+
               floatingActionButton: FloatingActionButton(
                 onPressed: () => _onAddButtonPressed(context, model),
                 tooltip:   'Add List',
@@ -70,6 +72,5 @@ class MainListPage extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
-    model.populateListsData();
   }
 }
