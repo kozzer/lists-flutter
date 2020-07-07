@@ -4,13 +4,8 @@ import 'package:lists/models/ListThing.dart';
 
 class ListsScopedModel extends Model{
 
-  // Constructor - populate list
-  ListsScopedModel() {
-    listsAdapter.getListThingByID(0).then(
-      (mainList) => _mainList = mainList
-    );
-    notifyListeners();  
-  }
+  // Constructor 
+  ListsScopedModel(); 
 
   // single ListsAdapter
   final ListsAdapter listsAdapter = ListsAdapter.instance;
