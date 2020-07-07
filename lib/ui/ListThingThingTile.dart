@@ -14,7 +14,7 @@ class ListThingThingTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ListsScopedModel>(
       builder: (context, child, model) => ListTile(
-        key:     ValueKey(thisThing.thingID),
+        key:     ValueKey(thisThing.hashCode),
         leading: Icon(thisThing.icon),
         title:   Text(thisThing.label,
             style: thisThing.isMarked

@@ -14,7 +14,7 @@ class ListThingListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      key:          ValueKey(thisThing.thingID),
+      key:          ValueKey(thisThing.hashCode),
       leading:      Icon(thisThing.icon),
       title:        Text(thisThing.label),
       subtitle:     Text('(${thisThing.listSize} items)'),
