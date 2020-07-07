@@ -66,51 +66,59 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                 },
               ),
             ]),
-        body: Form(
+        body: 
+            Form(
             key:       _formKey,
             onChanged: _onFormChange,
-            child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      onSaved: (String val) => _label = val,
-                      decoration: InputDecoration(
-                        border:     OutlineInputBorder(),
-                        helperText: "Required",
-                        labelText:  "label",
-                      ),
-                      autofocus: true,
-                      initialValue: widget.existingThing?.label,
-                      autovalidate: _formChanged,
-                      validator: (String val) {
-                        if (val.isEmpty) return "Field cannot be left blank";
-                        return null;
-                      },
+            child: 
+              Padding(
+              padding: EdgeInsets.all(16.0),
+              child: 
+                Column(
+                children: <Widget>[
+                  TextFormField(
+                    onSaved: (String val) => _label = val,
+                    decoration: InputDecoration(
+                      border:     OutlineInputBorder(),
+                      helperText: "Required",
+                      labelText:  "label",
                     ),
-                    Text('Is this a list?'),
-                    Checkbox(
-                        value: _isList,
-                        onChanged: (bool val) {
-                          _formChanged = true;
-                          _isList      = val;
-                        }),
-                    RaisedButton(
-                      color: Colors.blue[400],
-                      child: Text("save"),
-                      onPressed: _formChanged
-                          ? () {
-                              if (_formKey.currentState.validate()) {
-                                _formKey.currentState.save();
-                                Navigator.pop(context, _handleFormSubmit(model));
-                              } else {
-                                FocusScope.of(context).requestFocus(focusNode);
-                              }
+                    autofocus: true,
+                    initialValue: widget.existingThing?.label,
+                    autovalidate: _formChanged,
+                    validator: (String val) {
+                      if (val.isEmpty) return "Field cannot be left blank";
+                      return null;
+                    },
+                  ),
+                  Text('Is this a list?'),
+                  Checkbox(
+                    value: _isList,
+                    onChanged: (bool val) {
+                      _formChanged = true;
+                      _isList      = val;
+                    }
+                  ),
+                  RaisedButton(
+                    color: Colors.blue[400],
+                    child: Text("save"),
+                    onPressed: _formChanged
+                        ? () {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              Navigator.pop(context, _handleFormSubmit(model));
+                            } else {
+                              FocusScope.of(context).requestFocus(focusNode);
                             }
-                          : null,
-                    ),
-                  ],
-                )))));
+                          }
+                        : null,
+                  ),
+                ],
+              )
+            )
+          )
+        )
+      );   
   }
 
   void _onFormChange() {
@@ -132,7 +140,6 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
         var newThing = ListThing(-1, widget.parentThingID, _label, _isList);
         await model.addNewListThing(newThing);
       }
-      await model.populateListsData();
     }      
   }
 }

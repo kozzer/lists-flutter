@@ -14,7 +14,6 @@ class ListsScopedModel extends Model{
   ListThing _mainList;
   ListThing get mainList => _mainList;
   
-
   // Get data from adapter
   Future<ListsScopedModel> populateListsData() async {
     print('KOZZER - populating _mainList');

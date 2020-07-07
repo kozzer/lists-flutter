@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/ChildListPage.dart';
 import 'package:lists/ui/ListThingEntry.dart';
 
@@ -47,6 +45,5 @@ class ListThingListTile extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
-    await ScopedModel.of<ListsScopedModel>(context).populateListsData();
   }
 }
