@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/MainListPage.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 void main() async {
   // Make sure everything is ready to populate data

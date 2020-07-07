@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
+import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/ChildListPage.dart';
 import 'package:lists/ui/ListThingEntry.dart';
-import 'package:lists/models/ListsScopedModel.dart';
 
 
 /// Custom ListTile class for things that are lists
