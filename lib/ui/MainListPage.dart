@@ -19,22 +19,29 @@ class MainListPage extends StatelessWidget {
       builder: (context, child, model) => FutureBuilder<ListsScopedModel>(
         future: model.populateListsData(),
         builder: (context, AsyncSnapshot<ListsScopedModel> snapshot){
-          if (snapshot.hasData){
+
+          if (!snapshot.hasData){
+            // Data not loaded - Show loading screen
+            return LoadingScreen();
+            
+          } else {
+
             // Show lists data
             return Scaffold(
               appBar: AppBar(
-                  //  Also need to expose route to Settings screen
-                  title:    Text(title),
-                  actions:  <Widget>[
-                    // action button
-                    IconButton(
-                      icon:       Icon(Icons.more_vert),
-                      onPressed:  () async {
-                        print('KOZZER - refresh data!');
-                        await snapshot.data.populateListsData();
-                      },
-                    ),
-                  ]),
+                //  Also need to expose route to Settings screen
+                title:    Text(title),
+                actions:  <Widget>[
+                  // action button
+                  IconButton(
+                    icon:       Icon(Icons.more_vert),
+                    onPressed:  () async {
+                      print('KOZZER - refresh data!');
+                      await snapshot.data.populateListsData();
+                    },
+                  ),
+                ]),
+
               body: ListView.builder(
                 itemCount:    snapshot.data.mainList?.items?.length ?? 0,
                 itemBuilder:  (BuildContext context, int index) {
@@ -42,16 +49,14 @@ class MainListPage extends StatelessWidget {
                   // Always a list on the main page
                   return ListThingListTile(model.mainList.items[index]);
                 }),
+                
               floatingActionButton: FloatingActionButton(
                 onPressed: () => _onAddButtonPressed(context, model),
                 tooltip:   'Add List',
                 child:     Icon(Icons.add),
               )
             );
-          } else {
-            // Show loading screen
-            return LoadingScreen();
-          }
+          } 
       })
     );
   }

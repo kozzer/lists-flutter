@@ -26,6 +26,7 @@ class ChildListPage extends StatelessWidget {
               },
             ),
           ]),
+
       body: ListView.builder(
           itemCount:   thisThing.items.length,
           itemBuilder: (BuildContext context, int index) {
@@ -38,6 +39,7 @@ class ChildListPage extends StatelessWidget {
               return ListThingThingTile(thing);
             }
           }),
+          
       floatingActionButton: FloatingActionButton(
         onPressed: () => _onAddButtonPressed(context), // Prints to debug console
         tooltip:   'Add List',
