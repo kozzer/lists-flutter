@@ -17,7 +17,7 @@ class MainListPage extends StatelessWidget {
     return ScopedModelDescendant<ListsScopedModel>( 
       rebuildOnChange: true,
       builder: (context, child, model) => FutureBuilder<ListsScopedModel>(
-        future:  model.populateListsData(),
+        future:  model.populateListsData(notify: false),
         builder: (context, AsyncSnapshot<ListsScopedModel> snapshot){
 
           if (!snapshot.hasData){

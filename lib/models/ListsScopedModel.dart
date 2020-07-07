@@ -15,11 +15,12 @@ class ListsScopedModel extends Model{
   ListThing get mainList => _mainList;
   
   // Get data from adapter
-  Future<ListsScopedModel> populateListsData() async {
+  Future<ListsScopedModel> populateListsData({bool notify = true}) async {
     print('KOZZER - populating _mainList');
     listsAdapter.getListThingByID(0).then((dbList) { 
-      _mainList = dbList; 
-      notifyListeners(); 
+      _mainList = dbList;
+      if (notify) 
+        notifyListeners(); 
     });
     return this;
   }
