@@ -174,6 +174,7 @@ class ListsAdapter {
 
   /// Gets all children ListThings for given thingID, executes recursively to get descendants
   Future<List<ListThing>> getChildrenForParentID(int parentID) async {
+    print('KOZZER - ListsAdapter.getChildrenForParentID($parentID)');
     // Build SQL query
     final Database db = await instance.database;
     final String query = '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
@@ -223,7 +224,8 @@ class ListsAdapter {
   }
 
   Future<void> runArbitraryQuery() async {
-    final String query = '''UPDATE $listsTable SET $colIsList = 1 WHERE thingID = 12''';
+    print('KOZZER - RUNNING ARBITRARY QUERY');
+    final String query = '''UPDATE $listsTable SET $colIsList = 1 WHERE thingID = 21''';
     await (await database).rawQuery(query);
   }
 

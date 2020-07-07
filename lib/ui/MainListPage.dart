@@ -1,68 +1,60 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lists/models/ListThing.dart';
-import 'package:lists/models/ListsDataModel.dart';
+import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/ListThingEntry.dart';
 import 'package:lists/ui/ListThingListTile.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-class MainListPage extends StatefulWidget {
-  const MainListPage({Key key, this.title, this.mainList}) : super(key: key);
 
-  final String    title;
-  final ListThing mainList;
+class MainListPage extends StatelessWidget {
+  const MainListPage({Key key, this.title }) : super(key: key);
 
-  @override
-  MainListPageState createState() => MainListPageState();
-}
+  final String           title;
 
-class MainListPageState extends State<MainListPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          //  Also need to expose route to Settings screen
-          title:    Text(widget.title),
-          actions:  <Widget>[
-            // action button
-            IconButton(
-              icon:       Icon(Icons.more_vert),
-              onPressed:  () {
-                print('KOZZER - menu open!');
-              },
-            ),
-          ]),
-      body: ListView.builder(
-        itemCount:    widget.mainList?.items?.length ?? 0,
-        itemBuilder:  (BuildContext context, int index) {
-          // Always a list on the main page
-          return ListThingListTile(widget.mainList.items[index]);
-        }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _onAddButtonPressed,
-        tooltip:   'Add List',
-        child:     Icon(Icons.add),
+    return ScopedModelDescendant<ListsScopedModel>(
+      builder: (context, child, model) => Scaffold(
+        appBar: AppBar(
+            //  Also need to expose route to Settings screen
+            title:    Text(title),
+            actions:  <Widget>[
+              // action button
+              IconButton(
+                icon:       Icon(Icons.more_vert),
+                onPressed:  () async {
+                  await model.populateListsData();
+                },
+              ),
+            ]),
+        body: ListView.builder(
+          itemCount:    model.mainList?.items?.length ?? 0,
+          itemBuilder:  (BuildContext context, int index) {
+            print('KOZZER - in main page list item builder - index $index');
+            // Always a list on the main page
+            return ListThingListTile(model.mainList.items[index], model);
+          }),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _onAddButtonPressed(context),
+          tooltip:   'Add List',
+          child:     Icon(Icons.add),
+        )
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  Future<void> _onAddButtonPressed() async {
+  Future<void> _onAddButtonPressed(BuildContext context) async {
     print('adding new list to Main list');
-    var newThing = await Navigator.push<ListThing>(
+    await Navigator.push(
       context,
       MaterialPageRoute(
-        builder:          (context) => ListThingEntry(parentThingID: 0),
+        builder: (context) => 
+          ScopedModelDescendant<ListsScopedModel>(
+            builder: (context, child, model) => ListThingEntry(
+              parentThingID: 0),
+          ),
         fullscreenDialog: true,
       ),
     );
-    if (newThing != null) {
-      var addedThing = await StateContainer.of(context).addNewListThing(newThing);
-      
-      setState(() {
-        print('KOZZER - in MainListPage.setState()');
-        widget.mainList.items.add(addedThing);
-      });
-    }
   }
-
-  void triggerRebuild() => setState((){});
 }

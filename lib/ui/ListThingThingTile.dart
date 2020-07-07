@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:lists/models/ListsDataModel.dart';
+import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/ListThingEntry.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 /// Custom ListTile class for things that are lists
 class ListThingThingTile extends StatelessWidget {
   final ListThing thisThing;
+  final ListsScopedModel model;
 
-  const ListThingThingTile(this.thisThing);
+  const ListThingThingTile(this.thisThing, this.model);
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,13 @@ class ListThingThingTile extends StatelessWidget {
   void _toggleIsMarked(BuildContext context) async {
     print('toggle!');
     thisThing.isMarked = !thisThing.isMarked;
-    await StateContainer.of(context).updateListThing(thisThing);
+    await model.updateListThing(thisThing);
+    await model.populateListsData();
     print('isMarked toggled: ${thisThing.isMarked}');
   }
 
   void _editThing(BuildContext context, ListThing thisThing) async {
-    var editedThing = await Navigator.push<ListThing>(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ListThingEntry(
@@ -42,8 +45,5 @@ class ListThingThingTile extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
-    if (editedThing != null) {
-      await StateContainer.of(context).updateListThing(editedThing);
-    }
   }
 }
