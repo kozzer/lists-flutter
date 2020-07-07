@@ -15,9 +15,7 @@ class ChildListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => _onWillPop(context),
-      child:     ScopedModelDescendant<ListsScopedModel>(
+    return ScopedModelDescendant<ListsScopedModel>(
         builder: (context, child, model) => Scaffold(
         appBar:  AppBar(
             //  Also need to expose route to Settings screen
@@ -49,7 +47,7 @@ class ChildListPage extends StatelessWidget {
           child:     Icon(Icons.add),
         ), 
       )
-    ));
+    );
   }
 
   Future<void> _onAddButtonPressed(BuildContext context, ListsScopedModel model) async {
@@ -62,13 +60,5 @@ class ChildListPage extends StatelessWidget {
       ),
     );
     model.populateListsData();
-  }
-
-
-  Future<bool> _onWillPop(BuildContext context) async {
-    print('KOZZER - in _onWillPop() ... thisThing: ${thisThing.toMap()}');
-    // Pop, passing (possibly) updated thing
-    Navigator.pop(context);
-    return false;
   }
 }
