@@ -132,7 +132,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
         var newThing = ListThing(-1, widget.parentThingID, _label, _isList);
         await model.addNewListThing(newThing);
       }
-      await model.rePopulateListsData();
+      await model.populateListsData();
     }      
   }
 }

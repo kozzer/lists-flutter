@@ -28,10 +28,10 @@ class ListThingThingTile extends StatelessWidget {
 
   void _toggleIsMarked(BuildContext context) async {
     print('toggle!');
-    final toggledThing = thisThing.copyWith(isMarked: !thisThing.isMarked);
-    await model.updateListThing(toggledThing);
-    await model.rePopulateListsData();
-    print('isMarked toggled: ${toggledThing.isMarked}');
+    thisThing.isMarked = !thisThing.isMarked;
+    await model.updateListThing(thisThing);
+    await model.populateListsData();
+    print('isMarked toggled: ${thisThing.isMarked}');
   }
 
   void _editThing(BuildContext context, ListThing thisThing) async {

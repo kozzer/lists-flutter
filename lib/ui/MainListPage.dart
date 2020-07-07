@@ -23,14 +23,14 @@ class MainListPage extends StatelessWidget {
               IconButton(
                 icon:       Icon(Icons.more_vert),
                 onPressed:  () async {
-                  await model.rePopulateListsData();
+                  await model.populateListsData();
                 },
               ),
             ]),
         body: ListView.builder(
           itemCount:    model.mainList?.items?.length ?? 0,
           itemBuilder:  (BuildContext context, int index) {
-            print('KOZZER - in main page list builder');
+            print('KOZZER - in main page list item builder - index $index');
             // Always a list on the main page
             return ListThingListTile(model.mainList.items[index], model);
           }),

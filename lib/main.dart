@@ -9,6 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   var model = ListsScopedModel();
+  model.populateListsData();
 
   // Launch app wrapped in ScopedModel widget
   runApp(

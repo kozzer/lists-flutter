@@ -34,6 +34,7 @@ class ChildListPage extends StatelessWidget {
         body: ListView.builder(
             itemCount:   thisThing.items.length,
             itemBuilder: (BuildContext context, int index) {
+              print('KOZZER - child list item builder - index: $index');
               var thing = thisThing.items[index];
               if (thing?.isList ?? false || (thing?.thingID ?? 1) == 0) {
                 // Always a list on the main page
@@ -60,6 +61,7 @@ class ChildListPage extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
+    ScopedModel.of<ListsScopedModel>(context).populateListsData();
   }
 
 

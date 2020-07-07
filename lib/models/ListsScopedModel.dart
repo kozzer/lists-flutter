@@ -21,10 +21,12 @@ class ListsScopedModel extends Model{
   
 
   // Get data from adapter
-  Future<ListsScopedModel> rePopulateListsData() async {
+  Future<ListsScopedModel> populateListsData() async {
     print('KOZZER - populating _mainList');
-    _mainList = await listsAdapter.getListThingByID(0);
-    notifyListeners();
+    listsAdapter.getListThingByID(0).then((dbList) { 
+      _mainList = dbList; 
+      notifyListeners(); 
+    });
     return this;
   }
 
