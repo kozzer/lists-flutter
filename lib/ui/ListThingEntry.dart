@@ -27,7 +27,6 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
 
   // Constructor
   _ListThingEntryPageState() {
-    _isList    = widget?.parentThingID == 0 || (widget?.existingThing?.isList ?? false);
     _pageTitle = widget?.key != null ? 'edit ${widget.existingThing.label}' : 'add new thing';
   }
 
@@ -37,6 +36,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
   void initState() {
     super.initState();
     focusNode = FocusNode();
+    _isList   = widget?.parentThingID == 0 || (widget?.existingThing?.isList ?? false);
   }
 
   @override

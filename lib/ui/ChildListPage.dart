@@ -38,13 +38,13 @@ class ChildListPage extends StatelessWidget {
               var thing = thisThing.items[index];
               if (thing?.isList ?? false || (thing?.thingID ?? 1) == 0) {
                 // Always a list on the main page
-                return ListThingListTile(thing, model);
+                return ListThingListTile(thing);
               } else {
                 return ListThingThingTile(thing, model);
               }
             }),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _onAddButtonPressed(context), // Prints to debug console
+          onPressed: () => _onAddButtonPressed(context, model), // Prints to debug console
           tooltip:   'Add List',
           child:     Icon(Icons.add),
         ), 
@@ -52,7 +52,7 @@ class ChildListPage extends StatelessWidget {
     ));
   }
 
-  Future<void> _onAddButtonPressed(BuildContext context) async {
+  Future<void> _onAddButtonPressed(BuildContext context, ListsScopedModel model) async {
     print('KOZZER - in ChildListPage add button pressed');
     await Navigator.push(
       context,
@@ -61,7 +61,7 @@ class ChildListPage extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
-    ScopedModel.of<ListsScopedModel>(context).populateListsData();
+    model.populateListsData();
   }
 
 

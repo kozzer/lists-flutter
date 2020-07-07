@@ -38,11 +38,12 @@ class ListThingThingTile extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => ListThingEntry(
-          parentThingID: 0,
+          parentThingID: thisThing.parentThingID,
           existingThing: thisThing,
         ),
         fullscreenDialog: true,
       ),
     );
+    await model.populateListsData();
   }
 }

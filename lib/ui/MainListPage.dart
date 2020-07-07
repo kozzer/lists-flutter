@@ -9,7 +9,7 @@ import 'package:lists/ui/ListThingListTile.dart';
 class MainListPage extends StatelessWidget {
   const MainListPage({Key key, this.title }) : super(key: key);
 
-  final String           title;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,7 @@ class MainListPage extends StatelessWidget {
               IconButton(
                 icon:       Icon(Icons.more_vert),
                 onPressed:  () async {
+                  print('KOZZER - refresh data!');
                   await model.populateListsData();
                 },
               ),
@@ -32,10 +33,10 @@ class MainListPage extends StatelessWidget {
           itemBuilder:  (BuildContext context, int index) {
             print('KOZZER - in main page list item builder - index $index');
             // Always a list on the main page
-            return ListThingListTile(model.mainList.items[index], model);
+            return ListThingListTile(model.mainList.items[index]);
           }),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _onAddButtonPressed(context),
+          onPressed: () => _onAddButtonPressed(context, model),
           tooltip:   'Add List',
           child:     Icon(Icons.add),
         )
@@ -43,18 +44,15 @@ class MainListPage extends StatelessWidget {
     );
   }
 
-  Future<void> _onAddButtonPressed(BuildContext context) async {
+  Future<void> _onAddButtonPressed(BuildContext context, ListsScopedModel model) async {
     print('adding new list to Main list');
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => 
-          ScopedModelDescendant<ListsScopedModel>(
-            builder: (context, child, model) => ListThingEntry(
-              parentThingID: 0),
-          ),
+        builder: (context) => ListThingEntry(parentThingID: 0),
         fullscreenDialog: true,
       ),
     );
+    model.populateListsData();
   }
 }
