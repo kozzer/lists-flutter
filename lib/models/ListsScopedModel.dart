@@ -27,39 +27,65 @@ class ListsScopedModel extends Model{
 
 
   // Modify data via listsAdapter
-  Future<ListThing> addNewListThing(ListThing thing) async {
-    print('KOZZER - adding item to mainList: ${thing.toMap()}');
+  Future<ListThing> addNewListThing(ListThing newThing) async {
+    print('KOZZER - adding item: ${newThing.toMap()}');
 
     // Insert into database
-    final newThing    = await listsAdapter.insert(thing);
-    final parentThing = await listsAdapter.getListThingByID(thing.parentThingID);
+    final addedThing = await listsAdapter.insert(newThing);
 
     // Add into memory
-    parentThing.addChildThing(newThing);
+    final parentThing = findListThingByID(newThing.parentThingID, _mainList.items);
+    parentThing.addChildThing(addedThing);
     parentThing.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
 
     notifyListeners();
-    return newThing;
+    return addedThing;
   }
 
   Future<void> removeListThing(ListThing thing) async {
     print('KOZZER - removing item from mainList: ${thing.toMap()}');
-    final parentThing = await listsAdapter.getListThingByID(thing.parentThingID);
 
-    await listsAdapter.delete(thing.thingID); // Database
-    final refreshed = await listsAdapter.getListThingByID(0);
+    // Remove from database
+    await listsAdapter.delete(thing.thingID); 
 
-    _mainList = refreshed;
-    parentThing.removeChildThing(thing); // In memory
+    // Remove from memory
+    final parentThing = findListThingByID(thing.parentThingID, _mainList.items);
+    parentThing.removeChildThing(thing); 
+
     notifyListeners();
   }
 
   Future<void> updateListThing(ListThing updatedThing) async {
     print('KOZZER - updating thing with ID ${updatedThing.thingID}');
-    await listsAdapter.update(updatedThing);
-    var refreshed = await listsAdapter.getListThingByID(0);
 
-    _mainList = refreshed;
+    // Update in database
+    await listsAdapter.update(updatedThing);
+
+    // Update in memory
+    final theThing    = findListThingByID(updatedThing.thingID, _mainList.items);
+    theThing.label    = updatedThing.label;
+    theThing.icon     = updatedThing.icon;
+    theThing.isList   = updatedThing.isList;
+    theThing.isMarked = updatedThing.isMarked;
+
     notifyListeners();
+  }
+
+  /// Flattens all list things and returns the in-memory object with the same ID
+  ListThing findListThingByID(int targetThingID, List<ListThing> thingList) {
+    final flatList = _getFlatList(_mainList.items);
+    return flatList.where((thing) => thing.thingID == targetThingID).first;
+  }
+
+  List<ListThing> _getFlatList(List<ListThing> thingList){
+    final flatList = new List<ListThing>();
+    thingList.forEach((thing) { 
+      if (thing.isList && thing.items.length > 0){
+        flatList.addAll(_getFlatList(thing.items));
+      } else {
+        flatList.add(thing);
+      }
+    });
+    return flatList;
   }
 }
