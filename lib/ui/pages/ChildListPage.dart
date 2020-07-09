@@ -46,7 +46,7 @@ class ChildListPage extends StatelessWidget {
         ),
           
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _onAddButtonPressed(context), // Prints to debug console
+        onPressed: () => _onAddButtonPressed(context), 
         tooltip:   'Add List',
         child:     Icon(Icons.add),
       ), 

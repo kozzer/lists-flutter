@@ -3,8 +3,6 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 
-
-
 class ListThingEntry extends StatefulWidget {
   final int       parentThingID;
   final ListThing existingThing;
@@ -27,7 +25,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
 
   // Constructor
   _ListThingEntryPageState() {
-    _pageTitle = widget?.key != null ? 'edit ${widget.existingThing.label}' : 'add new thing';
+    _pageTitle = widget?.existingThing != null ? 'edit ${widget.existingThing.label}' : 'add new thing';
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
