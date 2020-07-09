@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListThing.dart';
+import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/widgets/ListThingListTile.dart';
 import 'package:lists/ui/widgets/ListThingThingTile.dart';
 import 'package:lists/ui/pages/ListThingEntry.dart';
@@ -36,7 +38,7 @@ class ChildListPage extends StatelessWidget {
 
             return Dismissible (
               key:          ValueKey('dismissable_' + thisThing.hashCode.toString()),
-              onDismissed:  (DismissDirection direction) => _onDismissed(thing),
+              onDismissed:  (DismissDirection direction) => _onDismissed(context, thing),
               background:   SwipeBackground(),
               child:        ((thing?.isList ?? false || (thing?.thingID ?? 1) == 0)) 
                               ? ListThingListTile(thing) 
@@ -64,7 +66,8 @@ class ChildListPage extends StatelessWidget {
     );
   }
 
-  Future<void> _onDismissed(ListThing dismissedThing) async {
+  Future<void> _onDismissed(BuildContext context, ListThing dismissedThing) async {
     print('KOZZER - swiped: ${dismissedThing.toMap()}');
+    ScopedModel.of<ListsScopedModel>(context).removeListThing(dismissedThing);
   }
 }

@@ -22,12 +22,12 @@ class MainListPage extends StatelessWidget {
         future:  model.populateListsData(notify: false),
         builder: (context, AsyncSnapshot<ListsScopedModel> snapshot){
 
-          if (!snapshot.hasData){
+          //if (!snapshot.hasData){
             print('KOZZER - no data yet - display LOADING screen');
             // Data not loaded - Show loading screen
             return LoadingScreen();
             
-          } else {
+          //} else {
             print('KOZZER - got Lists! data, show main list screen');
 
             // Show lists data
@@ -69,8 +69,9 @@ class MainListPage extends StatelessWidget {
                 child:     Icon(Icons.add),
               )
             );
-          } 
-      })
+         // } 
+        }
+      )
     );
   }
 

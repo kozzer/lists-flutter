@@ -22,6 +22,7 @@ class ListsApp extends StatelessWidget {
         title: 'Lists!',
         theme: ThemeData(
           primarySwatch: Colors.green,
+          accentColor: Colors.yellowAccent,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: MainListPage(title: 'Lists!'),
