@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:lists/ui/widgets/SwipeBackground.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
-import 'package:lists/ui/ListThingEntry.dart';
-import 'package:lists/ui/ListThingListTile.dart';
-import 'package:lists/ui/LoadingScreen.dart';
+import 'package:lists/ui/pages/ListThingEntry.dart';
+import 'package:lists/ui/widgets/ListThingListTile.dart';
+import 'package:lists/ui/pages/LoadingScreen.dart';
 
 
 class MainListPage extends StatelessWidget {
@@ -50,7 +52,14 @@ class MainListPage extends StatelessWidget {
                 itemBuilder:  (BuildContext context, int index) {
                   print('KOZZER - in main page list item builder - index $index');
                   // Always a list on the main page
-                  return ListThingListTile(model.mainList?.items[index]);
+                  var thisList = model.mainList?.items[index];
+
+                  return Dismissible (
+                    key:          ValueKey('dismissable_' + thisList.hashCode.toString()),
+                    onDismissed:  (DismissDirection direction) => _onDismissed(thisList),
+                    background:   SwipeBackground(),
+                    child:        ListThingListTile(thisList)
+                  );
                 }
               ),
 
@@ -66,7 +75,7 @@ class MainListPage extends StatelessWidget {
   }
 
   Future<void> _onAddButtonPressed(BuildContext context, ListsScopedModel model) async {
-    print('adding new list to Main list');
+    print('KOZZER - adding new list to Main list');
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -74,5 +83,9 @@ class MainListPage extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
+  }
+
+  Future<void> _onDismissed(ListThing dismissedThing) async {
+    print('KOZZER - swiped ${dismissedThing.toMap()}');
   }
 }

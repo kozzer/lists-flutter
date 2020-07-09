@@ -78,6 +78,9 @@ class ListsScopedModel extends Model{
 
   /// Flattens all list things and returns the in-memory object with the same ID
   ListThing findListThingByID(int targetThingID, List<ListThing> thingList) {
+    if (targetThingID == 0)
+      return _mainList;
+      
     final flatList = _getFlatList(_mainList.items);
     return flatList.where((thing) => thing.thingID == targetThingID).first;
   }

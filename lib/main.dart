@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListsScopedModel.dart';
-import 'package:lists/ui/MainListPage.dart';
+import 'package:lists/ui/pages/MainListPage.dart';
 
 void main() {
   // Launch app wrapped in ScopedModel widget

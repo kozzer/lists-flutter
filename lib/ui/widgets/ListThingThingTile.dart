@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
-import 'package:lists/ui/ListThingEntry.dart';
+import 'package:lists/ui/pages/ListThingEntry.dart';
 
 /// Custom ListTile class for things that are lists
 class ListThingThingTile extends StatelessWidget {

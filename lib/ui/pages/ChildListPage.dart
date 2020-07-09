@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:lists/ui/ListThingListTile.dart';
-import 'package:lists/ui/ListThingThingTile.dart';
-import 'package:lists/ui/ListThingEntry.dart';
+import 'package:lists/ui/widgets/ListThingListTile.dart';
+import 'package:lists/ui/widgets/ListThingThingTile.dart';
+import 'package:lists/ui/pages/ListThingEntry.dart';
+import 'package:lists/ui/widgets/SwipeBackground.dart';
 
 
 class ChildListPage extends StatelessWidget {
@@ -32,13 +33,17 @@ class ChildListPage extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             print('KOZZER - child list item builder - index: $index');
             var thing = thisThing.items[index];
-            if (thing?.isList ?? false || (thing?.thingID ?? 1) == 0) {
-              // Always a list on the main page
-              return ListThingListTile(thing);
-            } else {
-              return ListThingThingTile(thing);
-            }
-          }),
+
+            return Dismissible (
+              key:          ValueKey('dismissable_' + thisThing.hashCode.toString()),
+              onDismissed:  (DismissDirection direction) => _onDismissed(thing),
+              background:   SwipeBackground(),
+              child:        ((thing?.isList ?? false || (thing?.thingID ?? 1) == 0)) 
+                              ? ListThingListTile(thing) 
+                              : ListThingThingTile(thing)
+            );   
+          }
+        ),
           
       floatingActionButton: FloatingActionButton(
         onPressed: () => _onAddButtonPressed(context), // Prints to debug console
@@ -57,5 +62,9 @@ class ChildListPage extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
+  }
+
+  Future<void> _onDismissed(ListThing dismissedThing) async {
+    print('KOZZER - swiped: ${dismissedThing.toMap()}');
   }
 }

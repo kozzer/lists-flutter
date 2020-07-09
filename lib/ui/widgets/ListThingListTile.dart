@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:lists/ui/ChildListPage.dart';
-import 'package:lists/ui/ListThingEntry.dart';
+import 'package:lists/ui/pages/ChildListPage.dart';
+import 'package:lists/ui/pages/ListThingEntry.dart';
 
 
 /// Custom ListTile class for things that are lists
@@ -20,7 +22,7 @@ class ListThingListTile extends StatelessWidget {
       subtitle:     Text('(${thisThing.listSize} items)'),
       trailing:     Icon(Icons.drag_handle),
       onTap:        () => _openChildList(context, thisThing),
-      onLongPress:  () => _editList(context, thisThing),
+      onLongPress:  () => _editList(context, thisThing)
     );
   }
 
@@ -46,4 +48,5 @@ class ListThingListTile extends StatelessWidget {
       ),
     );
   }
+
 }
