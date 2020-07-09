@@ -39,7 +39,7 @@ class ListsScopedModel extends Model{
     final addedThing = await listsAdapter.insert(newThing);
 
     // Add into memory
-    final parentThing = findListThingByID(newThing.parentThingID, _mainList.items);
+    final parentThing = findListThingByID(addedThing.parentThingID, _mainList.items);
     parentThing.addChildThing(addedThing);
     parentThing.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
 
@@ -85,11 +85,11 @@ class ListsScopedModel extends Model{
   List<ListThing> _getFlatList(List<ListThing> thingList){
     final flatList = new List<ListThing>();
     thingList.forEach((thing) { 
-      if (thing.isList && thing.items.length > 0){
+
+      flatList.add(thing);
+
+      if (thing.isList && thing.items.length > 0)
         flatList.addAll(_getFlatList(thing.items));
-      } else {
-        flatList.add(thing);
-      }
     });
     return flatList;
   }
