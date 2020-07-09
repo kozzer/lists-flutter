@@ -6,7 +6,12 @@ import 'package:lists/models/ListThing.dart';
 
 class ListsAdapter {
   // Constructor, singleton access
-  ListsAdapter._();
+  ListsAdapter._(){
+    print('KOZZER - ListsAdapter private constructor');
+
+    // init database 
+    _initDatabase().then((database) => _database = database);
+  }
   static final ListsAdapter instance    = ListsAdapter._();
 
   // Database info

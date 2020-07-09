@@ -14,7 +14,7 @@ class ListsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('KOZZER - building ListsApp - no parameter');
+    print('KOZZER - building ListsApp');
 
     return ScopedModel<ListsScopedModel>(
       model: ListsScopedModel(),

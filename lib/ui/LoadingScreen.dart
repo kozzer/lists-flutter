@@ -10,12 +10,12 @@ class LoadingScreen extends StatelessWidget{
         children: <Widget>[
           SizedBox(
             child: CircularProgressIndicator(),
-            width: 60,
-            height: 60,
+            width: 40,
+            height: 40,
           ),
           const Padding(
-            padding: EdgeInsets.only(top: 16),
-            child: Text('Loading Lists! data...'),
+            padding: EdgeInsets.only(top: 6),
+            child: Text('Loading...'),
           )
         ]
       )

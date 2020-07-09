@@ -5,7 +5,9 @@ import 'package:lists/models/ListThing.dart';
 class ListsScopedModel extends Model{
 
   // Constructor 
-  ListsScopedModel(); 
+  ListsScopedModel(){
+    print('KOZZER - ListsScopedModel constructor');
+  } 
 
   // single ListsAdapter
   final ListsAdapter listsAdapter = ListsAdapter.instance;
@@ -14,15 +16,18 @@ class ListsScopedModel extends Model{
   ListThing _mainList;
   ListThing get mainList => _mainList;
   
-  // Get data from adapter
+  /// Populate main list from database -- 
+  ///   notify: needs to be false on app startup 
+  ///           because if it fires then, it somehow causes 
+  ///           an endless loop of data access
   Future<ListsScopedModel> populateListsData({bool notify = true}) async {
     print('KOZZER - populating _mainList');
-    listsAdapter.getListThingByID(0).then((dbList) { 
+    await listsAdapter.getListThingByID(0).then((dbList) { 
       _mainList = dbList;
       if (notify) 
         notifyListeners(); 
     });
-    return this;
+    return this;  // <-- main list ScopedModelDescendant widget needs this
   }
 
 

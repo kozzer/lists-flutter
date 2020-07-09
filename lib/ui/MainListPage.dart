@@ -50,7 +50,7 @@ class MainListPage extends StatelessWidget {
                 itemBuilder:  (BuildContext context, int index) {
                   print('KOZZER - in main page list item builder - index $index');
                   // Always a list on the main page
-                  return ListThingListTile(model.mainList.items[index]);
+                  return ListThingListTile(model.mainList?.items[index]);
                 }
               ),
 
