@@ -32,7 +32,8 @@ class ListThingListTile extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => ChildListPage(
-          listName: thisThing.label, 
+          key:       ValueKey(thisThing.hashCode.toString()),
+          listName:  thisThing.label, 
           thisThing: thisThing
         )
       )

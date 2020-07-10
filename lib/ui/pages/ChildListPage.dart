@@ -8,18 +8,25 @@ import 'package:lists/ui/pages/ListThingEntry.dart';
 import 'package:lists/ui/widgets/SwipeBackground.dart';
 
 
-class ChildListPage extends StatelessWidget {
-  const ChildListPage({Key key, this.listName, this.thisThing}) : super(key: key);
+class ChildListPage extends StatefulWidget {
+  const ChildListPage({this.key, this.listName, this.thisThing}) : super(key: key);
 
+  final Key       key;
   final String    listName;
   final ListThing thisThing;
+
+  @override
+  _ChildListPageState createState() => _ChildListPageState();
+}
+
+class _ChildListPageState extends State<ChildListPage>{
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
           //  Also need to expose route to Settings screen
-          title:   Text(listName, style: Theme.of(context).textTheme.headline1),
+          title:   Text(widget.listName, style: Theme.of(context).textTheme.headline1),
           actions: <Widget>[
             // action button
             IconButton(
@@ -30,23 +37,32 @@ class ChildListPage extends StatelessWidget {
             ),
           ]),
 
-      body: ListView.separated(
-          separatorBuilder: (context, index) => Divider(
-            color: Theme.of(context).primaryColor.withAlpha(192),
-            thickness: 0.5,
-            height: 1
-          ),
-          itemCount:   thisThing.items.length,
+      body: ListView.builder(
+          itemCount:   widget.thisThing.items.length,
           itemBuilder: (BuildContext context, int index) {
-            var thing = thisThing.items[index];
+            final thing = widget.thisThing.items[index];
 
             return Dismissible (
-              key:          ValueKey('dismissable_' + thisThing.hashCode.toString()),
-              onDismissed:  (DismissDirection direction) => _onDismissed(context, thing),
+              key:          UniqueKey(),
+              onDismissed:  (DismissDirection direction) {
+                print('KOZZER - swiped: ${thing.toMap()}');
+                ScopedModel.of<ListsScopedModel>(context).removeListThing(thing);
+                setState(() {
+                  widget.thisThing.items.removeAt(index);
+                });
+              },
               background:   SwipeBackground(),
-              child:        ((thing?.isList ?? false || (thing?.thingID ?? 1) == 0)) 
-                              ? ListThingListTile(thing) 
-                              : ListThingThingTile(thing)
+              child:        Container(
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(
+                    color: Theme.of(context).primaryColor.withAlpha(192),
+                    width: 0.5
+                  )),
+                ),
+                child: ((thing?.isList ?? false || (thing?.thingID ?? 1) == 0)) 
+                  ? ListThingListTile(thing) 
+                  : ListThingThingTile(thing)
+              )
             );   
           }
         ),
@@ -61,16 +77,22 @@ class ChildListPage extends StatelessWidget {
 
   Future<void> _onAddButtonPressed(BuildContext context) async {
     print('KOZZER - in ChildListPage add button pressed');
-    await Navigator.push(
+    final newThing = await Navigator.push<ListThing>(
       context,
       MaterialPageRoute(
-        builder: (context) => ListThingEntry(parentThingID: thisThing.thingID),
+        builder: (context) => ListThingEntry(parentThingID: widget.thisThing.thingID),
         fullscreenDialog: true,
       ),
     );
+    if (newThing != null)
+      setState(() {
+        widget.thisThing.addChildThing(newThing);
+      });
+      
   }
 
   Future<void> _onDismissed(BuildContext context, ListThing dismissedThing) async {
+    
     print('KOZZER - swiped: ${dismissedThing.toMap()}');
     ScopedModel.of<ListsScopedModel>(context).removeListThing(dismissedThing);
   }

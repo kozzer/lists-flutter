@@ -90,20 +90,25 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                   ),
                   Text('Is this a list?'),
                   Checkbox(
-                    value: _isList,
+                    value: _isList,                   
                     onChanged: (bool val) {
-                      _formChanged = true;
-                      _isList      = val;
+                      if (widget?.parentThingID != 0){
+                        setState((){
+                          _formChanged = true;
+                          _isList      = val;
+                        });
+                      }
                     }
                   ),
                   RaisedButton(
                     color: Colors.blue[400],
                     child: Text("save"),
                     onPressed: _formChanged
-                        ? () {
+                        ? () async {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
-                              Navigator.pop(context, _handleFormSubmit(model));
+                              final submittedThing = await _handleFormSubmit(model);
+                              Navigator.pop(context, submittedThing);
                             } else {
                               FocusScope.of(context).requestFocus(focusNode);
                             }
@@ -126,17 +131,20 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
     });
   }
 
-  Future<void> _handleFormSubmit(ListsScopedModel model) async {
+  Future<ListThing> _handleFormSubmit(ListsScopedModel model) async {
     if (_formChanged) {
       if (widget.existingThing != null){
         // Already existing, so this is an update
         final updatedThing = widget.existingThing.copyWith(label: _label, isList: _isList, icon: _icon);
         await model.updateListThing(updatedThing);
+        return updatedThing;
       } else {
         // Nothing existing, so this is a new item
-        var newThing = ListThing(-1, widget.parentThingID, _label, _isList);
-        await model.addNewListThing(newThing);
+        final newThing = ListThing(-1, widget.parentThingID, _label, _isList);
+        final addedThing = await model.addNewListThing(newThing);
+        return addedThing;
       }
-    }      
+    }  
+    return null;    
   }
 }

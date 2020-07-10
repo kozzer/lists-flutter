@@ -53,28 +53,31 @@ class MainListPage extends StatelessWidget {
                 ]
               ),
 
-              body: ListView.separated(
-                separatorBuilder: (context, index) => Divider(
-                  color: Theme.of(context).primaryColor.withAlpha(192),
-                  thickness: 0.5,
-                  height: 1
-                ),
+              body: ListView.builder(
                 itemCount:    snapshot.data.mainList?.items?.length ?? 0,
                 itemBuilder:  (BuildContext context, int index) {
                   // Always a list on the main page
                   var thisList = model.mainList?.items[index];
 
                   return Dismissible (
-                    key:          ValueKey('dismissable_' + thisList.hashCode.toString()),
+                    key:          ValueKey('0_dismissable_' + thisList.hashCode.toString()),
                     onDismissed:  (DismissDirection direction) => _onDismissed(context, thisList),
                     background:   SwipeBackground(),
-                    child:        ListThingListTile(thisList)
+                    child:        Container(
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          color: Theme.of(context).primaryColor.withAlpha(192),
+                          width: 0.5
+                        )),
+                      ),
+                      child: ListThingListTile(thisList)
+                    )
                   );
                 }
               ),
 
               floatingActionButton: FloatingActionButton(
-                onPressed: () => _onAddButtonPressed(context, model),
+                onPressed: () => _onAddButtonPressed(context),
                 tooltip:   'Add List',
                 child:     Icon(Icons.add),
               )
@@ -85,7 +88,7 @@ class MainListPage extends StatelessWidget {
     );
   }
 
-  Future<void> _onAddButtonPressed(BuildContext context, ListsScopedModel model) async {
+  Future<void> _onAddButtonPressed(BuildContext context) async {
     print('KOZZER - adding new list to Main list');
     await Navigator.push(
       context,
