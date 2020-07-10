@@ -53,13 +53,13 @@ class ListThing {
     return newThing;
   }
 
-  final int             thingID;
-  final int             parentThingID;
-  String                label;
-  bool                  isList;               // Is this itself a list, or just an item in a parent list?
-  IconData              icon; 
-  bool                  isMarked;             // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
-  int                   sortOrder;            // Default to end of list
+  final int thingID;
+  final int parentThingID;
+  String    label;
+  bool      isList;               // Is this itself a list, or just an item in a parent list?
+  IconData  icon; 
+  bool      isMarked;             // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
+  int       sortOrder;            // Default to end of list
   final List<ListThing> _items = <ListThing>[];
 
   List<ListThing> get items        => _items;
