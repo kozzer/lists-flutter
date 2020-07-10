@@ -20,7 +20,7 @@ class ListThingThingTile extends StatelessWidget {
             style: thisThing.isMarked
                 ? TextStyle(color: Colors.grey, decoration: TextDecoration.lineThrough)
                 : TextStyle(color: Theme.of(context).textTheme.bodyText1.color)),
-        trailing:    Icon(Icons.drag_handle),
+        trailing:    Icon(Icons.drag_handle, color: Theme.of(context).textTheme.bodyText1.color),
         onTap:       () => _toggleIsMarked(context, model),
         onLongPress: () => _editThing(context, thisThing),
       )

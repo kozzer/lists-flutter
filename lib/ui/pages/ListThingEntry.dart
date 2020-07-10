@@ -24,17 +24,16 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
   bool      _isList;
 
   // Constructor
-  _ListThingEntryPageState() {
-    _pageTitle = widget?.existingThing != null ? 'edit ${widget.existingThing.label}' : 'add new thing';
-  }
+  _ListThingEntryPageState();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    focusNode = FocusNode();
-    _isList   = widget?.parentThingID == 0 || (widget?.existingThing?.isList ?? false);
+    focusNode  = FocusNode();
+    _pageTitle = widget?.existingThing != null ? 'edit \'${widget.existingThing.label}\'' : 'add new thing';
+    _isList    = widget?.parentThingID == 0 || (widget?.existingThing?.isList ?? false);
   }
 
   @override

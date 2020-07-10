@@ -8,7 +8,7 @@ class ListsTheme {
   static const double _listItemLabelFontSize = 18;
   static const double _listItemCountFontSize = 14;
 
-  ListsTheme({@required this.isDark, this.primaryColor = Colors.green});
+  ListsTheme({ @required this.isDark, @required this.primaryColor });
 
   ThemeData get themeData {
     return ThemeData(

@@ -19,7 +19,7 @@ class ChildListPage extends StatelessWidget {
     return Scaffold(
       appBar:  AppBar(
           //  Also need to expose route to Settings screen
-          title:   Text(listName),
+          title:   Text(listName, style: Theme.of(context).textTheme.headline1),
           actions: <Widget>[
             // action button
             IconButton(
@@ -32,9 +32,10 @@ class ChildListPage extends StatelessWidget {
 
       body: ListView.separated(
           separatorBuilder: (context, index) => Divider(
-            color: Theme.of(context).textTheme.bodyText2.color,
-              height: 1
-            ),
+            color: Theme.of(context).primaryColor.withAlpha(192),
+            thickness: 0.5,
+            height: 1
+          ),
           itemCount:   thisThing.items.length,
           itemBuilder: (BuildContext context, int index) {
             var thing = thisThing.items[index];

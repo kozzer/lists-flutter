@@ -33,7 +33,12 @@ class MainListPage extends StatelessWidget {
             // Show lists data
             return Scaffold(
               appBar: AppBar(
-                // Also need to expose route to Settings screen
+                leading:  Padding(
+                  padding: EdgeInsets.only(left: 12, top: 12, bottom: 12),
+                  child: Image(
+                    image: AssetImage('lib/assets/lists_icon.png')
+                  )
+                ),
                 title:    Text(title, style: Theme.of(context).textTheme.headline1),
                 actions:  <Widget>[
                   // action button

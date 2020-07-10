@@ -20,7 +20,7 @@ class ListThingListTile extends StatelessWidget {
       leading:      Icon(thisThing.icon),
       title:        Text(thisThing.label, style: Theme.of(context).textTheme.bodyText1),
       subtitle:     Text('(${thisThing.listSize} item${thisThing.listSize != 1 ? 's' : ''})', style: Theme.of(context).textTheme.bodyText2),
-      trailing:     Icon(Icons.drag_handle),
+      trailing:     Icon(Icons.drag_handle, color: Theme.of(context).textTheme.bodyText1.color),
       onTap:        () => _openChildList(context, thisThing),
       onLongPress:  () => _editList(context, thisThing)
     );
@@ -31,9 +31,12 @@ class ListThingListTile extends StatelessWidget {
     await Navigator.push<ListThing>(
       context,
       MaterialPageRoute(
-        builder: (context) => ChildListPage(listName: thisThing.label, thisThing: thisThing),
-        fullscreenDialog: true
-      ));
+        builder: (context) => ChildListPage(
+          listName: thisThing.label, 
+          thisThing: thisThing
+        )
+      )
+    );
   }
 
   void _editList(BuildContext context, ListThing thisThing) async {
