@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/pages/MainListPage.dart';
+import 'package:lists/ui/themes/ListsTheme.dart';
 
 void main() {
   // Launch app wrapped in ScopedModel widget
@@ -20,12 +21,8 @@ class ListsApp extends StatelessWidget {
       model: ListsScopedModel(),
       child: MaterialApp(
         title: 'Lists!',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-          accentColor: Colors.yellowAccent,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: MainListPage(title: 'Lists!'),
+        theme: ListsTheme(isDark: true, primaryColor: Color(0xFF00A800)).themeData,
+        home:  MainListPage(title: 'Lists!'),
       )
     );
   }

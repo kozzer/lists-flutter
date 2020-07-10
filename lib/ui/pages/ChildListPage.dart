@@ -30,10 +30,13 @@ class ChildListPage extends StatelessWidget {
             ),
           ]),
 
-      body: ListView.builder(
+      body: ListView.separated(
+          separatorBuilder: (context, index) => Divider(
+            color: Theme.of(context).textTheme.bodyText2.color,
+              height: 1
+            ),
           itemCount:   thisThing.items.length,
           itemBuilder: (BuildContext context, int index) {
-            print('KOZZER - child list item builder - index: $index');
             var thing = thisThing.items[index];
 
             return Dismissible (

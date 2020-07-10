@@ -18,8 +18,8 @@ class ListThingListTile extends StatelessWidget {
     return ListTile(
       key:          ValueKey(thisThing.hashCode),
       leading:      Icon(thisThing.icon),
-      title:        Text(thisThing.label),
-      subtitle:     Text('(${thisThing.listSize} items)'),
+      title:        Text(thisThing.label, style: Theme.of(context).textTheme.bodyText1),
+      subtitle:     Text('(${thisThing.listSize} item${thisThing.listSize != 1 ? 's' : ''})', style: Theme.of(context).textTheme.bodyText2),
       trailing:     Icon(Icons.drag_handle),
       onTap:        () => _openChildList(context, thisThing),
       onLongPress:  () => _editList(context, thisThing)

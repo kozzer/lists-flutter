@@ -34,11 +34,12 @@ class MainListPage extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(
                 // Also need to expose route to Settings screen
-                title:    Text(title),
+                title:    Text(title, style: Theme.of(context).textTheme.headline1),
                 actions:  <Widget>[
                   // action button
                   IconButton(
                     icon:       Icon(Icons.more_vert),
+                    color:      Theme.of(context).textTheme.headline1.color,
                     onPressed:  () async {
                       print('KOZZER - refresh data!');
                       await snapshot.data.populateListsData();
@@ -47,16 +48,20 @@ class MainListPage extends StatelessWidget {
                 ]
               ),
 
-              body: ListView.builder(
+              body: ListView.separated(
+                separatorBuilder: (context, index) => Divider(
+                  color: Theme.of(context).primaryColor.withAlpha(192),
+                  thickness: 0.5,
+                  height: 1
+                ),
                 itemCount:    snapshot.data.mainList?.items?.length ?? 0,
                 itemBuilder:  (BuildContext context, int index) {
-                  print('KOZZER - in main page list item builder - index $index');
                   // Always a list on the main page
                   var thisList = model.mainList?.items[index];
 
                   return Dismissible (
                     key:          ValueKey('dismissable_' + thisList.hashCode.toString()),
-                    onDismissed:  (DismissDirection direction) => _onDismissed(thisList),
+                    onDismissed:  (DismissDirection direction) => _onDismissed(context, thisList),
                     background:   SwipeBackground(),
                     child:        ListThingListTile(thisList)
                   );
@@ -86,7 +91,8 @@ class MainListPage extends StatelessWidget {
     );
   }
 
-  Future<void> _onDismissed(ListThing dismissedThing) async {
+  Future<void> _onDismissed(BuildContext context, ListThing dismissedThing) async {
     print('KOZZER - swiped ${dismissedThing.toMap()}');
+    ScopedModel.of<ListsScopedModel>(context).removeListThing(dismissedThing);
   }
 }
