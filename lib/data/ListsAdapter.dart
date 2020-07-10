@@ -116,12 +116,12 @@ class ListsAdapter {
         print('KOZZER - calling ListsDataProvider.delete($childID) recursively');
         await delete(childID);
       }
-
-      // Descendants should all be deleted, so now delete primary thing
-      print('KOZZER - deleting thing ID $thingID');
-      query = 'DELETE FROM $listsTable WHERE $colThingID = $thingID';
-      await db.rawQuery(query);
     }
+
+    // Any descendants should all be deleted, so now delete primary thing
+    print('KOZZER - deleting thing ID $thingID');
+    query = 'DELETE FROM $listsTable WHERE $colThingID = $thingID';
+    await db.rawQuery(query);
   }
 
   /// Update existing ListThing record
