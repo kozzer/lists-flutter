@@ -44,13 +44,7 @@ class _ChildListPageState extends State<ChildListPage>{
 
             return Dismissible (
               key:          UniqueKey(),
-              onDismissed:  (DismissDirection direction) {
-                print('KOZZER - swiped: ${thing.toMap()}');
-                ScopedModel.of<ListsScopedModel>(context).removeListThing(thing);
-                setState(() {
-                  widget.thisThing.items.removeAt(index);
-                });
-              },
+              onDismissed:  (DismissDirection direction) => _onDismissed(context, thing, index),
               background:   SwipeBackground(),
               child:        Container(
                 decoration: BoxDecoration(
@@ -91,9 +85,33 @@ class _ChildListPageState extends State<ChildListPage>{
       
   }
 
-  Future<void> _onDismissed(BuildContext context, ListThing dismissedThing) async {
+  Future<void> _onDismissed(BuildContext context, ListThing dismissedThing, int index) async {
     
     print('KOZZER - swiped: ${dismissedThing.toMap()}');
     ScopedModel.of<ListsScopedModel>(context).removeListThing(dismissedThing);
+    setState(() {
+      widget.thisThing.items.removeAt(index);
+    });
+
+    final snackBar = SnackBar(
+      content: Text('Deleted \'${dismissedThing.label}\''),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () async {
+          // undo delete list item
+          print('KOZZER - Undo delete - thing: $dismissedThing');
+          await _onUndo(context, dismissedThing);
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  Future<void> _onUndo(BuildContext context, ListThing thing) async {
+    await ScopedModel.of<ListsScopedModel>(context).addNewListThing(thing);
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text('Delete cancelled')));
+    setState(() {
+      widget.thisThing.addChildThing(thing);
+    });
   }
 }

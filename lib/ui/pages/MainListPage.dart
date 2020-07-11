@@ -102,5 +102,23 @@ class MainListPage extends StatelessWidget {
   Future<void> _onDismissed(BuildContext context, ListThing dismissedThing) async {
     print('KOZZER - swiped ${dismissedThing.toMap()}');
     ScopedModel.of<ListsScopedModel>(context).removeListThing(dismissedThing);
+    final snackBar = SnackBar(
+      content: Text('Deleted \'${dismissedThing.label}\''),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () async {
+          // undo delete main list
+          print('KOZZER - Undo delete - thing: $dismissedThing');
+          await _onUndo(context, dismissedThing);
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
   }
+
+  Future<void> _onUndo(BuildContext context, ListThing thing) async {
+    await ScopedModel.of<ListsScopedModel>(context).addNewListThing(thing);
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text('Delete cancelled')));
+  }
+
 }
