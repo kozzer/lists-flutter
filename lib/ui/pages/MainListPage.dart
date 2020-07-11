@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lists/ui/widgets/SwipeBackground.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/pages/ListThingEntry.dart';
@@ -53,27 +54,40 @@ class MainListPage extends StatelessWidget {
                 ]
               ),
 
-              body: ListView.builder(
-                itemCount:    snapshot.data.mainList?.items?.length ?? 0,
-                itemBuilder:  (BuildContext context, int index) {
-                  // Always a list on the main page
-                  var thisList = model.mainList?.items[index];
-
-                  return Dismissible (
-                    key:          ValueKey('0_dismissable_' + thisList.hashCode.toString()),
-                    onDismissed:  (DismissDirection direction) => _onDismissed(context, thisList),
-                    background:   SwipeBackground(),
-                    child:        Container(
-                      decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(
-                          color: Theme.of(context).primaryColor.withAlpha(192),
-                          width: 0.5
-                        )),
-                      ),
-                      child: ListThingListTile(thisList)
-                    )
-                  );
-                }
+              body: ReorderableList(
+                onReorder:     (item, position) => _reorderCallback(snapshot.data.mainList, item, position),
+                onReorderDone: (item) => _reorderDone(snapshot.data, item),
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverPadding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).padding.bottom),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+                            final thisList = snapshot.data.mainList.items[index];
+                            return Dismissible (
+                              key:          ValueKey(thisList.key),
+                              onDismissed:  (DismissDirection direction) => _onDismissed(context, thisList),
+                              background:   SwipeBackground(),
+                              child:        Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Theme.of(context).primaryColor.withAlpha(192),
+                                      width: 0.8
+                                    )
+                                  ),
+                                ),
+                                child: ListThingListTile(thisList, index == 0, index == thisList.items.length - 1)
+                              )
+                            );
+                          },
+                          childCount: snapshot.data.mainList.items.length,
+                        ),
+                      )
+                    ),
+                  ],
+                )
               ),
 
               floatingActionButton: FloatingActionButton(
@@ -120,5 +134,47 @@ class MainListPage extends StatelessWidget {
     await ScopedModel.of<ListsScopedModel>(context).addNewListThing(thing);
     Scaffold.of(context).showSnackBar(SnackBar(content: Text('Delete cancelled')));
   }
+
+    // Returns index of item with given key
+  int _indexOfKey(ListThing mainList, ValueKey targetKey) {
+    for(int i = 0; i < mainList.items.length; i++){
+      final thisKey = ValueKey(mainList.items[i].key);
+      print('KOZZER - thisKey: $thisKey -- targetKey: $targetKey');
+      if (thisKey.value == targetKey.value)
+        return i;
+    }
+    return -1;
+  }
+
+  bool _reorderCallback(ListThing mainList, Key item, Key newPosition) {
+    print('KOZZER - _reorderCallback(item: $item, newPosition: $newPosition)');
+    int dragIndex = _indexOfKey(mainList, item);
+    int curIndex  = _indexOfKey(mainList, newPosition);
+
+    final draggedItem = mainList.items[dragIndex];
+
+    debugPrint("Reordering $item -> $newPosition");
+    mainList.items.removeAt(dragIndex);
+    mainList.items.insert(curIndex, draggedItem);
+
+    return true;
+  }
+
+  Future<void> _reorderDone(ListsScopedModel model, Key item) async {
+    print('KOZZER - _reorderDone(item: $item)');
+    final dragIndex = _indexOfKey(model.mainList, item);
+    final draggedItem = model.mainList.items[dragIndex];
+    int i = 0;
+    for(final thing in model.mainList.items){
+      final reorderedThing = thing.copyWith(sortOrder: i);
+      await model.updateListThing(reorderedThing);
+      i++;
+    }
+    //await model.populateListsData();
+
+    debugPrint("Reordering finished for ${draggedItem.label}}");
+  }
+
+
 
 }

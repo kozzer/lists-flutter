@@ -23,6 +23,7 @@ class ListThing {
     isMarked       = (map['isMarked']       as int        ) > 0,
     sortOrder      =  map['sortOrder']      as int;
 
+  ValueKey get key => ValueKey(this.hashCode.toString());
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

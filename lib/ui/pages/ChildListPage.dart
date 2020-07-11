@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/widgets/ListThingListTile.dart';
@@ -37,29 +38,44 @@ class _ChildListPageState extends State<ChildListPage>{
             ),
           ]),
 
-      body: ListView.builder(
-          itemCount:   widget.thisThing.items.length,
-          itemBuilder: (BuildContext context, int index) {
-            final thing = widget.thisThing.items[index];
+      // TODO make scopedmodel descendant?
+      body: ReorderableList(
+        onReorder:     _reorderCallback,
+        onReorderDone: _reorderDone,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverPadding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).padding.bottom),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
 
-            return Dismissible (
-              key:          UniqueKey(),
-              onDismissed:  (DismissDirection direction) => _onDismissed(context, thing, index),
-              background:   SwipeBackground(),
-              child:        Container(
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(
-                    color: Theme.of(context).primaryColor.withAlpha(192),
-                    width: 0.5
-                  )),
+                    final thing = widget.thisThing.items[index];
+                    return Dismissible (
+                      key:          ValueKey(thing.key),
+                      onDismissed:  (DismissDirection direction) => _onDismissed(context, thing, index),
+                      background:   SwipeBackground(),
+                      child:        Container(
+                        decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(
+                            color: Theme.of(context).primaryColor.withAlpha(192),
+                            width: 1.0
+                          )),
+                        ),
+                        child: ((thing?.isList ?? false || (thing?.thingID ?? 1) == 0)) 
+                          ? ListThingListTile(thing, index == 0, index == thing.items.length - 1) 
+                          : ListThingThingTile(thing, index == 0, index == thing.items.length - 1)
+                      )
+                    );
+
+                  },
+                  childCount: widget.thisThing.items.length,
                 ),
-                child: ((thing?.isList ?? false || (thing?.thingID ?? 1) == 0)) 
-                  ? ListThingListTile(thing) 
-                  : ListThingThingTile(thing)
               )
-            );   
-          }
-        ),
+            ),
+          ],
+        )
+      ),
           
       floatingActionButton: FloatingActionButton(
         onPressed: () => _onAddButtonPressed(context), 
@@ -113,5 +129,46 @@ class _ChildListPageState extends State<ChildListPage>{
     setState(() {
       widget.thisThing.addChildThing(undoThing);
     });
+  }
+
+  int _indexOfKey(ValueKey targetKey) {
+    for(int i = 0; i < widget.thisThing.items.length; i++){
+      final thisKey = ValueKey(widget.thisThing.items[i].key);
+      print('KOZZER - thisKey: $thisKey -- targetKey: $targetKey');
+      if (thisKey.value == targetKey.value)
+        return i;
+    }
+    return -1;
+  }
+
+  bool _reorderCallback(Key item, Key newPosition) {
+    print('KOZZER - _reorderCallback(item: $item, newPosition: $newPosition)');
+    int dragIndex = _indexOfKey(item);
+    int curIndex  = _indexOfKey(newPosition);
+
+    final draggedItem = widget.thisThing.items[dragIndex];
+
+    setState(() {
+      debugPrint("Reordering $item -> $newPosition");
+      widget.thisThing.items.removeAt(dragIndex);
+      widget.thisThing.items.insert(curIndex, draggedItem);
+    });
+    return true;
+  }
+
+  Future<void> _reorderDone(Key item) async {
+    print('KOZZER - _reorderDone(item: $item) - update in database');
+    final newIndex = _indexOfKey(item);
+    final draggedItem = widget.thisThing.items[newIndex];
+    int i = 0;
+    for(final thing in widget.thisThing.items){
+      final reorderedThing = thing.copyWith(sortOrder: i);
+      await ScopedModel.of<ListsScopedModel>(context).updateListThing(reorderedThing);
+      i++;
+    }
+    setState((){
+      widget.thisThing.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
+    });
+    debugPrint("Reordering finished for ${draggedItem.label}: index $newIndex");
   }
 }
