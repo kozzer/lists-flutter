@@ -108,10 +108,10 @@ class _ChildListPageState extends State<ChildListPage>{
   }
 
   Future<void> _onUndo(BuildContext context, ListThing thing) async {
-    await ScopedModel.of<ListsScopedModel>(context).addNewListThing(thing);
+    final undoThing = await ScopedModel.of<ListsScopedModel>(context).addNewListThing(thing);
     Scaffold.of(context).showSnackBar(SnackBar(content: Text('Delete cancelled')));
     setState(() {
-      widget.thisThing.addChildThing(thing);
+      widget.thisThing.addChildThing(undoThing);
     });
   }
 }
