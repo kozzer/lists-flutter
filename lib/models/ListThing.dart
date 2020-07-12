@@ -23,6 +23,7 @@ class ListThing {
     isMarked       = (map['isMarked']       as int        ) > 0,
     sortOrder      =  map['sortOrder']      as int;
 
+  ValueKey get key => ValueKey(this.hashCode.toString());
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -48,18 +49,18 @@ class ListThing {
     );
 
     var children = items ?? this._items;
-    children.forEach((thing)  => addChildThing(thing));
+    children.forEach((thing)  => addChildThing(thing.copyWith()));
 
     return newThing;
   }
 
-  final int             thingID;
-  final int             parentThingID;
-  String                label;
-  bool                  isList;               // Is this itself a list, or just an item in a parent list?
-  IconData              icon; 
-  bool                  isMarked;             // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
-  int                   sortOrder;            // Default to end of list
+  final int thingID;
+  final int parentThingID;
+  String    label;
+  bool      isList;               // Is this itself a list, or just an item in a parent list?
+  IconData  icon; 
+  bool      isMarked;             // Is this 'marked', ie has the user tapped it to fade the text marking it 'done'
+  int       sortOrder;            // Default to end of list
   final List<ListThing> _items = <ListThing>[];
 
   List<ListThing> get items        => _items;
@@ -78,6 +79,7 @@ class ListThing {
       isList = true;    // Since we're adding an item, convert to list if not already one
     }
     _items.add(thing);
+    _items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
   }
 
   void removeChildThing(ListThing thing) => _items.remove(thing);

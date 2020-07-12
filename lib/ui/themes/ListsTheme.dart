@@ -38,7 +38,7 @@ class ListsTheme {
       ),
       bodyText2: TextStyle(
         fontSize: _listItemCountFontSize,
-        color: Color(0x90161616),
+        color:      Color(0x90161616),
         fontStyle: FontStyle.italic
       ),
     );
@@ -47,19 +47,19 @@ class ListsTheme {
   TextTheme _getDarkTextTheme() {
     return Typography.whiteMountainView.copyWith(
       headline1: TextStyle(
-        fontSize: _appBarTextFontSize,
+        fontSize:   _appBarTextFontSize,
         fontWeight: FontWeight.w500,
-        color: Color(0xF5FAFAFA)
+        color:      Color(0xF5FAFAFA)
       ),
       bodyText1: TextStyle(
-        fontSize: _listItemLabelFontSize, 
-        color: Color(0xFFF5F5F5),
+        fontSize:   _listItemLabelFontSize, 
+        color:      Color(0xFFF5F5F5),
         fontWeight: FontWeight.w400
       ),
       bodyText2: TextStyle(
-        fontSize: _listItemCountFontSize,
-        color: Color(0xFFA1B1C1),
-        fontStyle: FontStyle.italic
+        fontSize:   _listItemCountFontSize,
+        color:      Color(0xFFA1B1C1),
+        fontStyle:  FontStyle.italic
       ),
     );
   }

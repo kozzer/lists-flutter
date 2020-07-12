@@ -41,7 +41,6 @@ class ListsScopedModel extends Model{
     // Add into memory
     final parentThing = findListThingByID(addedThing.parentThingID, _mainList.items);
     parentThing.addChildThing(addedThing);
-    parentThing.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
 
     notifyListeners();
     return addedThing;
@@ -60,21 +59,25 @@ class ListsScopedModel extends Model{
     notifyListeners();
   }
 
-  Future<void> updateListThing(ListThing updatedThing) async {
+  Future<void> updateListThing(ListThing updatedThing, { bool notify = true }) async {
     print('KOZZER - updating thing with ID ${updatedThing.thingID}');
 
     // Update in database
     await listsAdapter.update(updatedThing);
 
     // Update in memory
-    final theThing    = findListThingByID(updatedThing.thingID, _mainList.items);
-    theThing.label    = updatedThing.label;
-    theThing.icon     = updatedThing.icon;
-    theThing.isList   = updatedThing.isList;
-    theThing.isMarked = updatedThing.isMarked;
-
-    notifyListeners();
+    final theThing = findListThingByID(updatedThing.thingID, _mainList.items);
+    theThing.label     = updatedThing.label;
+    theThing.icon      = updatedThing.icon;
+    theThing.isList    = updatedThing.isList;
+    theThing.isMarked  = updatedThing.isMarked;
+    theThing.sortOrder = updatedThing.sortOrder;
+  
+    if (notify)
+      notifyListeners();
   }
+
+  void notifyModelListeners() => notifyListeners();
 
   /// Flattens all list things and returns the in-memory object with the same ID
   ListThing findListThingByID(int targetThingID, List<ListThing> thingList) {
