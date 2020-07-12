@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:lists/models/ListThing.dart';
-import 'package:lists/ui/pages/ChildListPage.dart';
+import 'package:lists/ui/pages/ShowListPage.dart';
 import 'package:lists/ui/pages/ListThingEntry.dart';
 import 'package:lists/ui/widgets/ListsDragHandle.dart';
 
@@ -84,7 +84,7 @@ class ListThingListTile extends StatelessWidget {
     await Navigator.push<ListThing>(
       context,
       MaterialPageRoute(
-        builder: (context) => ChildListPage(
+        builder: (context) => ShowListPage(
           key:       ValueKey('childpage_${thisThing.hashCode}'),
           listName:  thisThing.label, 
           thisThing: thisThing

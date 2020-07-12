@@ -9,8 +9,8 @@ import 'package:lists/ui/pages/ListThingEntry.dart';
 import 'package:lists/ui/widgets/SwipeBackground.dart';
 
 
-class ChildListPage extends StatefulWidget {
-  const ChildListPage({this.key, this.listName, this.thisThing}) : super(key: key);
+class ShowListPage extends StatefulWidget {
+  const ShowListPage({this.key, this.listName, this.thisThing}) : super(key: key);
 
   final Key       key;
   final String    listName;
@@ -20,13 +20,20 @@ class ChildListPage extends StatefulWidget {
   _ChildListPageState createState() => _ChildListPageState();
 }
 
-class _ChildListPageState extends State<ChildListPage>{
+class _ChildListPageState extends State<ShowListPage>{
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-          //  Also need to expose route to Settings screen
+          // Only show Lists! icon on home page
+          leading: widget.thisThing.thingID == 0 
+            ? Padding(
+                padding: EdgeInsets.only(left: 0, top: 12, bottom: 12),
+                child:  Image(
+                  image: AssetImage('lib/assets/lists_icon.png')
+                )) 
+            : null,
           title:   Text(widget.listName, style: Theme.of(context).textTheme.headline1),
           actions: <Widget>[
             // action button
@@ -58,7 +65,7 @@ class _ChildListPageState extends State<ChildListPage>{
                       child:        Container(
                         decoration: BoxDecoration(
                           border: Border(bottom: BorderSide(
-                            color: Theme.of(context).primaryColor.withAlpha(192),
+                            color: Theme.of(context).primaryColor.withAlpha(96),
                             width: 1.0
                           )),
                         ),
@@ -98,8 +105,7 @@ class _ChildListPageState extends State<ChildListPage>{
       setState(() {
         widget.thisThing.addChildThing(newThing);
       });
-      
-  }
+   }
 
   Future<void> _onDismissed(BuildContext context, ListThing dismissedThing, int index) async {
     
@@ -134,7 +140,6 @@ class _ChildListPageState extends State<ChildListPage>{
   int _indexOfKey(ValueKey targetKey) {
     for(int i = 0; i < widget.thisThing.items.length; i++){
       final thisKey = ValueKey(widget.thisThing.items[i].key);
-      print('KOZZER - thisKey: $thisKey -- targetKey: $targetKey');
       if (thisKey.value == targetKey.value)
         return i;
     }
@@ -160,14 +165,18 @@ class _ChildListPageState extends State<ChildListPage>{
     print('KOZZER - _reorderDone(item: $item) - update in database');
     final newIndex = _indexOfKey(item);
     final draggedItem = widget.thisThing.items[newIndex];
-    int i = 0;
-    for(final thing in widget.thisThing.items){
-      final reorderedThing = thing.copyWith(sortOrder: i);
-      await ScopedModel.of<ListsScopedModel>(context).updateListThing(reorderedThing);
-      i++;
+
+    // Save all new sortOrder values to database
+    for(int i = 0; i < widget.thisThing.items.length; i++){
+      var thing = widget.thisThing.items[i];
+      if (thing.sortOrder != i){
+        thing.sortOrder = i;
+        await ScopedModel.of<ListsScopedModel>(context).updateListThing(thing);
+      }
     }
+
     setState((){
-      widget.thisThing.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
+      widget.thisThing.items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); 
     });
     debugPrint("Reordering finished for ${draggedItem.label}: index $newIndex");
   }

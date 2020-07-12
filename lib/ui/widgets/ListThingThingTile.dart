@@ -15,6 +15,14 @@ class ListThingThingTile extends StatelessWidget {
 
   const ListThingThingTile(this.thisThing, this.isFirst, this.isLast);
 
+  @override
+  Widget build(BuildContext context) {
+    return ReorderableItem(
+      key:          ValueKey(thisThing.key), //
+      childBuilder: _buildChild
+    );
+  }
+
   Widget _buildChild(BuildContext context, ReorderableItemState state) {
     BoxDecoration decoration;
 
@@ -89,14 +97,6 @@ class ListThingThingTile extends StatelessWidget {
         ),
         fullscreenDialog: true,
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ReorderableItem(
-      key:          ValueKey(thisThing.key), //
-      childBuilder: _buildChild
     );
   }
 }

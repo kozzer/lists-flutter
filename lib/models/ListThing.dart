@@ -49,7 +49,7 @@ class ListThing {
     );
 
     var children = items ?? this._items;
-    children.forEach((thing)  => addChildThing(thing));
+    children.forEach((thing)  => addChildThing(thing.copyWith()));
 
     return newThing;
   }
@@ -79,6 +79,7 @@ class ListThing {
       isList = true;    // Since we're adding an item, convert to list if not already one
     }
     _items.add(thing);
+    _items.sort((ListThing a, ListThing b) => a.sortOrder.compareTo(b.sortOrder)); // Sorts in place after every add
   }
 
   void removeChildThing(ListThing thing) => _items.remove(thing);
