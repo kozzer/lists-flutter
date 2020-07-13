@@ -72,7 +72,7 @@ class ListsAdapter {
   }
 
   /// Insert new ListThing into database (since it's an add, it will never have any children at this point)
-  Future<ListThing> insert(ListThing thing) async {
+  Future<ListThing> insert(ListThing thing, bool keepSortOrder) async {
     print('KOZZER - ListsAdapter.insert()');
     final Database db = await instance.database;
 
@@ -82,12 +82,15 @@ class ListsAdapter {
     var newID = row[0].values.first as int;
 
     // Get new Thing's Sort order
-    query = "SELECT MAX($colSortOrder) + 1 FROM $listsTable WHERE $colParentThingID = ${thing.parentThingID}";
-    row = await db.rawQuery(query);
-    var newSortOrder = (row[0].values.first as int) ?? 1;
-
-    // Construct new object
-    var newThing = thing.copyWith(thingID: newID, sortOrder: newSortOrder);
+    ListThing newThing;
+    if (!keepSortOrder){
+      query = "SELECT MAX($colSortOrder) + 1 FROM $listsTable WHERE $colParentThingID = ${thing.parentThingID}";
+      row = await db.rawQuery(query);
+      var newSortOrder = (row[0].values.first as int) ?? 1;
+      newThing = thing.copyWith(thingID: newID, sortOrder: newSortOrder);
+    } else {
+      newThing = thing.copyWith(thingID: newID);
+    }
 
     print('KOZZER - insert new thing row: ${newThing.toMap()}');
     await db.insert(listsTable, newThing.toMap());

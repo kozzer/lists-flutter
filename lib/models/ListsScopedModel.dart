@@ -32,11 +32,11 @@ class ListsScopedModel extends Model{
 
 
   // Modify data via listsAdapter
-  Future<ListThing> addNewListThing(ListThing newThing) async {
+  Future<ListThing> addNewListThing(ListThing newThing, { bool keepSortOrder = false }) async {
     print('KOZZER - adding item: ${newThing.toMap()}');
 
     // Insert into database
-    final addedThing = await listsAdapter.insert(newThing);
+    final addedThing = await listsAdapter.insert(newThing, keepSortOrder);
 
     // Add into memory
     final parentThing = findListThingByID(addedThing.parentThingID, _mainList.items);
@@ -46,7 +46,7 @@ class ListsScopedModel extends Model{
     return addedThing;
   }
 
-  Future<void> removeListThing(ListThing thing) async {
+  Future<void> removeListThing(ListThing thing, { bool notify = true }) async {
     print('KOZZER - removing item from mainList: ${thing.toMap()}');
 
     // Remove from database
@@ -56,7 +56,8 @@ class ListsScopedModel extends Model{
     final parentThing = findListThingByID(thing.parentThingID, _mainList.items);
     parentThing.removeChildThing(thing); 
 
-    notifyListeners();
+    if (notify)
+      notifyListeners();
   }
 
   Future<void> updateListThing(ListThing updatedThing, { bool notify = true }) async {

@@ -49,7 +49,10 @@ class ListThing {
     );
 
     var children = items ?? this._items;
-    children.forEach((thing)  => addChildThing(thing.copyWith()));
+    children.forEach((thing) {
+      final copiedThing = thing.copyWith();
+      newThing.addChildThing(copiedThing);
+    });
 
     return newThing;
   }

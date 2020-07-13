@@ -45,7 +45,6 @@ class _ChildListPageState extends State<ShowListPage>{
             ),
           ]),
 
-      // TODO make scopedmodel descendant?
       body: ReorderableList(
         onReorder:     _reorderCallback,
         onReorderDone: _reorderDone,
@@ -102,18 +101,16 @@ class _ChildListPageState extends State<ShowListPage>{
       ),
     );
     if (newThing != null)
-      setState(() {
-        widget.thisThing.addChildThing(newThing);
-      });
+      addChildThingToWidget(newThing);
    }
 
   Future<void> _onDismissed(BuildContext context, ListThing dismissedThing, int index) async {
     
     print('KOZZER - swiped: ${dismissedThing.toMap()}');
-    ScopedModel.of<ListsScopedModel>(context).removeListThing(dismissedThing);
     setState(() {
       widget.thisThing.items.removeAt(index);
     });
+    await ScopedModel.of<ListsScopedModel>(context).removeListThing(dismissedThing, notify: false);
 
     final snackBar = SnackBar(
       content: Text('Deleted \'${dismissedThing.label}\''),
@@ -126,14 +123,20 @@ class _ChildListPageState extends State<ShowListPage>{
         },
       ),
     );
+    print('KOZZER - show snack bar');
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
   Future<void> _onUndo(BuildContext context, ListThing thing) async {
-    final undoThing = await ScopedModel.of<ListsScopedModel>(context).addNewListThing(thing);
+    final undoThing = await ScopedModel.of<ListsScopedModel>(context).addNewListThing(thing, keepSortOrder: true);
     Scaffold.of(context).showSnackBar(SnackBar(content: Text('Delete cancelled')));
+    addChildThingToWidget(undoThing);
+  }
+
+  void addChildThingToWidget(ListThing addThing){
     setState(() {
-      widget.thisThing.addChildThing(undoThing);
+      if (widget.thisThing.items.where((thing) => thing.key == addThing.key).length == 0)
+        widget.thisThing.addChildThing(addThing);
     });
   }
 
