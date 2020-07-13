@@ -167,7 +167,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
         return updatedThing;
       } else {
         // Nothing existing, so this is a new item
-        final newThing = ListThing(-1, widget.parentThingID, _label, _isList);
+        final newThing = ListThing(-1, widget.parentThingID, _label, _isList, _icon);
         final addedThing = await model.addNewListThing(newThing);
         return addedThing;
       }
