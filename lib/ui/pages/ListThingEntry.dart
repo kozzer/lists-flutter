@@ -18,11 +18,11 @@ class ListThingEntry extends StatefulWidget {
 class _ListThingEntryPageState extends State<ListThingEntry> {
   FocusNode focusNode;
 
-  bool _formChanged = false;
-  String _pageTitle;
-  String _label = '';
-  IconData _icon;
-  bool _isList;
+  bool      _formChanged = false;
+  String    _pageTitle;
+  String    _label = '';
+  IconData  _icon;
+  bool      _isList;
 
   // Constructor
   _ListThingEntryPageState();

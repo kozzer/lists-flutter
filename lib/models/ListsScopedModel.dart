@@ -22,6 +22,7 @@ class ListsScopedModel extends Model{
   ///           an endless loop of data access
   Future<ListsScopedModel> populateListsData({bool notify = true}) async {
     print('KOZZER - populating _mainList');
+    await Future.delayed(Duration(seconds: 2));
     await listsAdapter.getListThingByID(0).then((dbList) { 
       _mainList = dbList;
       if (notify) 

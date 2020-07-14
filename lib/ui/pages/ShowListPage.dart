@@ -30,9 +30,13 @@ class _ChildListPageState extends State<ShowListPage>{
           leading: widget.thisThing.thingID == 0 
             ? Padding(
                 padding: EdgeInsets.only(left: 0, top: 12, bottom: 12),
-                child:  Image(
-                  image: AssetImage('lib/assets/lists_icon.png')
-                )) 
+                child:  Hero(
+                  tag: "lists_icon",
+                  child: Image(
+                    image: AssetImage('lib/assets/lists_icon.png')
+                  )
+                ) 
+              ) 
             : null,
           title:   Text(widget.listName, style: Theme.of(context).textTheme.headline1),
           actions: <Widget>[

@@ -11,10 +11,13 @@ class LoadingScreen extends StatelessWidget {
           children: <Widget>[
             const Padding(
               padding: EdgeInsets.all(48),
-              child: Image(
-                image: AssetImage('lib/assets/lists_icon.png'),
-                width: 192,
-                height: 192
+              child: Hero(
+                tag: "lists_icon",
+                child: Image(
+                  image:  AssetImage('lib/assets/lists_icon.png'),
+                  width:  192,
+                  height: 192
+                )
               )
             ),
             SizedBox(
