@@ -58,7 +58,7 @@ class ListThingThingTile extends StatelessWidget {
                   child: ScopedModelDescendant<ListsScopedModel>(
                     builder: (context, child, model) => ListTile(
                       key:     ValueKey(thisThing.key),
-                      leading: Icon(thisThing.icon),
+                      leading: Icon(thisThing.icon, color: Theme.of(context).textTheme.bodyText2.color),
                       title:   Text(thisThing.label,
                           style: thisThing.isMarked
                               ? TextStyle(color: Colors.grey, decoration: TextDecoration.lineThrough)

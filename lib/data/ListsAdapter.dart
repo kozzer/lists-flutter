@@ -136,7 +136,7 @@ class ListsAdapter {
     var query = '''UPDATE lists
                    SET label     = '${thing.label}', 
                        isList    = ${thing.isListAsInt},
-                       icon      = ${thing.icon},
+                       icon      = ${thing.icon.codePoint},
                        isMarked  = ${thing.isMarkedAsInt},
                        sortOrder = ${thing.sortOrderDbVal}
                    WHERE thingID = ${thing.thingID};''';
@@ -244,28 +244,28 @@ class ListsAdapter {
     $colParentThingID   INTEGER   NOT NULL,
     $colLabel           TEXT      NOT NULL,
     $colIsList          INTEGER   NOT NULL,
-    $colIcon            TEXT,
+    $colIcon            INTEGER,
     $colIsMarked        INTEGER   NOT NULL,
     $colSortOrder       INTEGER   NOT NULL
   );''';
 
   static const String insertMainList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder) 
-    VALUES (0, -1, '[Main List]', 1, NULL, 0, 0);''';
+    VALUES (0, -1, '[Main List]', 1, 59542, 0, 0);''';
 
   static const String insertFirstList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (1, 0, 'First List', 1, NULL, 0, 0);''';
+    VALUES (1, 0, 'First List', 1, 59542, 0, 0);''';
 
   static const String insertFirstItem = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (2, 1, 'First List Item', 0, NULL, 0, 0);''';
+    VALUES (2, 1, 'First List Item', 0, 58278, 0, 0);''';
 
   static const String insertSecondList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (3, 0, 'Second List', 1, NULL, 0, 1);''';
+    VALUES (3, 0, 'Second List', 1, 59542, 0, 1);''';
 
   static const String insertThirdList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (4, 0, 'Third List', 1, NULL, 0, 2);''';
+    VALUES (4, 0, 'Third List', 1, 59542, 0, 2);''';
 }

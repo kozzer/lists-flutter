@@ -141,10 +141,9 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
   Future<void> _pickIcon() async {
     IconData icon = await FlutterIconPicker.showIconPicker(
       context,
-      adaptiveDialog: true,
-      iconPickerShape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      iconPackMode: IconPack.material,
+      adaptiveDialog:   true,
+      iconPickerShape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      iconPackMode:     IconPack.material,
     );
 
     if (icon != null) {

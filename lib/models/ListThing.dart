@@ -19,7 +19,7 @@ class ListThing {
     parentThingID  =  map['parentThingID']  as int,
     label          =  map['label']          as String,
     isList         = (map['isList']         as int        ) > 0,
-    icon           =  map['icon']           as IconData,
+    icon           =  IconData(map['icon']  as int, fontPackage: "MaterialIcons"),
     isMarked       = (map['isMarked']       as int        ) > 0,
     sortOrder      =  map['sortOrder']      as int;
 
@@ -31,7 +31,7 @@ class ListThing {
       'parentThingID':  parentThingID,
       'label':          label,
       'isList':         isListAsInt,
-      'icon':           icon,
+      'icon':           icon.codePoint,
       'isMarked':       isMarkedAsInt,
       'sortOrder':      sortOrderDbVal
     };
