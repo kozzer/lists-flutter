@@ -19,7 +19,7 @@ class ListThing {
     parentThingID  =  map['parentThingID']  as int,
     label          =  map['label']          as String,
     isList         = (map['isList']         as int        ) > 0,
-    icon           =  IconData(map['icon']  as int, fontPackage: "MaterialIcons"),
+    icon           =  IconData(map['icon']  as int, fontFamily: "MaterialIcons"),
     isMarked       = (map['isMarked']       as int        ) > 0,
     sortOrder      =  map['sortOrder']      as int;
 
