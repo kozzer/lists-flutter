@@ -251,11 +251,11 @@ class ListsAdapter {
 
   static const String insertMainList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder) 
-    VALUES (0, -1, '[Main List]', 1, 59542, 0, 0);''';
+    VALUES (0, -1, '[Main List]', 1, 59485, 0, 0);''';
 
   static const String insertFirstList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (1, 0, 'First List', 1, 59542, 0, 0);''';
+    VALUES (1, 0, 'First List', 1, 59485, 0, 0);''';
 
   static const String insertFirstItem = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
@@ -263,9 +263,9 @@ class ListsAdapter {
 
   static const String insertSecondList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (3, 0, 'Second List', 1, 59542, 0, 1);''';
+    VALUES (3, 0, 'Second List', 1, 59485, 0, 1);''';
 
   static const String insertThirdList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
-    VALUES (4, 0, 'Third List', 1, 59542, 0, 2);''';
+    VALUES (4, 0, 'Third List', 1, 59485, 0, 2);''';
 }

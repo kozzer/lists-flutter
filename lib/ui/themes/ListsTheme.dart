@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 class ListsTheme {
   bool isDark;
   Color primaryColor;
+  Color accentColor;
 
   static const double _appBarTextFontSize    = 18;
   static const double _listItemLabelFontSize = 18;
   static const double _listItemCountFontSize = 14;
 
-  ListsTheme({ @required this.isDark, @required this.primaryColor });
+  ListsTheme({ @required this.isDark, @required this.primaryColor, @required this.accentColor });
 
   ThemeData get themeData {
     return ThemeData(
       brightness:               Brightness.light,
       primarySwatch:            _getMaterialColor(primaryColor),
+      accentColor:              _getMaterialColor(accentColor),
       textTheme:                isDark ? _getDarkTextTheme() : _getLightTextTheme(),
       scaffoldBackgroundColor:  isDark ? const Color(0xFF333333) : const Color(0xFFEFEFEF),
       floatingActionButtonTheme: FloatingActionButtonThemeData(

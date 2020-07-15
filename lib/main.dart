@@ -21,7 +21,7 @@ class ListsApp extends StatelessWidget {
       model: ListsScopedModel(),
       child: MaterialApp(
         title: 'Lists!',
-        theme: ListsTheme(isDark: true, primaryColor: Color(0xFF00A800)).themeData,
+        theme: ListsTheme(isDark: true, primaryColor: Color(0xFF00A800), accentColor: Color(0xFFA8A8A8)).themeData,
         home:  MainListPage(title: 'Lists!'),
       )
     );

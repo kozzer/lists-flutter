@@ -51,7 +51,7 @@ class ListThingListTile extends StatelessWidget {
                 Expanded(
                   child: ListTile(
                     key:          ValueKey(thisThing.key),
-                    leading:      Icon(thisThing.icon, color: Theme.of(context).textTheme.bodyText2.color),
+                    leading:      Icon(thisThing.icon, color: Theme.of(context).accentColor),
                     title:        Text(thisThing.label, style: Theme.of(context).textTheme.bodyText1),
                     subtitle:     Text('(${thisThing.listSize} item${thisThing.listSize != 1 ? 's' : ''})', style: Theme.of(context).textTheme.bodyText2),
                     onTap:        () => _openChildList(context, thisThing),

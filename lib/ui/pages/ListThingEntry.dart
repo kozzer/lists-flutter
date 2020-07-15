@@ -5,11 +5,10 @@ import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 
 class ListThingEntry extends StatefulWidget {
-  final int parentThingID;
+  final int       parentThingID;
   final ListThing existingThing;
 
-  const ListThingEntry({Key key, this.parentThingID, this.existingThing})
-      : super(key: key);
+  const ListThingEntry({Key key, this.parentThingID, this.existingThing}) : super(key: key);
 
   @override
   _ListThingEntryPageState createState() => _ListThingEntryPageState();
@@ -34,10 +33,26 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
     super.initState();
     focusNode = FocusNode();
     _pageTitle = widget?.existingThing != null
-        ? 'edit \'${widget.existingThing.label}\''
-        : 'add new thing';
-    _isList =
-        widget?.parentThingID == 0 || (widget?.existingThing?.isList ?? false);
+                    ? 'edit \'${widget.existingThing.label}\''
+                    : 'add new thing';
+    _isList = widget?.parentThingID == 0 || (widget?.existingThing?.isList ?? false);
+    setIcon(init: true);
+  }
+
+  void toggleIsList(){
+    _isList = !_isList;
+  }
+
+  void setIcon({bool init = false}){
+    //if (init || (_formChanged && _icon.codePoint != 59485 && _icon.codePoint != 58278)){
+      _icon = widget?.existingThing?.icon 
+                ?? IconData(
+                    _isList 
+                      ? 59485     // List icon
+                      : 58278,    // Circle icon
+                    fontFamily: "MaterialIcons"
+                  );
+    //}
   }
 
   @override
@@ -83,12 +98,6 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                   ),
                   autofocus: true,
                   initialValue: widget.existingThing?.label,
-                  autovalidate: _formChanged,
-                  validator: (String val) {
-                    if (val.isEmpty)
-                      return "Field cannot be left blank";
-                    return null;
-                  },
                 ),
                 Text('Is this a list?'),
                 Checkbox(
@@ -97,27 +106,41 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                     if (widget?.parentThingID != 0) {
                       setState(() {
                         _formChanged = true;
-                        _isList = val;
+                        toggleIsList();
+                        setIcon();
                       });
                     }
-                  }),
+                  }
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,               
+                  children: <Widget>[
+                    RaisedButton(
+                      color: Theme.of(context).primaryColor.withAlpha(192),
+                      child: Text('Select icon'),
+                      onPressed: _pickIcon
+                    ),
+                    Icon(
+                      _icon,                  
+                      color: Theme.of(context).accentColor
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 75,
+                  child: null
+                ),
                 RaisedButton(
-                  color: Colors.blue[400],
-                  child: Text('Select icon'),
-                  onPressed: _pickIcon),
-                RaisedButton(
-                  color: Colors.blue[400],
-                  child: Text("save"),
+                  color: Theme.of(context).primaryColor.withAlpha(192),
+                  child: Text("Save"),
                   onPressed: _formChanged
                       ? () async {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            final submittedThing =
-                                await _handleFormSubmit(model);
+                            final submittedThing = await _handleFormSubmit(model);
                             Navigator.pop(context, submittedThing);
                           } else {
-                            FocusScope.of(context)
-                                .requestFocus(focusNode);
+                            FocusScope.of(context).requestFocus(focusNode);
                           }
                         }
                       : null,
@@ -144,12 +167,15 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
       adaptiveDialog:   true,
       iconPickerShape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       iconPackMode:     IconPack.material,
+      backgroundColor:  Theme.of(context).scaffoldBackgroundColor,
+      iconColor:        Theme.of(context).textTheme.bodyText1.color
     );
 
     if (icon != null) {
-      _icon = icon;
       setState(() {
         _formChanged = true;
+        _icon = icon;
+        widget?.existingThing?.icon = icon;
       });
 
       debugPrint('Picked Icon:  $icon');
@@ -160,8 +186,7 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
     if (_formChanged) {
       if (widget.existingThing != null) {
         // Already existing, so this is an update
-        final updatedThing = widget.existingThing
-            .copyWith(label: _label, isList: _isList, icon: _icon);
+        final updatedThing = widget.existingThing.copyWith(label: _label, isList: _isList, icon: _icon);
         await model.updateListThing(updatedThing);
         return updatedThing;
       } else {
