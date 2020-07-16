@@ -30,9 +30,10 @@ class MainListPage extends StatelessWidget {
             // Show lists data
             final mainList = snapshot.data.mainList;
             return ShowListPage(
-              key:        mainList.key, 
-              listName:   'Lists!', 
-              thisThing:  mainList
+              key:         mainList.key, 
+              listName:    'Lists!', 
+              thisThing:   mainList,
+              breadCrumbs: List<Widget>(),
             );
           } 
         }

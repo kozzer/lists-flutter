@@ -45,7 +45,7 @@ class ListsAdapter {
     final String path = join(await getDatabasesPath(), _databaseFileName);
 
     // Delete database so it can be re-generated with canned queries
-    await deleteDatabaseFile(path);
+    //await deleteDatabaseFile(path);
     print('KOZZER - in _initDatabase(), about to open $path');
     final Database db = await openDatabase(
       path,

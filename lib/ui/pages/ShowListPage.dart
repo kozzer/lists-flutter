@@ -10,11 +10,12 @@ import 'package:lists/ui/widgets/SwipeBackground.dart';
 
 
 class ShowListPage extends StatefulWidget {
-  const ShowListPage({this.key, this.listName, this.thisThing}) : super(key: key);
+  const ShowListPage({this.key, this.listName, this.thisThing, this.breadCrumbs}) : super(key: key);
 
-  final Key       key;
-  final String    listName;
-  final ListThing thisThing;
+  final Key          key;
+  final String       listName;
+  final ListThing    thisThing;
+  final List<Widget> breadCrumbs;
 
   @override
   _ChildListPageState createState() => _ChildListPageState();
@@ -27,18 +28,17 @@ class _ChildListPageState extends State<ShowListPage>{
     return Scaffold(
       appBar:  AppBar(
           // Only show Lists! icon on home page
-          leading: widget.thisThing.thingID == 0 
-            ? Padding(
-                padding: EdgeInsets.only(left: 0, top: 12, bottom: 12),
-                child:  Hero(
-                  tag: "lists_icon",
-                  child: Image(
-                    image: AssetImage('lib/assets/lists_icon.png')
-                  )
-                ) 
-              ) 
-            : null,
-          title:   Text(widget.listName, style: Theme.of(context).textTheme.headline1),
+          leading: Padding(
+            padding: EdgeInsets.only(left: 0, top: 6, bottom: 6),
+            child:  Hero(
+              tag: "lists_icon",
+              child: IconButton(
+                icon: Image.asset('lib/assets/lists_icon.png'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ) 
+          ),
+          title:   _buildBreadCrumbs(),
           actions: <Widget>[
             // action button
             IconButton(
@@ -73,7 +73,7 @@ class _ChildListPageState extends State<ShowListPage>{
                           )),
                         ),
                         child: ((thing?.isList ?? false || (thing?.thingID ?? 1) == 0)) 
-                          ? ListThingListTile(thing, index == 0, index == thing.items.length - 1) 
+                          ? ListThingListTile(thing, index == 0, index == thing.items.length - 1, widget.breadCrumbs) 
                           : ListThingThingTile(thing, index == 0, index == thing.items.length - 1)
                       )
                     );
@@ -142,6 +142,23 @@ class _ChildListPageState extends State<ShowListPage>{
       if (widget.thisThing.items.where((thing) => thing.key == addThing.key).length == 0)
         widget.thisThing.addChildThing(addThing);
     });
+  }
+
+  Widget _buildBreadCrumbs(){
+    return Container(
+      padding: const EdgeInsets.all(4),
+      child:   Row(children: _buildRowList(), ));
+  }
+
+  List<Widget> _buildRowList(){
+    List<Widget> crumbs = [];
+    for(var crumb in widget.breadCrumbs){
+      crumbs.add(crumb);
+      crumbs.add(Text(' > '));
+    }
+    //Add current list title
+    crumbs.add(Text(widget.thisThing.thingID > 0 ? widget.thisThing.label : 'Lists!'));
+    return crumbs;
   }
 
   int _indexOfKey(ValueKey targetKey) {
