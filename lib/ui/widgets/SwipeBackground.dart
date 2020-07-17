@@ -11,20 +11,14 @@ class SwipeBackground extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 16),
             child: Icon(
-              IconData(
-                59691, 
-                fontFamily: 'MaterialIcons'
-              ), 
+              Icons.delete_forever, 
               color: Theme.of(context).textTheme.headline1.color
             ),
           ),
           Padding(
             padding: EdgeInsets.only(right: 16),
             child: Icon(
-              IconData(
-                59691, 
-                fontFamily: 'MaterialIcons'
-              ), 
+              Icons.delete_forever, 
               color: Theme.of(context).textTheme.headline1.color
             ),
           )      
