@@ -13,15 +13,10 @@ class LoadingScreen extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(48),
-              child: Hero(
-                tag: "lists_icon",
-                child: SvgPicture.asset(
-                  'lib/assets/lists.svg', 
-                  width: 192, 
-                  height: 192,
-                ),
+              child:  Image(
+                image: AssetImage('lib/assets/lists_icon.png')
               )
-            ),
+            ), 
             SizedBox(
               child: CircularProgressIndicator(
                 backgroundColor: Theme.of(context).primaryColor,

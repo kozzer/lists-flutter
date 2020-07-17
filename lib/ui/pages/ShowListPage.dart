@@ -31,14 +31,16 @@ class _ChildListPageState extends State<ShowListPage>{
           // Only show Lists! icon on home page
           leading: Padding(
             padding: EdgeInsets.only(left: 0, top: 6, bottom: 6),
-            child:  Hero(
-              tag: "lists_icon",
-              child: IconButton(
-                icon: SvgPicture.asset('lib/assets/lists.svg'),
-                onPressed: widget.thisThing.thingID > 0 ? () => Navigator.of(context).pop() : null,
-              )
-            ) 
-          ),
+            child: (widget?.thisThing?.thingID ?? 0) > 0
+              ? IconButton(
+                  icon: SvgPicture.asset('lib/assets/lists.svg'),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              : Padding(
+                  padding: EdgeInsets.all(8), 
+                  child: SvgPicture.asset('lib/assets/lists.svg')
+                )
+          ),   
           title:   Text(widget.listName),// _buildBreadCrumbs(),
           actions: <Widget>[
             // action button

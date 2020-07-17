@@ -82,14 +82,17 @@ class ListThingListTile extends StatelessWidget {
 
   Future<void> _openChildList(BuildContext context, ListThing thisThing) async {
     print('open child list, thingID: ${thisThing.thingID} - ${thisThing.items.length} children');
-    breadCrumbs.add(IconButton(
-      key:   thisThing.key,
-      icon:  Icon(thisThing.icon),
-      color: Theme.of(context).accentColor,
-      onPressed: () {
-        print('breadcrumb pressed: ${thisThing.label}');
-      },
-    ));
+/*    breadCrumbs.add(
+      IconButton(
+        key:   thisThing.key,
+        icon:  Icon(thisThing.icon),
+        color: Theme.of(context).accentColor,
+        onPressed: () {
+          print('breadcrumb pressed: ${thisThing.label}');
+        },
+      )
+    );
+*/
     await Navigator.push<ListThing>(
       context,
       MaterialPageRoute(
