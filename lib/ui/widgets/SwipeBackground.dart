@@ -6,16 +6,28 @@ class SwipeBackground extends StatelessWidget {
     return Container(
       color: Theme.of(context).primaryColor,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget> [ 
-          Text(
-            'Delete', 
-            style: TextStyle(color: Theme.of(context).textTheme.headline1.color),
+          Padding(
+            padding: EdgeInsets.only(left: 16),
+            child: Icon(
+              IconData(
+                59691, 
+                fontFamily: 'MaterialIcons'
+              ), 
+              color: Theme.of(context).textTheme.headline1.color
+            ),
           ),
-          Text(
-            'Delete', 
-            style: TextStyle(color: Theme.of(context).textTheme.headline1.color),
-          ),          
+          Padding(
+            padding: EdgeInsets.only(right: 16),
+            child: Icon(
+              IconData(
+                59691, 
+                fontFamily: 'MaterialIcons'
+              ), 
+              color: Theme.of(context).textTheme.headline1.color
+            ),
+          )      
         ]
       )
     );

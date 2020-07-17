@@ -34,11 +34,11 @@ class _ChildListPageState extends State<ShowListPage>{
               tag: "lists_icon",
               child: IconButton(
                 icon: Image.asset('lib/assets/lists_icon.png'),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: widget.thisThing.thingID > 0 ? () => Navigator.of(context).pop() : null,
               )
             ) 
           ),
-          title:   _buildBreadCrumbs(),
+          title:   Text(widget.listName),// _buildBreadCrumbs(),
           actions: <Widget>[
             // action button
             IconButton(
