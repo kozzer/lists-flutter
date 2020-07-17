@@ -7,6 +7,7 @@ import 'package:lists/ui/widgets/ListThingListTile.dart';
 import 'package:lists/ui/widgets/ListThingThingTile.dart';
 import 'package:lists/ui/pages/ListThingEntry.dart';
 import 'package:lists/ui/widgets/SwipeBackground.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 class ShowListPage extends StatefulWidget {
@@ -33,7 +34,7 @@ class _ChildListPageState extends State<ShowListPage>{
             child:  Hero(
               tag: "lists_icon",
               child: IconButton(
-                icon: Image.asset('lib/assets/lists_icon.png'),
+                icon: SvgPicture.asset('lib/assets/lists.svg'),
                 onPressed: widget.thisThing.thingID > 0 ? () => Navigator.of(context).pop() : null,
               )
             ) 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 
 class LoadingScreen extends StatelessWidget {
   @override
@@ -9,15 +11,15 @@ class LoadingScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(48),
               child: Hero(
                 tag: "lists_icon",
-                child: Image(
-                  image:  AssetImage('lib/assets/lists_icon.png'),
-                  width:  192,
-                  height: 192
-                )
+                child: SvgPicture.asset(
+                  'lib/assets/lists.svg', 
+                  width: 192, 
+                  height: 192,
+                ),
               )
             ),
             SizedBox(
