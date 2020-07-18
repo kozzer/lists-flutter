@@ -69,15 +69,16 @@ class ListsAdapter {
   Future<void> _onCreate(Database db, int version) async {
     print('KOZZER - CREATING NEW DATABASE, SETTING DEFAULT THEME');
     await db.execute(createDatabaseSQL);
-    await db.execute(createSettingsSQL);
-    await db.execute(insertDarkThemeFlag);
-    await db.execute(insertPrimaryColor);
-    await db.execute(insertAccentColor);
     await db.execute(insertMainList);
     await db.execute(insertFirstList);
     await db.execute(insertFirstItem);
     await db.execute(insertSecondList);
     await db.execute(insertThirdList);
+
+    await db.execute(createSettingsSQL);
+    await db.execute(insertDarkThemeFlag);
+    await db.execute(insertPrimaryColor);
+    await db.execute(insertAccentColor);
   }
 
   /// Insert new ListThing into database (since it's an add, it will never have any children at this point)
@@ -219,13 +220,21 @@ class ListsAdapter {
 
   Future<String> getThemeColorString(bool isPrimary) async {
     final Database db = await instance.database;
-    final settingName = isPrimary ? 'primaryColor' : 'accentColor';
+    final String settingName = isPrimary ? 'primaryColor' : 'accentColor';
     final String query = '''SELECT $colSettingValue FROM $settingsTable WHERE $colSettingName = '$settingName' ''';
 
     // Execute query (should only get 1 item)
     final List<Map<String, dynamic>> rows = await db.rawQuery(query);
     // Convert map to ListThing object
-    return rows[0].toString();
+    final String colorString = rows[0]['$colSettingValue'].toString();
+    return colorString;
+  }
+
+  Future<void> setThemeColorByString(String colorString, bool isPrimary) async {
+    final Database db           = await instance.database;
+    final String   settingName  = isPrimary ? 'primaryColor' : 'accentColor';
+    final String   query        = '''UPDATE $settingsTable SET $colSettingValue = '$colorString' WHERE $colSettingName = '$settingName' ''';
+    await db.execute(query);
   }
 
   Future<bool> getIsDarkTheme() async {
@@ -234,8 +243,15 @@ class ListsAdapter {
 
     // Execute query (should only get 1 item)
     final List<Map<String, dynamic>> rows = await db.rawQuery(query);
-    final strVal = rows[0].toString();
+    final strVal = rows[0]['$colSettingValue'].toString();
     return strVal == 'true';
+  }
+
+  Future<void> setIsDarkTheme(bool isDarkTheme) async {
+    final Database db = await instance.database;
+    final String strDarkTheme = isDarkTheme ? 'true' : 'false';
+    final String query = '''UPDATE $settingsTable SET $colSettingValue = '$strDarkTheme' WHERE $colSettingName = 'darkTheme' ''';
+    await db.execute(query);
   }
 
   Future<void> deleteDatabaseFile(String path) async {
@@ -306,10 +322,10 @@ class ListsAdapter {
 
   static const String insertPrimaryColor = '''
   INSERT INTO $settingsTable ($colSettingName, $colSettingValue)
-    VALUES ('primaryColor', 'ff00a800');''';
+    VALUES ('primaryColor', 'FF00A800');''';
   static const String insertAccentColor = '''
   INSERT INTO $settingsTable ($colSettingName, $colSettingValue)
-    VALUES ('accentColor', 'ffa8a8a8');''';
+    VALUES ('accentColor', 'FFA8A8A8');''';
   static const String insertDarkThemeFlag = '''  
   INSERT INTO $settingsTable ($colSettingName, $colSettingValue)
     VALUES ('darkTheme', 'false');

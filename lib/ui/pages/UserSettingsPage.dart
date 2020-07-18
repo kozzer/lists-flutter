@@ -17,22 +17,28 @@ class UserSettingsPage extends StatefulWidget {
 class _UserSettingsPageState extends State<UserSettingsPage> {
   Color _primaryColor;
   Color _accentColor;
+  bool _isDarkTheme;
 
   @override
   void initState() {
     _primaryColor = Theme.of(widget._context).primaryColor;
     _accentColor  = Theme.of(widget._context).accentColor;
+    _isDarkTheme  = ScopedModel.of<ListsScopedModel>(widget._context).listsTheme.isDark;
     super.initState();
   }
 
   // ValueChanged<Color> callback
-  void changePrimaryColor(Color color) {
-    setState(() { 
-      _primaryColor = color;
-    });
+  void changePrimaryColor(BuildContext context, Color color) {
+    ScopedModel.of<ListsScopedModel>(context).setThemePrimaryColor(color);
+    setState(() => _primaryColor = color);
   }
-  void changeAccentColor(Color color) {
+  void changeAccentColor(BuildContext context, Color color) {
+    ScopedModel.of<ListsScopedModel>(context).setThemeAccentColor(color);
     setState(() => _accentColor = color);
+  }
+  void toggleDarkTheme(BuildContext context, bool isDarkTheme){
+    ScopedModel.of<ListsScopedModel>(context).setIsDarkTheme(isDarkTheme);
+    setState(() => _isDarkTheme = isDarkTheme);
   }
 
   @override
@@ -76,7 +82,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                               },
                             );
                             if (prim != null)
-                              changePrimaryColor(prim);
+                              changePrimaryColor(context, prim);
                           },
                           child: const Text('Pick Primary Color'),
                           color: _primaryColor,
@@ -114,7 +120,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                               },
                             );
                             if (acc != null)
-                              changeAccentColor(acc);
+                              changeAccentColor(context, acc);
                           },
                           child: const Text('Pick Accent Color'),
                           color: _primaryColor,
@@ -125,6 +131,15 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                       ),
                     ],
                   )
+                ),
+                Container(
+                  child: Row(children: <Widget>[
+                    Text('Enable dark theme?'),
+                    Checkbox(
+                      value: _isDarkTheme,
+                      onChanged: (bool val) => toggleDarkTheme(context, val)
+                    )
+                  ],)
                 ),
                 Expanded(child: Container(),),
               ],

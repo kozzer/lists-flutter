@@ -28,12 +28,20 @@ class ListsScopedModel extends Model{
   ///           an endless loop of data access
   Future<ListsScopedModel> populateListsModel({bool notify = true}) async {
 
-    _listsTheme ??= ListsTheme(
-      isDark:       await listsAdapter.getIsDarkTheme(), 
-      primaryColor: Color(0xFF00A800),                    // TODO get color values and apply
-      accentColor:  Color(0xFFA8A8A8)
-    );
+    // App Theme
+    if (_listsTheme == null){
 
+      final String primaryColor = await listsAdapter.getThemeColorString(true);
+      final String accentColor  = await listsAdapter.getThemeColorString(false);
+
+      _listsTheme = ListsTheme(
+        isDark:       await listsAdapter.getIsDarkTheme(), 
+        primaryColor: Color(int.parse(primaryColor.substring(0, 8), radix: 16) + 0x00000000),
+        accentColor:  Color(int.parse(accentColor.substring(0, 8), radix: 16) + 0x00000000)
+      );
+    }
+
+    // Lists data
     print('KOZZER - populating _mainList');
     await Future.delayed(Duration(seconds: 2));
     await listsAdapter.getListThingByID(0).then((dbList) { 
@@ -41,6 +49,7 @@ class ListsScopedModel extends Model{
       if (notify) 
         notifyListeners(); 
     });
+
     return this;  // <-- main list ScopedModelDescendant widget needs this
   }
 
@@ -116,11 +125,20 @@ class ListsScopedModel extends Model{
   }
 
   void setThemePrimaryColor(Color newColor){
+    final String colorString = '${newColor.value.toRadixString(16)}';
+    listsAdapter.setThemeColorByString(colorString, true);
     _listsTheme.primaryColor = newColor;
     notifyListeners();
   }
   void setThemeAccentColor(Color newColor){
+    final String colorString = '${newColor.value.toRadixString(16)}';
+    listsAdapter.setThemeColorByString(colorString, false);
     _listsTheme.accentColor = newColor;
+    notifyListeners();
+  }
+  void setIsDarkTheme(bool isDark){
+    listsAdapter.setIsDarkTheme(isDark);
+    _listsTheme.isDark = isDark;
     notifyListeners();
   }
 }
