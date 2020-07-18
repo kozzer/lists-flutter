@@ -28,7 +28,11 @@ class ListsScopedModel extends Model{
   ///           an endless loop of data access
   Future<ListsScopedModel> populateListsModel({bool notify = true}) async {
 
-    _listsTheme ??= ListsTheme(isDark: false, primaryColor: Color(0xFF00A800), accentColor: Color(0xFFA8A8A8));
+    _listsTheme ??= ListsTheme(
+      isDark:       await listsAdapter.getIsDarkTheme(), 
+      primaryColor: Color(0xFF00A800),                    // TODO get color values and apply
+      accentColor:  Color(0xFFA8A8A8)
+    );
 
     print('KOZZER - populating _mainList');
     await Future.delayed(Duration(seconds: 2));

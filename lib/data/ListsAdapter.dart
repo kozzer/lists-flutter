@@ -20,6 +20,8 @@ class ListsAdapter {
 
   // Table/column names
   static const String listsTable        = 'lists';
+  static const String settingsTable     = 'settings';
+
   static const String colThingID        = 'thingID';
   static const String colParentThingID  = 'parentThingID';
   static const String colLabel          = 'label';
@@ -27,6 +29,9 @@ class ListsAdapter {
   static const String colIcon           = 'icon';
   static const String colIsMarked       = 'isMarked';
   static const String colSortOrder      = 'sortOrder';
+
+  static const String colSettingName    = 'settingName';
+  static const String colSettingValue   = 'settingValue';
 
   // only have a single app-wide reference to the database
   static Database _database;
@@ -62,8 +67,12 @@ class ListsAdapter {
 
   // SQL code to create the database table & rows
   Future<void> _onCreate(Database db, int version) async {
-    print('KOZZER - CREATING NEW DATABASE');
+    print('KOZZER - CREATING NEW DATABASE, SETTING DEFAULT THEME');
     await db.execute(createDatabaseSQL);
+    await db.execute(createSettingsSQL);
+    await db.execute(insertDarkThemeFlag);
+    await db.execute(insertPrimaryColor);
+    await db.execute(insertAccentColor);
     await db.execute(insertMainList);
     await db.execute(insertFirstList);
     await db.execute(insertFirstItem);
@@ -208,6 +217,27 @@ class ListsAdapter {
     return children;
   }
 
+  Future<String> getThemeColorString(bool isPrimary) async {
+    final Database db = await instance.database;
+    final settingName = isPrimary ? 'primaryColor' : 'accentColor';
+    final String query = '''SELECT $colSettingValue FROM $settingsTable WHERE $colSettingName = '$settingName' ''';
+
+    // Execute query (should only get 1 item)
+    final List<Map<String, dynamic>> rows = await db.rawQuery(query);
+    // Convert map to ListThing object
+    return rows[0].toString();
+  }
+
+  Future<bool> getIsDarkTheme() async {
+    final Database db = await instance.database;
+    final String query = '''SELECT $colSettingValue FROM $settingsTable WHERE $colSettingName = 'darkTheme' ''';
+
+    // Execute query (should only get 1 item)
+    final List<Map<String, dynamic>> rows = await db.rawQuery(query);
+    final strVal = rows[0].toString();
+    return strVal == 'true';
+  }
+
   Future<void> deleteDatabaseFile(String path) async {
     // DELETE DATABASE FILE Needs directive: import 'dart:io';
     if (_database == null) {
@@ -248,6 +278,11 @@ class ListsAdapter {
     $colIsMarked        INTEGER   NOT NULL,
     $colSortOrder       INTEGER   NOT NULL
   );''';
+  static const String createSettingsSQL = '''
+  CREATE TABLE $settingsTable (
+    $colSettingName     TEXT      NOT NULL,
+    $colSettingValue    TEXT      NOT NULL
+  );''';
 
   static const String insertMainList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder) 
@@ -268,4 +303,15 @@ class ListsAdapter {
   static const String insertThirdList = '''
   INSERT INTO $listsTable ($colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder)
     VALUES (4, 0, 'Third List', 1, 59485, 0, 2);''';
+
+  static const String insertPrimaryColor = '''
+  INSERT INTO $settingsTable ($colSettingName, $colSettingValue)
+    VALUES ('primaryColor', 'ff00a800');''';
+  static const String insertAccentColor = '''
+  INSERT INTO $settingsTable ($colSettingName, $colSettingValue)
+    VALUES ('accentColor', 'ffa8a8a8');''';
+  static const String insertDarkThemeFlag = '''  
+  INSERT INTO $settingsTable ($colSettingName, $colSettingValue)
+    VALUES ('darkTheme', 'false');
+  ''';
 }
