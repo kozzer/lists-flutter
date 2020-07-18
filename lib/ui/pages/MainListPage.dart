@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/pages/ShowListPage.dart';
-import 'package:lists/ui/pages/LoadingScreen.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 
 
 class MainListPage extends StatelessWidget {
@@ -13,31 +13,16 @@ class MainListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { 
-    return ScopedModelDescendant<ListsScopedModel>( 
-      rebuildOnChange: true,
-      builder: (context, child, model) => FutureBuilder<ListsScopedModel>(
-        future:  model.populateListsData(notify: false),
-        builder: (context, AsyncSnapshot<ListsScopedModel> snapshot){
-
-          if (!snapshot.hasData){
-            print('KOZZER - no data yet - display LOADING screen');
-            // Data not loaded - Show loading screen
-            return LoadingScreen();
-            
-          } else {
-            print('KOZZER - got Lists! data, show main list screen');
-
-            // Show lists data
-            final mainList = snapshot.data.mainList;
-            return ShowListPage(
-              key:         mainList.key, 
-              listName:    'Lists!', 
-              thisThing:   mainList,
-              breadCrumbs: List<Widget>(),
-            );
-          } 
-        }
-      )
+    // Show lists data
+    final model = ScopedModel.of<ListsScopedModel>(context);
+    final mainList = model.mainList;
+    return ShowListPage(
+      key:         mainList.key, 
+      listName:    'Lists!', 
+      thisThing:   mainList,
+      listsTheme:  model.listsTheme,
+      breadCrumbs: List<Widget>(),
     );
-  }
+  } 
 }
+

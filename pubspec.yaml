@@ -30,6 +30,7 @@ dependencies:
   flutter_reorderable_list: ^0.1.4
   flutter_iconpicker: ^2.0.6
   flutter_svg: ^0.17.0
+  flutter_colorpicker: ^0.3.4
 
 dev_dependencies:
   flutter_test:

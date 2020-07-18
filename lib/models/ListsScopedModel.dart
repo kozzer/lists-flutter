@@ -1,6 +1,8 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/data/ListsAdapter.dart';
 import 'package:lists/models/ListThing.dart';
+import 'package:lists/ui/themes/ListsTheme.dart';
+import 'package:flutter/material.dart';
 
 class ListsScopedModel extends Model{
 
@@ -15,12 +17,19 @@ class ListsScopedModel extends Model{
   // Main List
   ListThing _mainList;
   ListThing get mainList => _mainList;
+
+  // User's theme
+  ListsTheme _listsTheme;
+  ListsTheme get listsTheme => _listsTheme;
   
   /// Populate main list from database -- 
   ///   notify: needs to be false on app startup 
   ///           because if it fires then, it somehow causes 
   ///           an endless loop of data access
-  Future<ListsScopedModel> populateListsData({bool notify = true}) async {
+  Future<ListsScopedModel> populateListsModel({bool notify = true}) async {
+
+    _listsTheme ??= ListsTheme(isDark: false, primaryColor: Color(0xFF00A800), accentColor: Color(0xFFA8A8A8));
+
     print('KOZZER - populating _mainList');
     await Future.delayed(Duration(seconds: 2));
     await listsAdapter.getListThingByID(0).then((dbList) { 
@@ -100,5 +109,14 @@ class ListsScopedModel extends Model{
         flatList.addAll(_getFlatList(thing.items));
     });
     return flatList;
+  }
+
+  void setThemePrimaryColor(Color newColor){
+    _listsTheme.primaryColor = newColor;
+    notifyListeners();
+  }
+  void setThemeAccentColor(Color newColor){
+    _listsTheme.accentColor = newColor;
+    notifyListeners();
   }
 }

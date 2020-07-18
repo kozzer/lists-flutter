@@ -46,12 +46,12 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
   void setIcon({bool init = false}){
     //if (init || (_formChanged && _icon.codePoint != 59485 && _icon.codePoint != 58278)){
       _icon = widget?.existingThing?.icon 
-                ?? IconData(
-                    _isList 
-                      ? 59485     // List icon
-                      : 58278,    // Circle icon
-                    fontFamily: "MaterialIcons"
-                  );
+        ?? IconData(
+            _isList 
+              ? 59485     // List icon
+              : 58278,    // Circle icon
+            fontFamily: "MaterialIcons"
+          );
     //}
   }
 

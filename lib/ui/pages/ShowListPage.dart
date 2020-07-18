@@ -8,14 +8,17 @@ import 'package:lists/ui/widgets/ListThingThingTile.dart';
 import 'package:lists/ui/pages/ListThingEntry.dart';
 import 'package:lists/ui/widgets/SwipeBackground.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lists/ui/pages/UserSettingsPage.dart';
+import 'package:lists/ui/themes/ListsTheme.dart';
 
 
 class ShowListPage extends StatefulWidget {
-  const ShowListPage({this.key, this.listName, this.thisThing, this.breadCrumbs}) : super(key: key);
+  const ShowListPage({this.key, this.listName, this.thisThing, this.listsTheme, this.breadCrumbs}) : super(key: key);
 
   final Key          key;
   final String       listName;
   final ListThing    thisThing;
+  final ListsTheme   listsTheme;
   final List<Widget> breadCrumbs;
 
   @override
@@ -47,7 +50,13 @@ class _ChildListPageState extends State<ShowListPage>{
             IconButton(
               icon:      Icon(Icons.more_vert),
               onPressed: () {
-                print('pushed!');
+                Navigator.push<ListThing>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserSettingsPage(context),
+                    fullscreenDialog: true,
+                  ),
+                );
               },
             ),
           ]),
