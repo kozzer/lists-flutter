@@ -8,6 +8,7 @@ class ListsTheme {
   static const double _appBarTextFontSize    = 18;
   static const double _listItemLabelFontSize = 18;
   static const double _listItemCountFontSize = 14;
+  static const double _settingCaptionFontSize = 16;
 
   ListsTheme({ @required this.isDark, @required this.primaryColor, @required this.accentColor });
 
@@ -43,6 +44,11 @@ class ListsTheme {
         color:      Color(0x90161616),
         fontStyle: FontStyle.italic
       ),
+      caption: TextStyle(
+        fontSize:   _settingCaptionFontSize,
+        color:      Color(0xFF222222),
+        fontWeight: FontWeight.w400
+      )
     );
   }
 
@@ -63,6 +69,11 @@ class ListsTheme {
         color:      Color(0xFFA1B1C1),
         fontStyle:  FontStyle.italic
       ),
+      caption: TextStyle(
+        fontSize:   _settingCaptionFontSize,
+        color:      Color(0xFFDEDEDE),
+        fontWeight: FontWeight.w400
+      )
     );
   }
 

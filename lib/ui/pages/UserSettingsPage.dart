@@ -19,26 +19,44 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
   Color _accentColor;
   bool _isDarkTheme;
 
+  TextEditingController primaryColorTextController;
+  TextEditingController accentColorTextController;
+
   @override
   void initState() {
-    _primaryColor = Theme.of(widget._context).primaryColor;
-    _accentColor  = Theme.of(widget._context).accentColor;
-    _isDarkTheme  = ScopedModel.of<ListsScopedModel>(widget._context).listsTheme.isDark;
+    final listsTheme = ScopedModel.of<ListsScopedModel>(widget._context).listsTheme;
+    _primaryColor = listsTheme.primaryColor;
+    _accentColor  = listsTheme.accentColor;
+    _isDarkTheme  = listsTheme.isDark;
+
+    primaryColorTextController = TextEditingController(text: '#${_primaryColor.value.toRadixString(16)}');
+    accentColorTextController  = TextEditingController(text: '#${_accentColor.value.toRadixString(16)}');
+    
     super.initState();
+  }
+
+  void _saveChanges(){
+    final model = ScopedModel.of<ListsScopedModel>(context);
+    model.setThemePrimaryColor(_primaryColor);
+    model.setThemeAccentColor(_accentColor);
+    model.setIsDarkTheme(_isDarkTheme);
+    Navigator.of(context).pop();
   }
 
   // ValueChanged<Color> callback
   void changePrimaryColor(BuildContext context, Color color) {
-    ScopedModel.of<ListsScopedModel>(context).setThemePrimaryColor(color);
-    setState(() => _primaryColor = color);
+    _primaryColor = color;
+    primaryColorTextController.text = '#${_primaryColor.value.toRadixString(16)}';
+    setState(() {});
   }
   void changeAccentColor(BuildContext context, Color color) {
-    ScopedModel.of<ListsScopedModel>(context).setThemeAccentColor(color);
-    setState(() => _accentColor = color);
+    _accentColor = color;
+    accentColorTextController.text = '#${_accentColor.value.toRadixString(16)}';
+    setState(() {});
   }
   void toggleDarkTheme(BuildContext context, bool isDarkTheme){
-    ScopedModel.of<ListsScopedModel>(context).setIsDarkTheme(isDarkTheme);
-    setState(() => _isDarkTheme = isDarkTheme);
+    _isDarkTheme = isDarkTheme;
+    setState(() {});
   }
 
   @override
@@ -58,37 +76,50 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
               children: <Widget>[
                 Container(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left:4, right: 6), 
+                        child: Text('Primary Color', style: Theme.of(context).textTheme.caption)
+                      ),
                       Container(
-                        constraints: BoxConstraints.tight(Size(MediaQuery.of(context).size.width / 3, 24)),
+                        constraints: BoxConstraints.tight(Size(MediaQuery.of(context).size.width / 4, 24)),
                         child: TextFormField(
                           textCapitalization: TextCapitalization.characters,
-                          decoration: null,
-                          maxLength: 9,
-                          initialValue: '#${_primaryColor.value.toRadixString(16)}',
+                          decoration: InputDecoration(
+                            labelText: "",
+                            counterStyle: TextStyle(height: double.minPositive,),
+                            counterText: ""
+                          ),
+                          maxLength: 9,                            
+                          controller: primaryColorTextController,
                         )
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 12, left: 12),
-                        child: RaisedButton(
-                          elevation: 3.0,
-                          onPressed: () async {
-                            final prim = await showDialog<Color>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ListsColorPicker(_primaryColor, true);
-                              },
-                            );
-                            if (prim != null)
-                              changePrimaryColor(context, prim);
-                          },
-                          child: const Text('Pick Primary Color'),
-                          color: _primaryColor,
-                          textColor: useWhiteForeground(_primaryColor)
-                              ? const Color(0xffffffff)
-                              : const Color(0xff000000),
+                        child: SizedBox(
+                          width: 60,
+                          child: RaisedButton(
+                            elevation: 3.0,
+                            onPressed: () async {
+                              final prim = await showDialog<Color>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ListsColorPicker(_primaryColor, true);
+                                },
+                              );
+                              if (prim != null){
+                                _primaryColor = prim;
+                                changePrimaryColor(context, prim);
+                              }
+                            },
+                            child: const Icon(Icons.colorize),
+                            color: _primaryColor,
+                            textColor: useWhiteForeground(_primaryColor)
+                                ? const Color(0xffffffff)
+                                : const Color(0xff000000),
+                          )
                         )
                       ),
                     ],
@@ -96,37 +127,50 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                 ),
                 Container(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left:4, right: 6), 
+                        child: Text('Accent Color', style: Theme.of(context).textTheme.caption)
+                      ),
                       Container(
-                        constraints: BoxConstraints.tight(Size(MediaQuery.of(context).size.width / 3, 24)),
+                        constraints: BoxConstraints.tight(Size(MediaQuery.of(context).size.width / 4, 24)),
                         child: TextFormField(
                           textCapitalization: TextCapitalization.characters,
-                          decoration: null,
+                          decoration: InputDecoration(
+                            labelText: "",
+                            counterStyle: TextStyle(height: double.minPositive,),
+                            counterText: ""
+                          ),
                           maxLength: 9,
-                          initialValue: '#${_accentColor.value.toRadixString(16)}',
+                          controller: accentColorTextController,
                         )
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 12, left: 12),
-                        child: RaisedButton(
-                          elevation: 3.0,
-                          onPressed: () async {
-                            final acc = await showDialog<Color>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ListsColorPicker(_accentColor, false);
-                              },
-                            );
-                            if (acc != null)
-                              changeAccentColor(context, acc);
-                          },
-                          child: const Text('Pick Accent Color'),
-                          color: _primaryColor,
-                          textColor: useWhiteForeground(_primaryColor)
-                              ? const Color(0xffffffff)
-                              : const Color(0xff000000),
+                        child: SizedBox (
+                          width: 60,
+                          child: RaisedButton(
+                            elevation: 3.0,
+                            onPressed: () async {
+                              final acc = await showDialog<Color>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ListsColorPicker(_accentColor, false);
+                                },
+                              );
+                              if (acc != null){
+                                _accentColor = acc;
+                                changeAccentColor(context, acc);
+                              }
+                            },
+                            child: const Icon(Icons.colorize),
+                            color: _accentColor,
+                            textColor: useWhiteForeground(_accentColor)
+                                ? const Color(0xffffffff)
+                                : const Color(0xff000000),
+                          )
                         )
                       ),
                     ],
@@ -134,12 +178,28 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                 ),
                 Container(
                   child: Row(children: <Widget>[
+                    Expanded(child: Container(),),
                     Text('Enable dark theme?'),
                     Checkbox(
                       value: _isDarkTheme,
                       onChanged: (bool val) => toggleDarkTheme(context, val)
-                    )
+                    ),
+                    Expanded(child: Container(),),
                   ],)
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[                   
+                    RaisedButton(
+                      elevation: 3,
+                      onPressed: _saveChanges,
+                      child: Text('Save Changes'),
+                      color: Theme.of(context).primaryColor,
+                      textColor: useWhiteForeground(_primaryColor)
+                                    ? const Color(0xffffffff)
+                                    : const Color(0xff000000),
+                    ),
+                  ],
                 ),
                 Expanded(child: Container(),),
               ],
