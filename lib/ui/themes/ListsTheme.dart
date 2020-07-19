@@ -10,6 +10,9 @@ class ListsTheme {
   static const double _listItemCountFontSize = 14;
   static const double _settingCaptionFontSize = 16;
 
+  static const int _lightThemeScaffoldBackground = 0xFFEFEFEF;
+  static const int _darkThemeScaffoldBackground  = 0xFF333333;
+
   ListsTheme({ @required this.isDark, @required this.primaryColor, @required this.accentColor });
 
   ThemeData get themeData {
@@ -18,10 +21,10 @@ class ListsTheme {
       primarySwatch:            _getMaterialColor(primaryColor),
       accentColor:              _getMaterialColor(accentColor),
       textTheme:                isDark ? _getDarkTextTheme() : _getLightTextTheme(),
-      scaffoldBackgroundColor:  isDark ? const Color(0xFF333333) : const Color(0xFFEFEFEF),
+      scaffoldBackgroundColor:  isDark ? const Color(_darkThemeScaffoldBackground) : const Color(_lightThemeScaffoldBackground),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: primaryColor,
-        foregroundColor: Color(0xF5FAFAFA)
+        foregroundColor: isDark ? _getDarkTextTheme().bodyText1.color : _getLightTextTheme().bodyText1.color
       ),
       visualDensity:              VisualDensity.adaptivePlatformDensity
     );

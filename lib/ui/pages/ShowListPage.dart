@@ -10,6 +10,7 @@ import 'package:lists/ui/widgets/SwipeBackground.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lists/ui/pages/UserSettingsPage.dart';
 import 'package:lists/ui/themes/ListsTheme.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 
 class ShowListPage extends StatefulWidget {
@@ -103,6 +104,9 @@ class _ChildListPageState extends State<ShowListPage>{
         onPressed: () => _onAddButtonPressed(context), 
         tooltip:   'Add List',
         child:     Icon(Icons.add),
+        foregroundColor: useWhiteForeground(Theme.of(context).primaryColor)
+                                ? const Color(0xffffffff)
+                                : const Color(0xff000000),
       ), 
     );
   }
