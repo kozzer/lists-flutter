@@ -24,9 +24,15 @@ class ShowListPage extends StatefulWidget {
   @override
   _ChildListPageState createState() => _ChildListPageState();
 
-  static MaterialPageRoute getRoute(ListThing routeThing) => MaterialPageRoute(
-      settings: RouteSettings(name: routeThing.label, arguments: routeThing.icon),
-      builder: (context) => ShowListPage());
+  static MaterialPageRoute getRoute(Key key, String listName, ListThing routeThing, ListsTheme listsTheme) => MaterialPageRoute(
+    settings: RouteSettings(name: routeThing.label, arguments: routeThing.icon),
+    builder: (context) => ShowListPage(
+      key:        key, 
+      listName:   listName, 
+      thisThing:  routeThing, 
+      listsTheme: listsTheme
+    )
+  );
 }
 
 class _ChildListPageState extends State<ShowListPage>{

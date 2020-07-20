@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:lists/models/ListThing.dart';
+import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/pages/ShowListPage.dart';
 import 'package:lists/ui/pages/ListThingEntry.dart';
 import 'package:lists/ui/widgets/ListsDragHandle.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 
 /// Custom ListTile class for things that are lists
@@ -83,7 +85,7 @@ class ListThingListTile extends StatelessWidget {
 
     await Navigator.push(
       context,
-      ShowListPage.getRoute(thisThing),
+      ShowListPage.getRoute(thisThing.key, thisThing.label, thisThing, ScopedModel.of<ListsScopedModel>(context).listsTheme),
     );
   }
 
