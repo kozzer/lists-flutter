@@ -14,9 +14,8 @@ class ListThingListTile extends StatelessWidget {
   final ListThing thisThing;
   final bool      isFirst;
   final bool      isLast;
-  final List<Widget> breadCrumbs;
 
-  const ListThingListTile(this.thisThing, this.isFirst, this.isLast, this.breadCrumbs);
+  const ListThingListTile(this.thisThing, this.isFirst, this.isLast);
 
   Widget _buildChild(BuildContext context, ReorderableItemState state) {
     BoxDecoration decoration;
@@ -71,7 +70,6 @@ class ListThingListTile extends StatelessWidget {
     return content;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return ReorderableItem(
@@ -82,27 +80,10 @@ class ListThingListTile extends StatelessWidget {
 
   Future<void> _openChildList(BuildContext context, ListThing thisThing) async {
     print('open child list, thingID: ${thisThing.thingID} - ${thisThing.items.length} children');
-/*    breadCrumbs.add(
-      IconButton(
-        key:   thisThing.key,
-        icon:  Icon(thisThing.icon),
-        color: Theme.of(context).accentColor,
-        onPressed: () {
-          print('breadcrumb pressed: ${thisThing.label}');
-        },
-      )
-    );
-*/
-    await Navigator.push<ListThing>(
+
+    await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => ShowListPage(
-          key:         ValueKey('childpage_${thisThing.hashCode}'),
-          listName:    thisThing.label, 
-          thisThing:   thisThing,
-          breadCrumbs: breadCrumbs,
-        )
-      )
+      ShowListPage.getRoute(thisThing),
     );
   }
 

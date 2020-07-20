@@ -4,6 +4,7 @@ import 'package:lists/ui/pages/LoadingScreen.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/pages/MainListPage.dart';
+import 'package:lists/models/ListsNavigatorObserver.dart';
 
 void main() async {
 
@@ -26,6 +27,7 @@ void main() async {
             } else {
               return MaterialApp(
                 title: 'Lists!',
+                navigatorObservers: [AppNavigatorObserver()],
                 theme: model.listsTheme.themeData,
                 home:  MainListPage(title: 'Lists!'),
               );

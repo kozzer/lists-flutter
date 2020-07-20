@@ -14,16 +14,19 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 
 class ShowListPage extends StatefulWidget {
-  const ShowListPage({this.key, this.listName, this.thisThing, this.listsTheme, this.breadCrumbs}) : super(key: key);
+  const ShowListPage({this.key, this.listName, this.thisThing, this.listsTheme}) : super(key: key);
 
   final Key          key;
   final String       listName;
   final ListThing    thisThing;
   final ListsTheme   listsTheme;
-  final List<Widget> breadCrumbs;
 
   @override
   _ChildListPageState createState() => _ChildListPageState();
+
+  static MaterialPageRoute getRoute(ListThing routeThing) => MaterialPageRoute(
+      settings: RouteSettings(name: routeThing.label, arguments: routeThing.icon),
+      builder: (context) => ShowListPage());
 }
 
 class _ChildListPageState extends State<ShowListPage>{
@@ -51,12 +54,9 @@ class _ChildListPageState extends State<ShowListPage>{
             IconButton(
               icon:      Icon(Icons.more_vert),
               onPressed: () {
-                Navigator.push<ListThing>(
+                Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => UserSettingsPage(context),
-                    fullscreenDialog: true,
-                  ),
+                  UserSettingsPage.getRoute(context),
                 );
               },
             ),
@@ -86,7 +86,7 @@ class _ChildListPageState extends State<ShowListPage>{
                           )),
                         ),
                         child: ((thing?.isList ?? false || (thing?.thingID ?? 1) == 0)) 
-                          ? ListThingListTile(thing, index == 0, index == thing.items.length - 1, widget.breadCrumbs) 
+                          ? ListThingListTile(thing, index == 0, index == thing.items.length - 1) 
                           : ListThingThingTile(thing, index == 0, index == thing.items.length - 1)
                       )
                     );
@@ -158,23 +158,6 @@ class _ChildListPageState extends State<ShowListPage>{
       if (widget.thisThing.items.where((thing) => thing.key == addThing.key).length == 0)
         widget.thisThing.addChildThing(addThing);
     });
-  }
-
-  Widget _buildBreadCrumbs(){
-    return Container(
-      padding: const EdgeInsets.all(4),
-      child:   Row(children: _buildRowList(), ));
-  }
-
-  List<Widget> _buildRowList(){
-    List<Widget> crumbs = [];
-    for(var crumb in widget.breadCrumbs){
-      crumbs.add(crumb);
-      crumbs.add(Text(' > '));
-    }
-    //Add current list title
-    crumbs.add(Text(widget.thisThing.thingID > 0 ? widget.thisThing.label : 'Lists!'));
-    return crumbs;
   }
 
   int _indexOfKey(ValueKey targetKey) {

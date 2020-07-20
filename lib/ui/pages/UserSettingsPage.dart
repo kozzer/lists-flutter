@@ -12,6 +12,17 @@ class UserSettingsPage extends StatefulWidget {
 
   @override
   _UserSettingsPageState createState() => _UserSettingsPageState();
+
+  static MaterialPageRoute getRoute(BuildContext context) => 
+    MaterialPageRoute(
+      fullscreenDialog: true,
+      settings: 
+        RouteSettings(
+          name: 'UserSettingsPage', 
+          arguments: Icons.settings
+        ),
+      builder: (context) => UserSettingsPage(context)
+    );
 }
 
 class _UserSettingsPageState extends State<UserSettingsPage> {

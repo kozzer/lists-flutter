@@ -12,6 +12,10 @@ class ListThingEntry extends StatefulWidget {
 
   @override
   _ListThingEntryPageState createState() => _ListThingEntryPageState();
+
+  static MaterialPageRoute getRoute() => MaterialPageRoute(
+    settings: RouteSettings(name: 'ListThingEntry', arguments: Icons.add_circle),
+    builder: (context) => ListThingEntry());
 }
 
 class _ListThingEntryPageState extends State<ListThingEntry> {

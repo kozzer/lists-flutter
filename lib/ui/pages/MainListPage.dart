@@ -21,7 +21,6 @@ class MainListPage extends StatelessWidget {
       listName:    'Lists!', 
       thisThing:   mainList,
       listsTheme:  model.listsTheme,
-      breadCrumbs: List<Widget>(),
     );
   } 
 }
