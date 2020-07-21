@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lists/ui/pages/UserSettingsPage.dart';
 import 'package:lists/ui/themes/ListsTheme.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:lists/ui/widgets/BreadcrumbNavigator.dart';
 
 
 class ShowListPage extends StatefulWidget {
@@ -41,20 +42,7 @@ class _ChildListPageState extends State<ShowListPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-          // Only show Lists! icon on home page
-          leading: Padding(
-            padding: EdgeInsets.only(left: 0, top: 6, bottom: 6),
-            child: (widget?.thisThing?.thingID ?? 0) > 0
-              ? IconButton(
-                  icon: SvgPicture.asset('lib/assets/lists.svg'),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
-              : Padding(
-                  padding: EdgeInsets.all(8), 
-                  child: SvgPicture.asset('lib/assets/lists.svg')
-                )
-          ),   
-          title:   Text(widget.listName),// _buildBreadCrumbs(),
+          title:  BreadCrumbNavigator(), 
           actions: <Widget>[
             // action button
             IconButton(

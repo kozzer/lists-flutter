@@ -3,6 +3,7 @@ import 'package:lists/ui/widgets/ListsColorPicker.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:lists/ui/widgets/BreadcrumbNavigator.dart';
 
 class UserSettingsPage extends StatefulWidget {
 
@@ -75,7 +76,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
     return ScopedModelDescendant<ListsScopedModel>(
       builder: (context, child, model) => Scaffold(
         appBar: AppBar(
-          title: Text('Settings'),
+          title: BreadCrumbNavigator(),
           backgroundColor: Theme.of(context).primaryColor
         ),
         body: Form(

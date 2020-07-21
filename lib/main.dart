@@ -27,7 +27,7 @@ void main() async {
             } else {
               return MaterialApp(
                 title: 'Lists!',
-                navigatorObservers: [AppNavigatorObserver()],
+                navigatorObservers: [ListsNavigatorObserver()],
                 theme: model.listsTheme.themeData,
                 home:  MainListPage(title: 'Lists!'),
               );
