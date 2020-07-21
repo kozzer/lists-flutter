@@ -21,9 +21,7 @@ class BreadCrumbNavigator extends StatelessWidget {
                           (route) => route == currentRouteStack[index]);
                     },
                     child: _BreadButton(
-                        index == 0
-                            ? 'Home'
-                            : currentRouteStack[index].settings.name,
+                        currentRouteStack[index].settings.arguments as IconData,
                         index == 0))),
           )
           .values),
@@ -34,24 +32,25 @@ class BreadCrumbNavigator extends StatelessWidget {
 }
 
 class _BreadButton extends StatelessWidget {
-  final String text;
+  final IconData icon;
   final bool isFirstButton;
 
-  _BreadButton(this.text, this.isFirstButton);
+  _BreadButton(this.icon, this.isFirstButton);
 
   @override
   Widget build(BuildContext context) {
     return ClipPath(
       clipper: _TriangleClipper(!isFirstButton),
       child: Container(
-        color: Colors.blue,
+        color: Theme.of(context).primaryColor,
         child: Padding(
           padding: EdgeInsetsDirectional.only(
-              start: isFirstButton ? 8 : 20, end: 28, top: 8, bottom: 8),
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            start:  isFirstButton ? 8 : 20, 
+            end:    28, 
+            top:    8, 
+            bottom: 8
           ),
+          child: Icon(icon, color: Theme.of(context).accentColor)
         ),
       ),
     );
