@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lists/models/ListsNavigatorObserver.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
+import 'package:lists/models/RouteThing.dart';
+import 'package:path/path.dart';
 
 class BreadCrumbNavigator extends StatelessWidget {
   final List<Route> currentRouteStack;
@@ -14,15 +16,24 @@ class BreadCrumbNavigator extends StatelessWidget {
           .asMap()
           .map(
             (index, value) => MapEntry(
-                index,
-                GestureDetector(
-                    onTap: () {
-                      Navigator.popUntil(context,
-                          (route) => route == currentRouteStack[index]);
-                    },
-                    child: _BreadButton(
-                        currentRouteStack[index].settings.arguments as IconData,
-                        index == 0))),
+              index,
+              GestureDetector(
+                onTap: () {
+                  Navigator.popUntil(context,
+                    (popRoute) {
+                      final popRouteThing   = popRoute.settings.arguments as RouteThing;
+                      final indexRouteThing = currentRouteStack[index].settings.arguments as RouteThing;
+                      return popRouteThing.thingID == indexRouteThing.thingID
+                              || indexRouteThing.thingID <= 0;
+                    }
+                  );
+                },
+                child: _BreadButton(
+                  currentRouteStack[index].settings.arguments as RouteThing,
+                  index == 0
+                )
+              )
+            ),
           )
           .values),
       mainAxisSize: MainAxisSize.max,
@@ -32,10 +43,10 @@ class BreadCrumbNavigator extends StatelessWidget {
 }
 
 class _BreadButton extends StatelessWidget {
-  final IconData icon;
+  final RouteThing routeThing;
   final bool isFirstButton;
 
-  _BreadButton(this.icon, this.isFirstButton);
+  _BreadButton(this.routeThing, this.isFirstButton);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +61,7 @@ class _BreadButton extends StatelessWidget {
             top:    8, 
             bottom: 8
           ),
-          child: Icon(icon, color: Theme.of(context).accentColor)
+          child: Icon(routeThing.icon, color: Theme.of(context).accentColor)
         ),
       ),
     );

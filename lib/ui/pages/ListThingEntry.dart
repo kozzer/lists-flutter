@@ -130,10 +130,6 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
                     ),
                   ],
                 ),
-                Container(
-                  height: 75,
-                  child: null
-                ),
                 RaisedButton(
                   color: Theme.of(context).primaryColor.withAlpha(192),
                   child: Text("Save"),

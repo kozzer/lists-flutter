@@ -12,6 +12,7 @@ import 'package:lists/ui/pages/UserSettingsPage.dart';
 import 'package:lists/ui/themes/ListsTheme.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:lists/ui/widgets/BreadcrumbNavigator.dart';
+import 'package:lists/models/RouteThing.dart';
 
 
 class ShowListPage extends StatefulWidget {
@@ -26,7 +27,10 @@ class ShowListPage extends StatefulWidget {
   _ChildListPageState createState() => _ChildListPageState();
 
   static MaterialPageRoute getRoute(Key key, String listName, ListThing routeThing, ListsTheme listsTheme) => MaterialPageRoute(
-    settings: RouteSettings(name: routeThing.label, arguments: routeThing.icon),
+    settings: RouteSettings(
+      name:      routeThing.label, 
+      arguments: RouteThing(routeThing.thingID, routeThing.icon, true)
+    ),
     builder: (context) => ShowListPage(
       key:        key, 
       listName:   listName, 

@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:lists/models/ListsScopedModel.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:lists/ui/widgets/BreadcrumbNavigator.dart';
+import 'package:lists/models/RouteThing.dart';
 
 class UserSettingsPage extends StatefulWidget {
 
@@ -20,7 +21,7 @@ class UserSettingsPage extends StatefulWidget {
       settings: 
         RouteSettings(
           name: 'UserSettingsPage', 
-          arguments: Icons.settings
+          arguments: RouteThing(-1, Icons.settings, false)    // -1 indicates that this is not a ListThing
         ),
       builder: (context) => UserSettingsPage(context)
     );

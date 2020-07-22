@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 // https://medium.com/@Amir_P/implementing-breadcrumb-in-flutter-6ca9b8144206
 
 
-
+// routeStack exists in global scope
 List<Route> routeStack = List();
 
 class ListsNavigatorObserver extends NavigatorObserver {
