@@ -3,6 +3,8 @@ import 'package:lists/models/ListsNavigatorObserver.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:lists/models/RouteThing.dart';
 import 'package:path/path.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 
 class BreadCrumbNavigator extends StatelessWidget {
   final List<Route> currentRouteStack;
@@ -24,7 +26,8 @@ class BreadCrumbNavigator extends StatelessWidget {
                       final popRouteThing   = popRoute.settings.arguments as RouteThing;
                       final indexRouteThing = currentRouteStack[index].settings.arguments as RouteThing;
                       return popRouteThing.thingID == indexRouteThing.thingID
-                              || indexRouteThing.thingID <= 0;
+                              || indexRouteThing.thingID <= 0
+                              || index == 0;
                     }
                   );
                 },
@@ -51,7 +54,7 @@ class _BreadButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipPath(
-      clipper: _TriangleClipper(!isFirstButton),
+      //clipper: _TriangleClipper(!isFirstButton),
       child: Container(
         color: Theme.of(context).primaryColor,
         child: Padding(
@@ -61,7 +64,7 @@ class _BreadButton extends StatelessWidget {
             top:    8, 
             bottom: 8
           ),
-          child: Icon(routeThing.icon, color: Theme.of(context).accentColor)
+          child: Hero(tag: 'icon_thing${routeThing.thingID}', child: Icon(routeThing.icon, color: Theme.of(context).accentColor))
         ),
       ),
     );

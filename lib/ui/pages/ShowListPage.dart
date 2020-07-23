@@ -7,7 +7,6 @@ import 'package:lists/ui/widgets/ListThingListTile.dart';
 import 'package:lists/ui/widgets/ListThingThingTile.dart';
 import 'package:lists/ui/pages/ListThingEntry.dart';
 import 'package:lists/ui/widgets/SwipeBackground.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lists/ui/pages/UserSettingsPage.dart';
 import 'package:lists/ui/themes/ListsTheme.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
