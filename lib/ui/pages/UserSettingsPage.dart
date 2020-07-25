@@ -21,7 +21,7 @@ class UserSettingsPage extends StatefulWidget {
       settings: 
         RouteSettings(
           name: 'UserSettingsPage', 
-          arguments: RouteThing(-1, Icons.settings, false)    // -1 indicates that this is not a ListThing
+          arguments: RouteThing(ValueKey('UserSettingsPage'), -2, Icons.settings, false)    // -2 indicates that this is settings page
         ),
       builder: (context) => UserSettingsPage(context)
     );
@@ -77,6 +77,8 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
     return ScopedModelDescendant<ListsScopedModel>(
       builder: (context, child, model) => Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: null,
           title: BreadCrumbNavigator(),
           backgroundColor: Theme.of(context).primaryColor
         ),

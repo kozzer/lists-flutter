@@ -3,6 +3,9 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/models/ListsScopedModel.dart';
+import 'package:lists/ui/widgets/BreadcrumbNavigator.dart';
+import 'package:lists/models/RouteThing.dart';
+
 
 class ListThingEntry extends StatefulWidget {
   final int       parentThingID;
@@ -13,9 +16,22 @@ class ListThingEntry extends StatefulWidget {
   @override
   _ListThingEntryPageState createState() => _ListThingEntryPageState();
 
-  static MaterialPageRoute getRoute() => MaterialPageRoute(
-    settings: RouteSettings(name: 'ListThingEntry', arguments: Icons.add_circle),
-    builder: (context) => ListThingEntry());
+  static MaterialPageRoute<ListThing> getRoute(int parentThingID, [ListThing existingThing = null]) => MaterialPageRoute(
+    settings: RouteSettings(
+      name: 'ListThingEntry', 
+      arguments: existingThing != null 
+        ? RouteThing(
+            ValueKey('ListThingEntry__Edit_Thing_${existingThing.thingID}'),
+            existingThing.thingID, 
+            Icons.edit_attributes, 
+            false)
+        : RouteThing(ValueKey('ListThingEntry__Add_Under_Parent_$parentThingID'), -1, Icons.add_circle, false)
+    ),
+    builder: (context) => parentThingID < 0 
+                          ? ListThingEntry(existingThing: existingThing) 
+                          : ListThingEntry(parentThingID: parentThingID, existingThing: existingThing),
+    fullscreenDialog: true
+  );
 }
 
 class _ListThingEntryPageState extends State<ListThingEntry> {
@@ -75,14 +91,15 @@ class _ListThingEntryPageState extends State<ListThingEntry> {
     return ScopedModelDescendant<ListsScopedModel>(
       builder: (context, child, model) => Scaffold(
         appBar: AppBar(
-            //  Also need to expose route to Settings screen
-            title: Text(_pageTitle),
+            automaticallyImplyLeading: false,
+            leading: null,
+            title: BreadCrumbNavigator(),
             actions: <Widget>[
               // action button
               IconButton(
-                icon: Icon(Icons.more_vert),
+                icon: Icon(Icons.close),
                 onPressed: () {
-                  print('KOZZER - menu open!');
+                  Navigator.pop(context);
                 },
               ),
             ]),

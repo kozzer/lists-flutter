@@ -92,13 +92,7 @@ class ListThingThingTile extends StatelessWidget {
   void _editThing(BuildContext context, ListThing thisThing) async {
     await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => ListThingEntry(
-          parentThingID: thisThing.parentThingID,
-          existingThing: thisThing,
-        ),
-        fullscreenDialog: true,
-      ),
+      ListThingEntry.getRoute(thisThing.parentThingID, thisThing),
     );
   }
 }

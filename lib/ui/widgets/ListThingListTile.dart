@@ -85,20 +85,19 @@ class ListThingListTile extends StatelessWidget {
 
     await Navigator.push(
       context,
-      ShowListPage.getRoute(thisThing.key, thisThing.label, thisThing, ScopedModel.of<ListsScopedModel>(context).listsTheme),
+      ShowListPage.getRoute(
+        thisThing.key, 
+        thisThing.label, 
+        thisThing, 
+        ScopedModel.of<ListsScopedModel>(context).listsTheme
+      ),
     );
   }
 
   void _editList(BuildContext context, ListThing thisThing) async {
     await Navigator.push<ListThing>(
       context,
-      MaterialPageRoute(
-        builder: (context) => ListThingEntry(
-          parentThingID: thisThing.parentThingID,
-          existingThing: thisThing,
-        ),
-        fullscreenDialog: true,
-      ),
+      ListThingEntry.getRoute(thisThing.parentThingID, thisThing)
     );
   }
 

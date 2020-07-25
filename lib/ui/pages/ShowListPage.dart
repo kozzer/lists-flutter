@@ -28,7 +28,12 @@ class ShowListPage extends StatefulWidget {
   static MaterialPageRoute getRoute(Key key, String listName, ListThing routeThing, ListsTheme listsTheme) => MaterialPageRoute(
     settings: RouteSettings(
       name:      routeThing.label, 
-      arguments: RouteThing(routeThing.thingID, routeThing.icon, true)
+      arguments: RouteThing(
+        ValueKey('ShowPage__List_ThingId_${routeThing.thingID}'), 
+        routeThing.thingID, 
+        routeThing.icon, 
+        true
+      )
     ),
     builder: (context) => ShowListPage(
       key:        key, 
@@ -45,19 +50,24 @@ class _ChildListPageState extends State<ShowListPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
+          automaticallyImplyLeading: false,
+          leading: null,
           title:  BreadCrumbNavigator(), 
-          actions: <Widget>[
-            // action button
-            IconButton(
-              icon:      Icon(Icons.more_vert),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  UserSettingsPage.getRoute(context),
-                );
-              },
-            ),
-          ]),
+          actions: widget.thisThing.thingID == 0 
+            ? <Widget>[
+              // action button
+              IconButton(
+                icon:      Icon(Icons.more_vert),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    UserSettingsPage.getRoute(context),
+                  );
+                },
+              ),
+            ]
+            : null
+          ),
 
       body: ReorderableList(
         onReorder:     _reorderCallback,
@@ -112,10 +122,7 @@ class _ChildListPageState extends State<ShowListPage>{
     print('KOZZER - in ChildListPage add button pressed');
     final newThing = await Navigator.push<ListThing>(
       context,
-      MaterialPageRoute(
-        builder: (context) => ListThingEntry(parentThingID: widget.thisThing.thingID),
-        fullscreenDialog: true,
-      ),
+      ListThingEntry.getRoute(widget.thisThing.thingID)
     );
     if (newThing != null)
       addChildThingToWidget(newThing);
