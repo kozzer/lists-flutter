@@ -6,6 +6,7 @@ import 'package:lists/models/ListsScopedModel.dart';
 import 'package:lists/ui/pages/MainListPage.dart';
 import 'package:lists/models/ListsNavigatorObserver.dart';
 
+
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();

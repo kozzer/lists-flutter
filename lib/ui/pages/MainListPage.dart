@@ -13,6 +13,7 @@ class MainListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { 
+    
     // Show lists data
     final model = ScopedModel.of<ListsScopedModel>(context);
     final mainList = model.mainList;
