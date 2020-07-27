@@ -12,8 +12,17 @@ class BreadCrumbNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final index = (currentRouteStack?.length ?? 0) - 1;
+    var pageTitle = "Lists!";
+    var thingID = 0;
+    if (index >= 0){
+      final currentRoute = currentRouteStack[index];
+      final routeThing = currentRoute.settings.arguments as RouteThing;
+      pageTitle = routeThing.title;
+      thingID = routeThing.thingID;
+    } 
+    print('KOZZER - index: $index -- length: ${currentRouteStack?.length ?? 0} -- pageTitle: $pageTitle');                  
     return Row(
-      //mainAxisSize: MainAxisSize.max, 
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[  
         GestureDetector(
@@ -28,7 +37,13 @@ class BreadCrumbNavigator extends StatelessWidget {
               }
             );
           },
-          child: SvgPicture.asset('lib/assets/lists.svg', width: 32, height: 32,)
+          child: Container(
+            transform: Matrix4.translationValues(-4.0, 0.0, 0.0),
+            child: Padding(
+              padding: EdgeInsets.only(right: 4),
+              child: SvgPicture.asset('lib/assets/lists.svg', width: 32, height: 32,)
+            )
+          )
         ),   
         RowSuper(
           fitHorizontally: true,
@@ -52,16 +67,22 @@ class BreadCrumbNavigator extends StatelessWidget {
                       }
                     );
                   },
-                  child: _BreadButton(
-                    currentRouteStack[index].settings.arguments as RouteThing,
-                    index == 0
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(width: 15, child: Icon(Icons.arrow_right)),
+                      _BreadButton(
+                        currentRouteStack[index].settings.arguments as RouteThing,
+                        index == 0
+                      )
+                    ],
                   )
                 )
               ),
             )
             .values
           ),
-        )
+        ),
+        Hero(tag: 'thing$thingID-title', child: Text(pageTitle, style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 14)))
       ],
     );
   }

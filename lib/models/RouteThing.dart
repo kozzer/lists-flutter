@@ -5,6 +5,7 @@ class RouteThing {
   final int       thingID;
   final IconData  icon;
   final bool      isShowListPage;
+  final String    title;
 
-  RouteThing([ this.key, this.thingID, this.icon, this.isShowListPage ]);
+  RouteThing([ this.key, this.thingID, this.icon, this.isShowListPage, this.title ]);
 }

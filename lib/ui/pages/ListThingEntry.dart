@@ -24,8 +24,9 @@ class ListThingEntry extends StatefulWidget {
             ValueKey('ListThingEntry__Edit_Thing_${existingThing.thingID}'),
             existingThing.thingID, 
             Icons.edit_attributes, 
-            false)
-        : RouteThing(ValueKey('ListThingEntry__Add_Under_Parent_$parentThingID'), -1, Icons.add_circle, false)
+            false,
+            'Edit')
+        : RouteThing(ValueKey('ListThingEntry__Add_Under_Parent_$parentThingID'), -1, Icons.add_circle, false, 'Add')
     ),
     builder: (context) => parentThingID < 0 
                           ? ListThingEntry(existingThing: existingThing) 

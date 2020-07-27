@@ -21,7 +21,7 @@ class UserSettingsPage extends StatefulWidget {
       settings: 
         RouteSettings(
           name: 'UserSettingsPage', 
-          arguments: RouteThing(ValueKey('UserSettingsPage'), -2, Icons.settings, false)    // -2 indicates that this is settings page
+          arguments: RouteThing(ValueKey('UserSettingsPage'), -2, Icons.settings, false, 'Settings')    // -2 indicates that this is settings page
         ),
       builder: (context) => UserSettingsPage(context)
     );

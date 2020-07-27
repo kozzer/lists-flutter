@@ -32,7 +32,8 @@ class ShowListPage extends StatefulWidget {
         ValueKey('ShowPage__List_ThingId_${routeThing.thingID}'), 
         routeThing.thingID, 
         routeThing.icon, 
-        true
+        true,
+        listName
       )
     ),
     builder: (context) => ShowListPage(
