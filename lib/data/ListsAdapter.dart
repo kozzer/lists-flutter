@@ -48,14 +48,11 @@ class ListsAdapter {
 
     // Delete database so it can be re-generated with canned queries
     //await deleteDatabaseFile(path);
-    print('KOZZER - in _initDatabase(), about to open $path');
     final Database db = await openDatabase(
       path,
       version:  _databaseVersion, 
       onCreate: _onCreate, 
       readOnly: false);
-
-    print('KOZZER - db opened: $db');
 
     //runArbitraryQuery();
 
@@ -80,7 +77,6 @@ class ListsAdapter {
 
   /// Insert new ListThing into database (since it's an add, it will never have any children at this point)
   Future<ListThing> insert(ListThing thing, bool keepSortOrder) async {
-    print('KOZZER - ListsAdapter.insert()');
     final Database db = await instance.database;
 
     // Get new Thing's ID
@@ -99,14 +95,12 @@ class ListsAdapter {
       newThing = thing.copyWith(thingID: newID);
     }
 
-    print('KOZZER - insert new thing row: ${newThing.toMap()}');
     await db.insert(listsTable, newThing.toMap());
     return newThing;
   }
 
   /// Delete ListThing from database, including all descendants (uses recursion)
   Future<void> delete(int thingID) async {
-    print('KOZZER - in ListsDataProvider.delete($thingID)');
 
     if (thingID == 0) throw 'Not allowed to delete main list! (ID: 0)';
 
@@ -116,27 +110,22 @@ class ListsAdapter {
 
     final List<Map<String, dynamic>> rows = await db.rawQuery(query);
     if (rows.isNotEmpty) {
-      print('KOZZER - in ListsDataProvider.delete($thingID) - found ${rows.length} children');
-
       // Recursively get to the "bottom", and then we can delete on the way up
       for (final Map<String, dynamic> row in rows) {
         final int childID = row[colThingID] as int;
 
         // Call this method recursively
-        print('KOZZER - calling ListsDataProvider.delete($childID) recursively');
         await delete(childID);
       }
     }
 
     // Any descendants should all be deleted, so now delete primary thing
-    print('KOZZER - deleting thing ID $thingID');
     query = 'DELETE FROM $listsTable WHERE $colThingID = $thingID';
     await db.rawQuery(query);
   }
 
   /// Update existing ListThing record
   Future<void> update(ListThing thing) async {
-    print('KOZZER - updating thing row - new values: ${thing.toMap()}');
     if (thing.thingID == 0) throw 'Not allowed to update main list! (ID: 0)';
 
     final Database db = await instance.database;
@@ -152,7 +141,6 @@ class ListsAdapter {
 
   /// Gets ListThing by ID and includes all descendants
   Future<ListThing> getListThingByID(int thingID) async {
-    print('KOZZER - in listsAdapter.getListThingByID($thingID)');
     // Build SQL query
     final Database db = await instance.database;
     final String query = '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
@@ -167,7 +155,6 @@ class ListsAdapter {
       // If this is a list, get the children
       if (thing.isList) {
         final List<ListThing> children = await getChildrenForParentID(thing.thingID);
-        print('KOZZER - found ${children?.length ?? 0} children');
 
         for (int i = 0; i < children.length; i++) {
           thing.addChildThing(children[i]);
@@ -189,7 +176,6 @@ class ListsAdapter {
 
   /// Gets all children ListThings for given thingID, executes recursively to get descendants
   Future<List<ListThing>> getChildrenForParentID(int parentID) async {
-    print('KOZZER - ListsAdapter.getChildrenForParentID($parentID)');
     // Build SQL query
     final Database db = await instance.database;
     final String query = '''SELECT $colThingID, $colParentThingID, $colLabel, $colIsList, $colIcon, $colIsMarked, $colSortOrder
@@ -254,7 +240,7 @@ class ListsAdapter {
   Future<void> deleteDatabaseFile(String path) async {
     // DELETE DATABASE FILE Needs directive: import 'dart:io';
     if (_database == null) {
-      print('KOZZER - deleting existing database file: $path');
+      print('KOZZER - DELETING existing database file: $path');
       final File fse = File(path);
       if (await fse.exists()) {
         fse.delete();

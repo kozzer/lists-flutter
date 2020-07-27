@@ -21,14 +21,17 @@ class BreadCrumbNavigator extends StatelessWidget {
             Navigator.popUntil(context,
               (popRoute) {
                 final popRouteThing = popRoute.settings.arguments as RouteThing;
+
+                print('KOZZER - popping down to main list, poproute: ${popRouteThing.thingID} -- stack size: ${this.currentRouteStack.length}');
+
                 return popRouteThing.thingID == 0;
               }
             );
           },
-          child: SvgPicture.asset('lib/assets/lists.svg', width: 24, height: 24,)
+          child: SvgPicture.asset('lib/assets/lists.svg', width: 32, height: 32,)
         ),   
         RowSuper(
-          mainAxisSize: MainAxisSize.max,
+          fitHorizontally: true,
           innerDistance: -8,
           children: List<Widget>.from(currentRouteStack
             .asMap()
@@ -41,7 +44,9 @@ class BreadCrumbNavigator extends StatelessWidget {
                       (popRoute) {
                         final popRouteThing   = popRoute.settings.arguments as RouteThing;
                         final indexRouteThing = currentRouteStack[index].settings.arguments as RouteThing;
-                        print('poproute: ${popRouteThing.thingID} -- indexroute: ${indexRouteThing.thingID} -- index: $index');
+
+                        print('KOZZER - poproute: ${popRouteThing.thingID} -- indexroute: ${indexRouteThing.thingID} -- index: $index -- stack size: ${this.currentRouteStack.length}');
+
                         return popRouteThing.thingID == indexRouteThing.thingID
                                 || indexRouteThing.thingID <= 0;
                       }
