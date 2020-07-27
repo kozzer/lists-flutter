@@ -69,7 +69,7 @@ class BreadCrumbNavigator extends StatelessWidget {
                   },
                   child: Row(
                     children: <Widget>[
-                      SizedBox(width: 15, child: Icon(Icons.arrow_right)),
+                      SizedBox(width: 15, child: Icon(Icons.arrow_right, color: Theme.of(context).textTheme.bodyText1.color)),
                       _BreadButton(
                         currentRouteStack[index].settings.arguments as RouteThing,
                         index == 0
