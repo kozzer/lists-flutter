@@ -10,7 +10,7 @@ class UserSettingsPage extends StatefulWidget {
 
   final BuildContext _context;
 
-  UserSettingsPage(this._context);
+  const UserSettingsPage(this._context);
 
   @override
   _UserSettingsPageState createState() => _UserSettingsPageState();
