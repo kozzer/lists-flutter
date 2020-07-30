@@ -60,12 +60,20 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
   void changePrimaryColor(BuildContext context, Color color) {
     _primaryColor = color;
     primaryColorTextController.text = '#${_primaryColor.value.toRadixString(16)}';
-    setState(() {});
+    setState((){});
+  }
+  void updatePrimaryColor(){
+    _primaryColor = Color(int.parse(primaryColorTextController.text.substring(0, 8), radix: 16) + 0x00000000);
+    setState((){});
   }
   void changeAccentColor(BuildContext context, Color color) {
     _accentColor = color;
     accentColorTextController.text = '#${_accentColor.value.toRadixString(16)}';
-    setState(() {});
+    setState((){});
+  }
+  void updateAccentColor() {
+    _accentColor = Color(int.parse(accentColorTextController.text.substring(0, 8), radix: 16) + 0x00000000);
+    setState((){});
   }
   void toggleDarkTheme(BuildContext context, bool isDarkTheme){
     _isDarkTheme = isDarkTheme;
@@ -109,6 +117,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                           ),
                           maxLength: 9,                            
                           controller: primaryColorTextController,
+                          onEditingComplete: updatePrimaryColor,
                         )
                       ),
                       Padding(
@@ -160,6 +169,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                           ),
                           maxLength: 9,
                           controller: accentColorTextController,
+                          onEditingComplete: updateAccentColor,
                         )
                       ),
                       Padding(
