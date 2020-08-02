@@ -26,12 +26,7 @@ void main() async {
                 home: LoadingScreen()
               );
             } else {
-              return MaterialApp(
-                title: 'Lists!',
-                navigatorObservers: [ListsNavigatorObserver()],
-                theme: model.listsTheme.themeData,
-                home:  MainListPage(title: 'Lists!'),
-              );
+              return ListsApp(model);
             }
           } ,
         )
@@ -52,6 +47,7 @@ class ListsApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Lists!',
+      navigatorObservers: [ListsNavigatorObserver()],
       theme: model.listsTheme.themeData,
       home:  MainListPage(title: 'Lists!'),
     );

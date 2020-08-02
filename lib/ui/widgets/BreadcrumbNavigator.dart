@@ -18,8 +18,10 @@ class BreadCrumbNavigator extends StatelessWidget {
     if (index >= 0){
       final currentRoute = currentRouteStack[index];
       final routeThing = currentRoute.settings.arguments as RouteThing;
-      pageTitle = routeThing.title;
-      thingID = routeThing.thingID;
+      if (routeThing != null){
+        pageTitle = routeThing.title;
+        thingID = routeThing.thingID;
+      }
     } 
     print('KOZZER - index: $index -- length: ${currentRouteStack?.length ?? 0} -- pageTitle: $pageTitle');                  
     return Row(
@@ -62,8 +64,8 @@ class BreadCrumbNavigator extends StatelessWidget {
 
                         print('KOZZER - poproute: ${popRouteThing.thingID} -- indexroute: ${indexRouteThing?.thingID} -- index: $index -- stack size: ${this.currentRouteStack.length}');
 
-                        return popRouteThing.thingID == indexRouteThing.thingID
-                                || indexRouteThing.thingID <= 0;
+                        return popRouteThing?.thingID == indexRouteThing?.thingID
+                                || (indexRouteThing?.thingID ?? 0) <= 0;
                       }
                     );
                   },

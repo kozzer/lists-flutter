@@ -15,8 +15,12 @@ class ListsNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route route, Route previousRoute) {
     super.didPush(route, previousRoute);
-    routeStack.add(route);
-    print('KOZZER - pushed route, stack size: ${routeStack.length}');
+    if (route.settings?.arguments != null){
+      routeStack.add(route);
+      print('KOZZER - pushed route, stack size: ${routeStack.length}');
+    } else {
+      print('KOZZER - route arg null, no push route, stack size: ${routeStack.length}');
+    }
   }
 
   @override
