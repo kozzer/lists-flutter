@@ -4,12 +4,12 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lists/models/ListThing.dart';
 
-class ListsAdapter {
+class ListsSqLiteAdapter {
   // Constructor, singleton access
-  ListsAdapter._(){
+  ListsSqLiteAdapter._(){
     print('KOZZER - ListsAdapter private constructor');
   }
-  static final ListsAdapter instance    = ListsAdapter._();
+  static final ListsSqLiteAdapter instance    = ListsSqLiteAdapter._();
 
   // Database info
   static const String _databaseFileName = 'lists_database.db';

@@ -1,5 +1,5 @@
 import 'package:scoped_model/scoped_model.dart';
-import 'package:lists/data/ListsAdapter.dart';
+import 'package:lists/data/ListsSqLiteAdapter.dart';
 import 'package:lists/models/ListThing.dart';
 import 'package:lists/ui/themes/ListsTheme.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class ListsScopedModel extends Model{
   } 
 
   // single ListsAdapter
-  final ListsAdapter listsAdapter = ListsAdapter.instance;
+  final ListsSqLiteAdapter listsAdapter = ListsSqLiteAdapter.instance;
 
   // Main List
   ListThing _mainList;
