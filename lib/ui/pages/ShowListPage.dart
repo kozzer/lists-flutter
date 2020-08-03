@@ -110,6 +110,7 @@ class _ChildListPageState extends State<ShowListPage>{
           
       floatingActionButton: FloatingActionButton(
         onPressed: () => _onAddButtonPressed(context), 
+        heroTag:    null,
         tooltip:   'Add List',
         child:     Icon(Icons.add),
         foregroundColor: useWhiteForeground(Theme.of(context).primaryColor)

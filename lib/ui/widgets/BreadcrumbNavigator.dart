@@ -48,6 +48,7 @@ class BreadCrumbNavigator extends StatelessWidget {
           )
         ),   
         RowSuper(
+          alignment: Alignment.centerLeft,
           fitHorizontally: true,
           innerDistance: -8,
           children: List<Widget>.from(currentRouteStack
@@ -70,11 +71,23 @@ class BreadCrumbNavigator extends StatelessWidget {
                     );
                   },
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(width: 15, child: Icon(Icons.arrow_right, color: Theme.of(context).textTheme.bodyText1.color)),
-                      _BreadButton(
-                        currentRouteStack[index].settings.arguments as RouteThing,
-                        index == 0
+                      Container(
+                        // transform: Matrix4.translationValues(-12.0, 0.0, 0.0),
+                        width: 30, 
+                        child: Icon(
+                          Icons.arrow_right, 
+                          color: Theme.of(context).textTheme.bodyText1.color,
+                          size: 24
+                        )
+                      ),
+                      Container(
+                        // transform: Matrix4.translationValues(-24.0, 0.0, 0.0),
+                        child: _BreadButton(
+                          currentRouteStack[index].settings.arguments as RouteThing,
+                          index == 0
+                        )
                       )
                     ],
                   )

@@ -17,7 +17,7 @@ class ListThingListTile extends StatelessWidget {
   final bool      isFirst;
   final bool      isLast;
 
-  const ListThingListTile(this.thisThing, this.isFirst, this.isLast);
+  ListThingListTile(this.thisThing, this.isFirst, this.isLast);
 
   Widget _buildChild(BuildContext context, ReorderableItemState state) {
     BoxDecoration decoration;
@@ -53,7 +53,7 @@ class ListThingListTile extends StatelessWidget {
                 Expanded(
                   child: ListTile(
                     key:          ValueKey(thisThing.key),
-                    leading:      Hero(tag: 'icon_thing${thisThing.thingID}', child: Icon(thisThing.icon, color: Theme.of(context).accentColor)),
+                    leading:      Hero(tag: 'icon_thing${thisThing.thingID}',  child: Icon(thisThing.icon,  color: Theme.of(context).accentColor)),
                     title:        Hero(tag: 'thing${thisThing.thingID}-title', child: Text(thisThing.label, style: Theme.of(context).textTheme.bodyText1)),
                     subtitle:     Text('(${thisThing.listSize} item${thisThing.listSize != 1 ? 's' : ''})', style: Theme.of(context).textTheme.bodyText2),
                     onTap:        () => _openChildList(context, thisThing),
