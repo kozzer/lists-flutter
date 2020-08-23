@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lists/models/ListsNavigatorObserver.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:lists/models/RouteThing.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 
 class BreadCrumbNavigator extends StatelessWidget {
@@ -41,9 +40,17 @@ class BreadCrumbNavigator extends StatelessWidget {
           },
           child: Container(
             transform: Matrix4.translationValues(-4.0, 0.0, 0.0),
+            //color: Color.fromARGB(255, 155, 155, 155),
             child: Padding(
-              padding: EdgeInsets.only(right: 4),
-              child: SvgPicture.asset('lib/assets/lists.svg', width: 32, height: 32,)
+              padding: EdgeInsets.only(right: 0.0),
+              child:  Hero(
+                tag: 'ListsAppIcon',
+                child: Image(
+                  image: AssetImage('lib/assets/splash.png'),
+                  width: 32,
+                  height: 32,
+                )
+              )
             )
           )
         ),   
@@ -74,8 +81,10 @@ class BreadCrumbNavigator extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        // transform: Matrix4.translationValues(-12.0, 0.0, 0.0),
-                        width: 30, 
+                        transform: Matrix4.translationValues(-2.0, 0.0, 0.0),
+                        //color: Color.fromARGB(255, 128, 128, 128),
+                        alignment: Alignment.centerLeft,
+                        width: 18, 
                         child: Icon(
                           Icons.arrow_right, 
                           color: Theme.of(context).textTheme.bodyText1.color,
@@ -97,7 +106,13 @@ class BreadCrumbNavigator extends StatelessWidget {
             .values
           ),
         ),
-        Hero(tag: 'thing$thingID-title', child: Text(pageTitle, style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 14)))
+        Hero(
+          tag: 'thing$thingID-title', 
+          child: Text(
+            pageTitle, 
+            style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 14)
+          )
+        )
       ],
     );
   }
@@ -113,9 +128,10 @@ class _BreadButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(
       color: Theme.of(context).primaryColor,
+      //color: Color.fromARGB(255, 96, 96, 96),
       child: Padding(
         padding: EdgeInsetsDirectional.only(
-          start:  16, 
+          start:  0, 
           end:    8, 
           top:    8, 
           bottom: 8

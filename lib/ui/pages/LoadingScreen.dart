@@ -18,8 +18,11 @@ class LoadingScreen extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.all(48),
-              child:  Image(
-                image: AssetImage('lib/assets/splash.png')
+              child:  Hero(
+                tag: 'ListsAppIcon',
+                child: Image(
+                  image: AssetImage('lib/assets/splash.png')
+                )
               )
             ), 
             SizedBox(
