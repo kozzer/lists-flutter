@@ -7,15 +7,13 @@ import 'package:scoped_model/scoped_model.dart';
 
 
 class MainListPage extends StatelessWidget {
-  const MainListPage({ Key key, this.title }) : super(key: key);
-
-  final String title;
+  const MainListPage({ Key key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) { 
     
     // Show lists data
-    final model = ScopedModel.of<ListsScopedModel>(context);
+    final model    = ScopedModel.of<ListsScopedModel>(context);
     final mainList = model.mainList;
     return ShowListPage(
       key:         mainList.key, 

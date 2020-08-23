@@ -49,7 +49,7 @@ class ListsApp extends StatelessWidget {
       title: 'Lists!',
       navigatorObservers: [ListsNavigatorObserver()],
       theme: model.listsTheme.themeData,
-      home:  MainListPage(title: 'Lists!'),
+      home:  MainListPage(),
     );
   }
 }

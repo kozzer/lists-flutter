@@ -11,15 +11,15 @@ class BreadCrumbNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = (currentRouteStack?.length ?? 0) - 1;
-    var pageTitle = "Lists!";
-    var thingID = 0;
+    final index     = (currentRouteStack?.length ?? 0) - 1;
+    var   pageTitle = "Lists!";
+    var   thingID   = 0;
     if (index >= 0){
       final currentRoute = currentRouteStack[index];
-      final routeThing = currentRoute.settings.arguments as RouteThing;
+      final routeThing   = currentRoute.settings.arguments as RouteThing;
       if (routeThing != null){
         pageTitle = routeThing.title;
-        thingID = routeThing.thingID;
+        thingID   = routeThing.thingID;
       }
     } 
     print('KOZZER - index: $index -- length: ${currentRouteStack?.length ?? 0} -- pageTitle: $pageTitle');                  
@@ -34,7 +34,9 @@ class BreadCrumbNavigator extends StatelessWidget {
 
                 print('KOZZER - popping down to main list, poproute: ${popRouteThing?.thingID} -- stack size: ${this.currentRouteStack.length}');
 
-                return popRouteThing == null || popRouteThing.thingID == 0;
+                return index < 0 
+                        || popRouteThing == null 
+                        || popRouteThing.thingID == 0;
               }
             );
           },
@@ -67,6 +69,9 @@ class BreadCrumbNavigator extends StatelessWidget {
                   onTap: () {
                     Navigator.popUntil(context,
                       (popRoute) {
+                        
+                        if (index < 0) return true;
+
                         final popRouteThing   = popRoute.settings.arguments as RouteThing;
                         final indexRouteThing = currentRouteStack[index].settings.arguments as RouteThing;
 
@@ -132,7 +137,7 @@ class _BreadButton extends StatelessWidget {
       child: Padding(
         padding: EdgeInsetsDirectional.only(
           start:  0, 
-          end:    8, 
+          end:    6, 
           top:    8, 
           bottom: 8
         ),
